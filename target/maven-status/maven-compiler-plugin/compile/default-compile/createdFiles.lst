@@ -1,0 +1,8 @@
+com\blackchicktech\healthdiet\repository\HelloDao.class
+com\blackchicktech\healthdiet\util\json\SharedParameterizedType.class
+com\blackchicktech\healthdiet\entity\Entity.class
+com\blackchicktech\healthdiet\HealthDietApplication.class
+com\blackchicktech\healthdiet\util\rest\ApiCode.class
+com\blackchicktech\healthdiet\entity\Hello.class
+com\blackchicktech\healthdiet\util\rest\JsonResult.class
+com\blackchicktech\healthdiet\repository\BaseDao.class
