@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ReportRequest extends BasicResponse{
+public class ReportRequest {
 
     @JsonProperty("userInfo")
     private UserInfo userInfo;
