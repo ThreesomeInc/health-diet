@@ -35,4 +35,75 @@ public class UserDataInfo {
     @JsonProperty("irritability")
     List<String> irritability;
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthDay() {
+        return birthDay;
+    }
+
+    public void setBirthDay(String birthDay) {
+        this.birthDay = birthDay;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getSportRate() {
+        return sportRate;
+    }
+
+    public void setSportRate(String sportRate) {
+        this.sportRate = sportRate;
+    }
+
+    public String getNephroticPeriod() {
+        return nephroticPeriod;
+    }
+
+    public void setNephroticPeriod(String nephroticPeriod) {
+        this.nephroticPeriod = nephroticPeriod;
+    }
+
+    public String getTreatmentMethod() {
+        return treatmentMethod;
+    }
+
+    public void setTreatmentMethod(String treatmentMethod) {
+        this.treatmentMethod = treatmentMethod;
+    }
+
+    public List<String> getOtherDisease() {
+        return otherDisease;
+    }
+
+    public void setOtherDisease(List<String> otherDisease) {
+        this.otherDisease = otherDisease;
+    }
+
+    public List<String> getIrritability() {
+        return irritability;
+    }
+
+    public void setIrritability(List<String> irritability) {
+        this.irritability = irritability;
+    }
 }

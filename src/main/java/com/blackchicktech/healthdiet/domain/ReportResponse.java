@@ -9,6 +9,18 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReportResponse extends BasicResponse{
 
+    @JsonProperty("bodyType")
+    private String bodyType;
+
+    @JsonProperty("standardWeight")
+    private float standardWeight;
+
+    @JsonProperty("calorie")
+    private float calorie;
+
+    @JsonProperty("protein")
+    private float protein;
+
     @JsonProperty("healthEstimation")
     private String healthEstimation;
 
@@ -20,6 +32,38 @@ public class ReportResponse extends BasicResponse{
 
     @JsonProperty("nutrition")
     private List<Nutrition> nutrition = new ArrayList<>();
+
+    public String getBodyType() {
+        return bodyType;
+    }
+
+    public void setBodyType(String bodyType) {
+        this.bodyType = bodyType;
+    }
+
+    public float getStandardWeight() {
+        return standardWeight;
+    }
+
+    public void setStandardWeight(float standardWeight) {
+        this.standardWeight = standardWeight;
+    }
+
+    public float getCalorie() {
+        return calorie;
+    }
+
+    public void setCalorie(float calorie) {
+        this.calorie = calorie;
+    }
+
+    public float getProtein() {
+        return protein;
+    }
+
+    public void setProtein(float protein) {
+        this.protein = protein;
+    }
 
     public String getHealthEstimation() {
         return healthEstimation;

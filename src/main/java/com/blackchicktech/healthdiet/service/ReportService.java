@@ -1,9 +1,6 @@
 package com.blackchicktech.healthdiet.service;
 
-import com.blackchicktech.healthdiet.domain.Nutrition;
-import com.blackchicktech.healthdiet.domain.ReportRequest;
-import com.blackchicktech.healthdiet.domain.ReportResponse;
-import com.blackchicktech.healthdiet.domain.SuggestNutrition;
+import com.blackchicktech.healthdiet.domain.*;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,8 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportService {
 
+
+
     public ReportResponse report(ReportRequest reportRequest){
         ReportResponse response = new ReportResponse();
+        response.setBodyType(calWeightIndex(reportRequest));
+        response.setStandardWeight(calStandardWeight(reportRequest));
+        response.setCalorie(calCalorie(reportRequest));
+        response.setProtein(calProtein(reportRequest));
         response.setHealthEstimation("Normal");
         response.setAdvice("No Advice");
         SuggestNutrition sn1 = new SuggestNutrition("energy", "1575", "kcal");
@@ -26,5 +29,57 @@ public class ReportService {
         Nutrition n3 = new Nutrition("egg", "1", "ge");
         response.addNutrition(n1);
         return response;
+    }
+
+    private String calWeightIndex(ReportRequest reportRequest){
+       float bmi = calBmi(reportRequest);
+        if(bmi < 18.5){
+            return BodyType.MALNOURISHED.info();
+        } else if(bmi >= 18.5 && bmi < 23.9){
+            return BodyType.NORMAL.info();
+        } else if(bmi >= 24.0 && bmi < 27.9){
+            return BodyType.OVERWEIGHT.info();
+        } else {
+            return BodyType.FATTY.info();
+        }
+    }
+
+    private float calBmi(ReportRequest reportRequest){
+        String height = reportRequest.getUserDataInfo().getHeight();
+        String weight = reportRequest.getUserDataInfo().getWeight();
+        return Float.parseFloat(weight)/(Integer.parseInt(height)/100)/(Integer.parseInt(height)/100);
+    }
+
+    private float calStandardWeight(ReportRequest reportRequest){
+        String gender = reportRequest.getUserDataInfo().getGender();
+        String height = reportRequest.getUserDataInfo().getHeight();
+        if("male".equals(gender)){
+            return (float)((Integer.parseInt(height) - 100) * 0.9);
+        } else if("female".equals(gender)){
+            return (float)((Integer.parseInt(height) - 100) * 0.9 - 2.5);
+        } else {
+            throw new IllegalArgumentException("Gender can only be male or female");
+        }
+    }
+
+    private float calCalorie(ReportRequest reportRequest){
+        String sportRate = reportRequest.getUserDataInfo().getSportRate();
+        float standardWeight = calStandardWeight(reportRequest);
+        float bmi = calBmi(reportRequest);
+        if("light".equals(sportRate)){
+          if(bmi < 18.5){
+              return standardWeight*35;
+          } else if(bmi >= 18.5 && bmi < 23.9){
+              return (float)(standardWeight*32.5);
+          } else {
+              return  standardWeight*30;
+          }
+        }
+        return 0;
+
+    }
+
+    private float calProtein(ReportRequest reportRequest){
+        return 0;
     }
 }
