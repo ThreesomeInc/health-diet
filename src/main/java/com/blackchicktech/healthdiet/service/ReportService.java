@@ -19,15 +19,17 @@ public class ReportService {
         response.setProtein(calProtein(reportRequest));
         response.setHealthEstimation("Normal");
         response.setAdvice("No Advice");
-        SuggestNutrition sn1 = new SuggestNutrition("energy", "1575", "kcal");
-        SuggestNutrition sn2 = new SuggestNutrition("protein", "45", "g");
+        SuggestNutrition sn1 = new SuggestNutrition("energy", "热量", "1575", "kcal");
+        SuggestNutrition sn2 = new SuggestNutrition("protein", "蛋白质", "45", "g");
         response.addSuggestNutrition(sn1);
         response.addSuggestNutrition(sn2);
 
-        Nutrition n1 = new Nutrition("milk", "220", "ml");
-        Nutrition n2 = new Nutrition("fruit", "176", "g");
-        Nutrition n3 = new Nutrition("egg", "1", "ge");
+        Nutrition n1 = new Nutrition("milk", "牛奶", "220", "ml");
+        Nutrition n2 = new Nutrition("fruit", "水果", "176", "g");
+        Nutrition n3 = new Nutrition("egg", "鸡蛋", "1", "ge");
         response.addNutrition(n1);
+        response.addNutrition(n2);
+        response.addNutrition(n3);
         return response;
     }
 

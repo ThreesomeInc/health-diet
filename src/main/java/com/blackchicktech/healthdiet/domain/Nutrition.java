@@ -12,11 +12,15 @@ public class Nutrition {
     @JsonProperty("value")
     private String value;
 
+    @JsonProperty("alias")
+    private String alias;
+
     @JsonProperty("unit")
     private String unit;
 
-    public Nutrition(String name, String value, String unit) {
+    public Nutrition(String name, String alias, String value, String unit) {
         this.name = name;
+        this.alias = alias;
         this.value = value;
         this.unit = unit;
     }
@@ -37,6 +41,14 @@ public class Nutrition {
         this.value = value;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public String getUnit() {
         return unit;
     }
@@ -49,6 +61,7 @@ public class Nutrition {
     public String toString() {
         return "Nutrition{" +
                 "name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
                 ", value='" + value + '\'' +
                 ", unit='" + unit + '\'' +
                 '}';

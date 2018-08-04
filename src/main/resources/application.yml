@@ -25,7 +25,7 @@ spring:
     thymeleaf:
         prefix: classpath:/templates/
         suffix: .html
-        mode: HTML
+        mode: HTML5
         encoding: UTF-8
         cache: false
         servlet:
@@ -82,3 +82,6 @@ spring:
 mybatis:
   mapper-locations: ["classpath:mapper/*Mapper.xml", "classpath:mapper/**/*Mapper.xml"]
   config-location: classpath:mapper/config/sqlMapConfig.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+#  type-aliases-package: com.blackchicktech.healthdiet.repository

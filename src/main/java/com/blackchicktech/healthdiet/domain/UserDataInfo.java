@@ -27,7 +27,7 @@ public class UserDataInfo {
     private String nephroticPeriod;
 
     @JsonProperty("treatmentMethod")
-    private String treatmentMethod;
+    private List<String> treatmentMethod;
 
     @JsonProperty("otherDisease")
     List<String> otherDisease;
@@ -83,11 +83,11 @@ public class UserDataInfo {
         this.nephroticPeriod = nephroticPeriod;
     }
 
-    public String getTreatmentMethod() {
+    public List<String> getTreatmentMethod() {
         return treatmentMethod;
     }
 
-    public void setTreatmentMethod(String treatmentMethod) {
+    public void setTreatmentMethod(List<String> treatmentMethod) {
         this.treatmentMethod = treatmentMethod;
     }
 
