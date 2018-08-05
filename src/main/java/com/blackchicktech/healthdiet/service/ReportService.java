@@ -16,30 +16,30 @@ public class ReportService {
 
     public ReportResponse report(ReportRequest reportRequest){
         ReportResponse response = new ReportResponse();
-        /*response.setBodyType(calWeightIndex(reportRequest));*/
-        response.setStandardWeight(calStandardWeight(reportRequest));
-        response.setCalorie(calCalorie(reportRequest));
+        /*response.setBodyType(calBmi(reportRequest));*/
+        response.setStandardWeight(String.valueOf(calStandardWeight(reportRequest)) + "kg");
+        response.setCalorie(String.valueOf(calCalorie(reportRequest)) + "cal");
         response.setProtein(calProtein(reportRequest));
-        response.setHealthEstimation(calWeightIndex(reportRequest));
+        response.setBmi(calBmi(reportRequest));
         response.setAdvice("No Advice");
         response.setSuggestNutrition(calSuggestNutrition(reportRequest));
         return response;
     }
 
-    private String calWeightIndex(ReportRequest reportRequest){
-       float bmi = calBmi(reportRequest);
-        if(bmi < 18.5){
+    private String calBmi(ReportRequest reportRequest){
+       float bmiIndex = calBmiIndex(reportRequest);
+        if(bmiIndex < 18.5){
             return BodyType.MALNOURISHED.info();
-        } else if(bmi >= 18.5 && bmi < 23.9){
+        } else if(bmiIndex >= 18.5 && bmiIndex < 23.9){
             return BodyType.NORMAL.info();
-        } else if(bmi >= 24.0 && bmi < 27.9){
+        } else if(bmiIndex >= 24.0 && bmiIndex < 27.9){
             return BodyType.OVERWEIGHT.info();
         } else {
             return BodyType.FATTY.info();
         }
     }
 
-    private float calBmi(ReportRequest reportRequest){
+    private float calBmiIndex(ReportRequest reportRequest){
         String height = reportRequest.getUserDataInfo().getHeight();
         String weight = reportRequest.getUserDataInfo().getWeight();
         return Float.parseFloat(weight)/(Integer.parseInt(height)/100)/(Integer.parseInt(height)/100);
@@ -60,7 +60,7 @@ public class ReportService {
     private float calCalorie(ReportRequest reportRequest){
         String sportRate = reportRequest.getUserDataInfo().getSportRate();
         float standardWeight = calStandardWeight(reportRequest);
-        float bmi = calBmi(reportRequest);
+        float bmi = calBmiIndex(reportRequest);
         if("light".equals(sportRate)){
           if(bmi < 18.5){
               return standardWeight*35;
@@ -89,14 +89,14 @@ public class ReportService {
         StringBuffer protein = new StringBuffer();
         if(nephroticPeriod >= 1 && nephroticPeriod <=2 ){
             return protein.append(standardWeight*0.8).append("~")
-                    .append(standardWeight*1).toString();
+                    .append(standardWeight*1).append("cal").toString();
         } else if (nephroticPeriod >=3 && nephroticPeriod <=5){
             if(treatmentMethod.contains("dialysis")){
                 return protein.append(standardWeight*1).append("~")
-                        .append(standardWeight*1.2).toString();
+                        .append(standardWeight*1.2).append("cal").toString();
             } else{
                 return protein.append(standardWeight*0.6).append("~")
-                        .append(standardWeight*10.8).toString();
+                        .append(standardWeight*10.8).append("cal").toString();
             }
         }
         return "Protein is unclear.";
