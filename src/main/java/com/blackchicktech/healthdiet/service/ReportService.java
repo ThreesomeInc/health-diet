@@ -13,11 +13,11 @@ public class ReportService {
 
     public ReportResponse report(ReportRequest reportRequest){
         ReportResponse response = new ReportResponse();
-        response.setBodyType(calWeightIndex(reportRequest));
+        /*response.setBodyType(calWeightIndex(reportRequest));*/
         response.setStandardWeight(calStandardWeight(reportRequest));
         response.setCalorie(calCalorie(reportRequest));
         response.setProtein(calProtein(reportRequest));
-        response.setHealthEstimation("Normal");
+        response.setHealthEstimation(calWeightIndex(reportRequest));
         response.setAdvice("No Advice");
         SuggestNutrition sn1 = new SuggestNutrition("energy", "热量", "1575", "kcal");
         SuggestNutrition sn2 = new SuggestNutrition("protein", "蛋白质", "45", "g");
@@ -76,12 +76,36 @@ public class ReportService {
           } else {
               return  standardWeight*30;
           }
+        } else {
+            if(bmi < 18.5){
+                return standardWeight*40;
+            } else if(bmi >= 18.5 && bmi < 23.9){
+                return (standardWeight*37);
+            } else {
+                return  standardWeight*35;
+            }
         }
-        return 0;
+
 
     }
 
-    private float calProtein(ReportRequest reportRequest){
-        return 0;
+    private String calProtein(ReportRequest reportRequest){
+        int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
+        String treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
+        float standardWeight = calStandardWeight(reportRequest);
+        StringBuffer protein = new StringBuffer();
+        if(nephroticPeriod >= 1 && nephroticPeriod <=2 ){
+            return protein.append(standardWeight*0.8).append("~")
+                    .append(standardWeight*1).toString();
+        } else if (nephroticPeriod >=3 && nephroticPeriod <=5){
+            if(treatmentMethod.contains("dialysis")){
+                return protein.append(standardWeight*1).append("~")
+                        .append(standardWeight*1.2).toString();
+            } else{
+                return protein.append(standardWeight*0.6).append("~")
+                        .append(standardWeight*10.8).toString();
+            }
+        }
+        return "Protein is unclear.";
     }
 }

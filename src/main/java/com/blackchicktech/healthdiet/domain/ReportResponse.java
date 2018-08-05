@@ -19,7 +19,7 @@ public class ReportResponse extends BasicResponse{
     private float calorie;
 
     @JsonProperty("protein")
-    private float protein;
+    private String protein;
 
     @JsonProperty("healthEstimation")
     private String healthEstimation;
@@ -57,11 +57,11 @@ public class ReportResponse extends BasicResponse{
         this.calorie = calorie;
     }
 
-    public float getProtein() {
+    public String getProtein() {
         return protein;
     }
 
-    public void setProtein(float protein) {
+    public void setProtein(String protein) {
         this.protein = protein;
     }
 
