@@ -1,13 +1,13 @@
 package com.blackchicktech.healthdiet.domain;
 
-import com.blackchicktech.healthdiet.entity.Food;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-//每餐内容
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Diet {
+public class FoodListResponse extends BasicResponse {
 
-    private List<Food> foodList; //应该用食物还是菜谱
+    @JsonProperty("foodList")
+    private List<Food> foodList;
 }

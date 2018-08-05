@@ -3,7 +3,9 @@ package com.blackchicktech.healthdiet.controller;
 import com.blackchicktech.healthdiet.domain.DietHistoryResponse;
 import com.blackchicktech.healthdiet.domain.DietRecordRequest;
 import com.blackchicktech.healthdiet.domain.DietRecordResponse;
+import com.blackchicktech.healthdiet.domain.UserMetadata;
 import com.blackchicktech.healthdiet.service.DietService;
+import com.blackchicktech.healthdiet.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +17,16 @@ public class DietController {
     @Autowired
     private DietService dietService;
 
+    @Autowired
+    private UserService userService;
+
     //记录每日膳食
     @PostMapping(MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public DietRecordResponse addDiet(@RequestBody DietRecordRequest request) {
+        UserMetadata userMetadata = userService.getUser(request.getUserInfo());
+        //verify
+
         return new DietRecordResponse();
     }
 
