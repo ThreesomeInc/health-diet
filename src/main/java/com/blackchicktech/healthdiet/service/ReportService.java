@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,17 +22,7 @@ public class ReportService {
         response.setProtein(calProtein(reportRequest));
         response.setHealthEstimation(calWeightIndex(reportRequest));
         response.setAdvice("No Advice");
-        SuggestNutrition sn1 = new SuggestNutrition("energy", "热量", "1575", "kcal");
-        SuggestNutrition sn2 = new SuggestNutrition("protein", "蛋白质", "45", "g");
-        response.addSuggestNutrition(sn1);
-        response.addSuggestNutrition(sn2);
-
-        Nutrition n1 = new Nutrition("milk", "牛奶", "220", "ml");
-        Nutrition n2 = new Nutrition("fruit", "水果", "176", "g");
-        Nutrition n3 = new Nutrition("egg", "鸡蛋", "1", "ge");
-        response.addNutrition(n1);
-        response.addNutrition(n2);
-        response.addNutrition(n3);
+        response.setSuggestNutrition(calSuggestNutrition(reportRequest));
         return response;
     }
 
@@ -110,4 +101,268 @@ public class ReportService {
         }
         return "Protein is unclear.";
     }
+
+    private List<SuggestNutrition> calSuggestNutrition(ReportRequest reportRequest){
+        float standardWeight = calStandardWeight(reportRequest);
+        float calorie = calCalorie(reportRequest);
+        String protein = calProtein(reportRequest);
+        List<String> irritabilities = reportRequest.getUserDataInfo().getIrritability();
+        List<SuggestNutrition> suggestNutritions = new ArrayList<>();
+        boolean irritableToMilk = irritabilities.contains("milk");
+        if(standardWeight >= 40 && standardWeight < 45){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "330g~350g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "35g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "100g~120g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "35g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            }
+        } else if(standardWeight >= 45 && standardWeight < 50){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "125g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "330g~350g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "40g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "100g~120g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "40g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else if(standardWeight >= 50 && standardWeight < 55){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "150g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "355g~380g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "45g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "125g~150g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "45g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else if(standardWeight >=55 && standardWeight < 60){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "175g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "355g~380g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "50g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "125g~150g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "50g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else if(standardWeight >= 60 && standardWeight < 65){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "200g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "380g~410g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "50g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "200g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "150g~180g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "50g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else if(standardWeight >= 65 && standardWeight < 70){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "200g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "405g~440g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "55g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "200g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "50g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "175g~210g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "55g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else if(standardWeight >= 70 && standardWeight < 75){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "225g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "75g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "430g~470g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "55g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "225g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "75g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "200g~240g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "55g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else if(standardWeight >= 75){
+            if(irritableToMilk){
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "250g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "75g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "430g~470g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "60g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+
+            } else {
+                SuggestNutrition cereal = new SuggestNutrition("谷薯类", "250g" );
+                SuggestNutrition starch = new SuggestNutrition("淀粉", "75g");
+                SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250g");
+                SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400g");
+                SuggestNutrition milk = new SuggestNutrition("奶类", "230g");
+                SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "200g~240g");
+                SuggestNutrition grease = new SuggestNutrition("油脂类", "60g");
+                suggestNutritions.add(cereal);
+                suggestNutritions.add(starch);
+                suggestNutritions.add(vegetable);
+                suggestNutritions.add(fruit);
+                suggestNutritions.add(milk);
+                suggestNutritions.add(meatEgg);
+                suggestNutritions.add(grease);
+            }
+        } else{
+            suggestNutritions.add(new SuggestNutrition("没有合适的食材", "0g"));
+        }
+        return suggestNutritions;
+    }
+
+
 }
