@@ -3,6 +3,8 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Eric Cen on 2018/8/3.
  */
@@ -91,14 +93,14 @@ public class ReportService {
 
     private String calProtein(ReportRequest reportRequest){
         int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
-        String treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
+        List<String> treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
         float standardWeight = calStandardWeight(reportRequest);
         StringBuffer protein = new StringBuffer();
         if(nephroticPeriod >= 1 && nephroticPeriod <=2 ){
             return protein.append(standardWeight*0.8).append("~")
                     .append(standardWeight*1).toString();
         } else if (nephroticPeriod >=3 && nephroticPeriod <=5){
-            if(treatmentMethod.contains("dialysis")){
+            if(treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))){
                 return protein.append(standardWeight*1).append("~")
                         .append(standardWeight*1.2).toString();
             } else{
