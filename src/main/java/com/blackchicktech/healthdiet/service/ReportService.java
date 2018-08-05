@@ -98,14 +98,14 @@ public class ReportService {
 		StringBuffer protein = new StringBuffer();
 		if (nephroticPeriod >= 1 && nephroticPeriod <= 2) {
 			return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8))).append("~")
-					.append(standardWeight.multiply(BigDecimal.ONE)).append("cal").toString();
+					.append(standardWeight.multiply(BigDecimal.ONE)).append("g").toString();
 		} else if (nephroticPeriod >= 3 && nephroticPeriod <= 5) {
 			if (treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))) {
 				return protein.append(standardWeight.multiply(BigDecimal.ONE)).append("~")
-						.append(standardWeight.multiply(BigDecimal.valueOf(1.2))).append("cal").toString();
+						.append(standardWeight.multiply(BigDecimal.valueOf(1.2))).append("g").toString();
 			} else {
 				return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6))).append("~")
-						.append(standardWeight.multiply(BigDecimal.valueOf(10.8))).append("cal").toString();
+						.append(standardWeight.multiply(BigDecimal.valueOf(10.8))).append("g").toString();
 			}
 		}
 		return "Protein is unclear.";
