@@ -9,20 +9,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReportResponse extends BasicResponse{
 
-    @JsonProperty("bodyType")
-    private String bodyType;
+
+    @JsonProperty("bmi")
+    private String bmi;
 
     @JsonProperty("standardWeight")
-    private float standardWeight;
+    private String standardWeight;
 
     @JsonProperty("calorie")
-    private float calorie;
+    private String calorie;
 
     @JsonProperty("protein")
     private String protein;
 
-    @JsonProperty("healthEstimation")
-    private String healthEstimation;
 
     @JsonProperty("suggestNutrition")
     private List<SuggestNutrition> suggestNutrition = new ArrayList<>();
@@ -30,30 +29,28 @@ public class ReportResponse extends BasicResponse{
     @JsonProperty("advice")
     private String advice;
 
-    @JsonProperty("nutrition")
-    private List<Nutrition> nutrition = new ArrayList<>();
 
-    public String getBodyType() {
-        return bodyType;
+    public String getBmi() {
+        return bmi;
     }
 
-    public void setBodyType(String bodyType) {
-        this.bodyType = bodyType;
+    public void setBmi(String bmi) {
+        this.bmi = bmi;
     }
 
-    public float getStandardWeight() {
+    public String getStandardWeight() {
         return standardWeight;
     }
 
-    public void setStandardWeight(float standardWeight) {
+    public void setStandardWeight(String standardWeight) {
         this.standardWeight = standardWeight;
     }
 
-    public float getCalorie() {
+    public String getCalorie() {
         return calorie;
     }
 
-    public void setCalorie(float calorie) {
+    public void setCalorie(String calorie) {
         this.calorie = calorie;
     }
 
@@ -65,13 +62,6 @@ public class ReportResponse extends BasicResponse{
         this.protein = protein;
     }
 
-    public String getHealthEstimation() {
-        return healthEstimation;
-    }
-
-    public void setHealthEstimation(String healthEstimation) {
-        this.healthEstimation = healthEstimation;
-    }
 
     public List<SuggestNutrition> getSuggestNutrition() {
         return suggestNutrition;
@@ -91,17 +81,5 @@ public class ReportResponse extends BasicResponse{
 
     public void setAdvice(String advice) {
         this.advice = advice;
-    }
-
-    public List<Nutrition> getNutrition() {
-        return nutrition;
-    }
-
-    public void setNutrition(List<Nutrition> nutrition) {
-        this.nutrition = nutrition;
-    }
-
-    public void addNutrition(Nutrition nutrition) {
-        this.nutrition.add(nutrition);
     }
 }
