@@ -9,16 +9,12 @@ public class SuggestNutrition {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("alias")
-    private String alias;
-
     @JsonProperty("value")
     private String value;
 
 
-    public SuggestNutrition(String name, String alias, String value) {
+    public SuggestNutrition(String name, String value) {
         this.name = name;
-        this.alias = alias;
         this.value = value;
     }
 
@@ -39,19 +35,10 @@ public class SuggestNutrition {
     }
 
 
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
     @Override
     public String toString() {
         return "SuggestNutrition{" +
                 "name='" + name + '\'' +
-                ", alias='" + alias + '\'' +
                 ", value='" + value + '\'' +
                 "}";
     }
