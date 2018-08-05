@@ -68,9 +68,7 @@ public class HttpClientUtil {
 		}
 		logger.info("Request url is :{}, headers are :{}, params are :{}", url.toString(), params);
 
-		try (Response response = httpClient.newCall(requestBuilder.build()).execute()) {
-			return response;
-		}
+		return httpClient.newCall(requestBuilder.build()).execute();
 	}
 
 	private Response postBody(String urlString, String body, Map<String, String> headers)
@@ -87,9 +85,7 @@ public class HttpClientUtil {
 						? headers.get("Content-Type") : "text/plain; charset=utf-8"), body));
 
 		logger.info("Request url is :{}, body is :{}", url.toString(), body);
-		try (Response response = httpClient.newCall(requestBuilder.build()).execute()) {
-			return response;
-		}
+		return httpClient.newCall(requestBuilder.build()).execute();
 	}
 
 	public String send(String urlString, HttpMethod method,
@@ -116,10 +112,7 @@ public class HttpClientUtil {
 			setFormBody(parameters, requestBuilder);
 		}
 		logger.info("Request url is :{}, headers are :{}, params are :{}", url.toString(), parameters);
-
-		try (Response response = httpClient.newCall(requestBuilder.build()).execute()) {
-			return response;
-		}
+		return httpClient.newCall(requestBuilder.build()).execute();
 	}
 
 	private void setHeader(Map<String, String> headers, Request.Builder requestBuilder) {

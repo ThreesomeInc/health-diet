@@ -22,13 +22,13 @@ public class CommonController {
 
 	@GetMapping(value = "/wxLogin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public JsonElement login(HttpServletRequest request) {
+	public String login(HttpServletRequest request) {
 		String code = request.getHeader("X-WX-Code");
 		String result = HttpClientUtil.instance().getData(
 				"https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
 						"&secret=" + appSecret +
 						"&grant_type=authorization_code" +
 						"&js_code=" + code);
-		return new JsonParser().parse(result);
+		return result;
 	}
 }
