@@ -84,14 +84,14 @@ public class ReportService {
 
     private String calProtein(ReportRequest reportRequest){
         int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
-        String treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
+        List<String> treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
         float standardWeight = calStandardWeight(reportRequest);
         StringBuffer protein = new StringBuffer();
         if(nephroticPeriod >= 1 && nephroticPeriod <=2 ){
             return protein.append(standardWeight*0.8).append("~")
                     .append(standardWeight*1).append("cal").toString();
         } else if (nephroticPeriod >=3 && nephroticPeriod <=5){
-            if(treatmentMethod.contains("dialysis")){
+            if(treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))){
                 return protein.append(standardWeight*1).append("~")
                         .append(standardWeight*1.2).append("cal").toString();
             } else{
