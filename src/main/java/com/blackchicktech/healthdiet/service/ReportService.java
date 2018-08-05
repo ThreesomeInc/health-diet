@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -93,18 +94,18 @@ public class ReportService {
 	private String calProtein(ReportRequest reportRequest) {
 		int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
 		List<String> treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
-		float standardWeight = calStandardWeight(reportRequest);
+		BigDecimal standardWeight = BigDecimal.valueOf(calStandardWeight(reportRequest));
 		StringBuffer protein = new StringBuffer();
 		if (nephroticPeriod >= 1 && nephroticPeriod <= 2) {
-			return protein.append(standardWeight * 0.8).append("~")
-					.append(standardWeight * 1).append("cal").toString();
+			return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8))).append("~")
+					.append(standardWeight.multiply(BigDecimal.ONE)).append("cal").toString();
 		} else if (nephroticPeriod >= 3 && nephroticPeriod <= 5) {
 			if (treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))) {
-				return protein.append(standardWeight * 1).append("~")
-						.append(standardWeight * 1.2).append("cal").toString();
+				return protein.append(standardWeight.multiply(BigDecimal.ONE)).append("~")
+						.append(standardWeight.multiply(BigDecimal.valueOf(1.2))).append("cal").toString();
 			} else {
-				return protein.append(standardWeight * 0.6).append("~")
-						.append(standardWeight * 10.8).append("cal").toString();
+				return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6))).append("~")
+						.append(standardWeight.multiply(BigDecimal.valueOf(10.8))).append("cal").toString();
 			}
 		}
 		return "Protein is unclear.";

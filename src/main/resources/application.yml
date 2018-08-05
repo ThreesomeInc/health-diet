@@ -87,4 +87,4 @@ mybatis:
 #  type-aliases-package: com.blackchicktech.healthdiet.repository
 app:
   appId: "wx3e7fd7ad370e49c3"
-  appSecret: ""
+  appSecret: "895b3db8ab32e38709070e52b0c636fb"
