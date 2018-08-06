@@ -39,12 +39,18 @@ public class FoodController {
     @RequestMapping(value = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public FoodListResponse getFoodList() {
-        return new FoodListResponse();
+        return new FoodListResponse(foodService.toDomainFoodList());
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public FoodVerifyResponse verifyFood(@RequestBody FoodVerifyRequest foodVerifyRequest) {
         return new FoodVerifyResponse();
+    }
+
+    @RequestMapping(value = "/type", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public FoodTypeListResponse getFoodTypeList() {
+        return new FoodTypeListResponse(foodService.listFoodType());
     }
 }
