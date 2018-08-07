@@ -9,8 +9,8 @@ spring:
       console:
         enabled: true
         path: /h2
-        settings:
-          web-allow-others: true
+#        settings:
+#          web-allow-others: true
 #    datasource:
 #        type: com.alibaba.druid.pool.DruidDataSource
 #        driverClassName: com.mysql.jdbc.Driver
