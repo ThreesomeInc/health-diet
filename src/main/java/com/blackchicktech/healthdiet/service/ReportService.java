@@ -57,9 +57,9 @@ public class ReportService {
 	private float calStandardWeight(ReportRequest reportRequest) {
 		String gender = reportRequest.getUserDataInfo().getGender();
 		String height = getHeightOrWeight(reportRequest.getUserDataInfo().getHeight());
-		if ("male".equals(gender)) {
+		if ("male" .equals(gender) || Constants.GENDER.getOrDefault("male", "").equals(gender)) {
 			return (float) ((Integer.parseInt(height) - 100) * 0.9);
-		} else if ("female".equals(gender)) {
+		} else if ("female" .equals(gender) || Constants.GENDER.getOrDefault("female", "").equals(gender)) {
 			return (float) ((Integer.parseInt(height) - 100) * 0.9 - 2.5);
 		} else {
 			throw new IllegalArgumentException("Gender can only be male or female");
@@ -75,7 +75,8 @@ public class ReportService {
 		String sportRate = reportRequest.getUserDataInfo().getSportRate();
 		float standardWeight = calStandardWeight(reportRequest);
 		float bmi = calBmiIndex(reportRequest);
-		if ("light".equals(sportRate)) {
+		if ("light" .equals(sportRate)
+				|| Constants.SPORT_RATE.getOrDefault("light", "").equals(sportRate)) {
 			if (bmi < 18.5) {
 				return standardWeight * 35;
 			} else if (bmi >= 18.5 && bmi < 23.9) {
@@ -100,7 +101,7 @@ public class ReportService {
 		int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
 		List<String> treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
 		BigDecimal standardWeight = BigDecimal.valueOf(calStandardWeight(reportRequest));
-		StringBuffer protein = new StringBuffer();
+		StringBuilder protein = new StringBuilder();
 		if (nephroticPeriod >= 1 && nephroticPeriod <= 2) {
 			return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8)).setScale(1)).append("~")
 					.append(standardWeight.multiply(BigDecimal.ONE).setScale(1)).append("克").toString();
@@ -122,7 +123,8 @@ public class ReportService {
 		String protein = calProtein(reportRequest);
 		List<String> irritabilities = reportRequest.getUserDataInfo().getIrritability();
 		List<SuggestNutrition> suggestNutritions = new ArrayList<>();
-		boolean irritableToMilk = irritabilities.contains("milk");
+		boolean irritableToMilk = irritabilities.contains("milk")
+				|| irritabilities.contains(Constants.IRRITABILITY.getOrDefault("milk", ""));
 		if (standardWeight >= 40 && standardWeight < 45) {
 			if (irritableToMilk) {
 				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100克");
@@ -378,24 +380,23 @@ public class ReportService {
 		return suggestNutritions;
 	}
 
-	private String deduceAdvice(ReportRequest reportRequest){
+	private String deduceAdvice(ReportRequest reportRequest) {
 		int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
 		List<String> otherDiseases = reportRequest.getUserDataInfo().getOtherDisease();
-		StringBuffer suggestDiets = new StringBuffer();
-		StringBuffer otherDiseaseResult = new StringBuffer();
-		for(String otherDisease : otherDiseases){
-			OtherDiseaseSuggestDiet otherDiseaseSuggestDiet = Constants.suggestDiet.get(otherDisease);
-			if(otherDiseaseSuggestDiet != null){
+		StringBuilder suggestDiets = new StringBuilder();
+		StringBuilder otherDiseaseResult = new StringBuilder();
+		for (String otherDisease : otherDiseases) {
+			OtherDiseaseSuggestDiet otherDiseaseSuggestDiet = Constants.SUGGESTED_DIET.get(otherDisease);
+			if (otherDiseaseSuggestDiet != null) {
 				suggestDiets.append(otherDiseaseSuggestDiet.getSuggestDiet());
 				otherDiseaseResult.append(otherDiseaseSuggestDiet.getElement());
 			}
 		}
-		String advice = String.format(Constants.ADVICE_TEMPLATE, nephroticPeriod,
-										otherDiseaseResult.toString(), suggestDiets.toString());
-		return advice;
+		return String.format(Constants.ADVICE_TEMPLATE, nephroticPeriod,
+				otherDiseaseResult.toString(), suggestDiets.toString());
 	}
 
-	private String deduceSlogan(){
+	private String deduceSlogan() {
 		int seed = random.nextInt();
 		return Constants.SLOGAN[seed % Constants.SLOGAN.length];
 	}
