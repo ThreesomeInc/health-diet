@@ -10,8 +10,7 @@ import java.util.Map;
  */
 public class Constants {
 
-    public static String ADVICE_TEMPLATE = "您的肾脏功能属于第{0}期，需要控制蛋白质摄入以延缓肾脏功能的进一步恶化。同时，您\n" +
-            "的{1}偏高，建议{2}饮食。";
+    public static String ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，需要控制蛋白质摄入以延缓肾脏功能的进一步恶化。同时，您的%s偏高，建议%s饮食。";
     public static Map<String, OtherDiseaseSuggestDiet> suggestDiet= new HashMap<>();
 
     public static String[] SLOGAN = {"你知道怎么吃得饱又吃得好吗？", "没有垃圾食品，只有垃圾食法！"};
