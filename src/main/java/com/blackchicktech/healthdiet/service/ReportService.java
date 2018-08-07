@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 @Service
 public class ReportService {
 
-	public static Random random = new Random(10);
+	public static Random random = new Random();
 
 
 	public ReportResponse report(ReportRequest reportRequest) {
@@ -37,9 +37,9 @@ public class ReportService {
 		float bmiIndex = calBmiIndex(reportRequest);
 		if (bmiIndex < 18.5) {
 			return BodyType.MALNOURISHED.info();
-		} else if (bmiIndex >= 18.5 && bmiIndex < 23.9) {
+		} else if (bmiIndex >= 18.5 && bmiIndex <= 23.9) {
 			return BodyType.NORMAL.info();
-		} else if (bmiIndex >= 24.0 && bmiIndex < 27.9) {
+		} else if (bmiIndex >= 24.0 && bmiIndex <= 27.9) {
 			return BodyType.OVERWEIGHT.info();
 		} else {
 			return BodyType.FATTY.info();
@@ -49,9 +49,8 @@ public class ReportService {
 	private float calBmiIndex(ReportRequest reportRequest) {
 		String height = reportRequest.getUserDataInfo().getHeight();
 		String weight = reportRequest.getUserDataInfo().getWeight();
-		return Float.parseFloat(getHeightOrWeight(weight)) /
-				(Integer.parseInt(getHeightOrWeight(height)) / 100) /
-				(Integer.parseInt(getHeightOrWeight(height)) / 100);
+		return (Float.parseFloat(getHeightOrWeight(weight)) / (Float.parseFloat(getHeightOrWeight(height)) / 100))
+				                                            / (Float.parseFloat(getHeightOrWeight(height)) / 100);
 	}
 
 	private float calStandardWeight(ReportRequest reportRequest) {
@@ -103,15 +102,15 @@ public class ReportService {
 		BigDecimal standardWeight = BigDecimal.valueOf(calStandardWeight(reportRequest));
 		StringBuilder protein = new StringBuilder();
 		if (nephroticPeriod >= 1 && nephroticPeriod <= 2) {
-			return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8)).setScale(1)).append("~")
-					.append(standardWeight.multiply(BigDecimal.ONE).setScale(1)).append("克").toString();
+			return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8)).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
+					.append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
 		} else if (nephroticPeriod >= 3 && nephroticPeriod <= 5) {
 			if (treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))) {
-				return protein.append(standardWeight.multiply(BigDecimal.ONE).setScale(1)).append("~")
-						.append(standardWeight.multiply(BigDecimal.valueOf(1.2)).setScale(1)).append("克").toString();
+				return protein.append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
+						.append(standardWeight.multiply(BigDecimal.valueOf(1.2)).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
 			} else {
-				return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6)).setScale(1)).append("~")
-						.append(standardWeight.multiply(BigDecimal.valueOf(10.8)).setScale(1)).append("克").toString();
+				return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6)).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
+						.append(standardWeight.multiply(BigDecimal.valueOf(10.8)).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
 			}
 		}
 		return "Protein is unclear.";
@@ -397,7 +396,8 @@ public class ReportService {
 	}
 
 	private String deduceSlogan() {
-		int seed = random.nextInt();
+		int seed = random.nextInt(10);
+		System.out.println("Seed: " + seed);
 		return Constants.SLOGAN[seed % Constants.SLOGAN.length];
 	}
 

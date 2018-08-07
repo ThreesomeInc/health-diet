@@ -13,11 +13,11 @@ public class Constants {
 	public final static String ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，需要控制蛋白质摄入以延缓肾脏功能的进一步恶化。同时，您的%s偏高，建议%s饮食。";
 
 	public final static Map<String, OtherDiseaseSuggestDiet> SUGGESTED_DIET = ImmutableMap.<String, OtherDiseaseSuggestDiet>builder()
-			.put("高尿酸", new OtherDiseaseSuggestDiet("高尿酸", "尿酸", "低嘌呤"))
-			.put("高血糖", new OtherDiseaseSuggestDiet("高血糖", "血糖", "低糖"))
-			.put("高胆固醇", new OtherDiseaseSuggestDiet("高胆固醇", "胆固醇", "低胆固醇"))
-			.put("高甘油三酯", new OtherDiseaseSuggestDiet("高甘油三酯", "甘油三酯", "低脂肪"))
-			.put("高血压", new OtherDiseaseSuggestDiet("高血压", "血压", "低钠"))
+			.put("hyperuricacidemia", new OtherDiseaseSuggestDiet("高尿酸", "尿酸", "低嘌呤"))
+			.put("hyperglycemia", new OtherDiseaseSuggestDiet("高血糖", "血糖", "低糖"))
+			.put("cholesterol", new OtherDiseaseSuggestDiet("高胆固醇", "胆固醇", "低胆固醇"))
+			.put("triglyceride", new OtherDiseaseSuggestDiet("高甘油三酯", "甘油三酯", "低脂肪"))
+			.put("hypertension", new OtherDiseaseSuggestDiet("高血压", "血压", "低钠"))
 			.build();
 
 	public final static String[] SLOGAN = {"你知道怎么吃得饱又吃得好吗？", "没有垃圾食品，只有垃圾食法！"};
