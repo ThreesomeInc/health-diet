@@ -3,8 +3,8 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: org.h2.Driver
         url: jdbc:h2:file:~/test
-        username: martinho0330@gmail.com
-        password: Who-the-hell-can-break-this!
+        username: sa
+        password: 1234564
     h2:
       console:
         enabled: true
