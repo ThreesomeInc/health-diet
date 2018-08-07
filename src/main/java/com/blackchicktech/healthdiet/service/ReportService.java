@@ -50,7 +50,7 @@ public class ReportService {
 		String height = reportRequest.getUserDataInfo().getHeight();
 		String weight = reportRequest.getUserDataInfo().getWeight();
 		return (Float.parseFloat(getHeightOrWeight(weight)) / (Float.parseFloat(getHeightOrWeight(height)) / 100))
-				                                            / (Float.parseFloat(getHeightOrWeight(height)) / 100);
+				/ (Float.parseFloat(getHeightOrWeight(height)) / 100);
 	}
 
 	private float calStandardWeight(ReportRequest reportRequest) {
@@ -387,8 +387,9 @@ public class ReportService {
 		for (String otherDisease : otherDiseases) {
 			OtherDiseaseSuggestDiet otherDiseaseSuggestDiet = Constants.SUGGESTED_DIET.get(otherDisease);
 			if (otherDiseaseSuggestDiet != null) {
-				suggestDiets.append(otherDiseaseSuggestDiet.getSuggestDiet());
-				otherDiseaseResult.append(otherDiseaseSuggestDiet.getElement());
+				String separator = suggestDiets.length() > 0 ? "、" : "";
+				suggestDiets.append(separator).append(otherDiseaseSuggestDiet.getSuggestDiet());
+				otherDiseaseResult.append(separator).append(otherDiseaseSuggestDiet.getElement());
 			}
 		}
 		return String.format(Constants.ADVICE_TEMPLATE, nephroticPeriod,
