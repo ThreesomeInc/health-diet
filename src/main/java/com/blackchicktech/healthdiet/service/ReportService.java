@@ -237,7 +237,7 @@ public class ReportService {
 				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "175克");
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
-				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
+				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400克");
 				SuggestNutrition milk = new SuggestNutrition("奶类", "230克");
 				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "125g~150克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "50克");
