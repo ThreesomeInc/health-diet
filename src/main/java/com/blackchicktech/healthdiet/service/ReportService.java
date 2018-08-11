@@ -130,7 +130,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "330g~350克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "135g~155克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "35克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -162,7 +162,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "330g~350克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "135g~155克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "40克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -172,7 +172,7 @@ public class ReportService {
 				suggestNutritions.add(grease);
 
 			} else {
-				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100克");
+				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "125克");
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
@@ -193,7 +193,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "355g~380克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "160g~185克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "45克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -203,7 +203,7 @@ public class ReportService {
 				suggestNutritions.add(grease);
 
 			} else {
-				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100克");
+				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "150克");
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
@@ -224,7 +224,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "355g~380克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "160g~185克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "50克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -234,7 +234,7 @@ public class ReportService {
 				suggestNutritions.add(grease);
 
 			} else {
-				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "100克");
+				SuggestNutrition cereal = new SuggestNutrition("谷薯类", "175克");
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "200克");
@@ -255,7 +255,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "380g~410克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "185g~215克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "50克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -286,7 +286,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "50克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "405g~440克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "210g~245克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "55克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -317,7 +317,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "75克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "430g~470克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "235g~275克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "55克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
@@ -348,7 +348,7 @@ public class ReportService {
 				SuggestNutrition starch = new SuggestNutrition("淀粉", "75克");
 				SuggestNutrition vegetable = new SuggestNutrition("绿叶蔬菜", "250克");
 				SuggestNutrition fruit = new SuggestNutrition("瓜果蔬菜", "400克");
-				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "430g~470克");
+				SuggestNutrition meatEgg = new SuggestNutrition("肉蛋类", "235g~275克");
 				SuggestNutrition grease = new SuggestNutrition("油脂类", "60克");
 				suggestNutritions.add(cereal);
 				suggestNutritions.add(starch);
