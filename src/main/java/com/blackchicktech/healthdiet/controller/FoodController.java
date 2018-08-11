@@ -53,4 +53,10 @@ public class FoodController {
     public FoodTypeListResponse getFoodTypeList() {
         return new FoodTypeListResponse(foodService.listFoodType());
     }
+
+    @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public FoodDetailResponse getFoodDetailById(@RequestParam String foodId){
+        return new FoodDetailResponse();
+    }
 }
