@@ -12,17 +12,13 @@ public class FoodType {
     @JsonProperty("foodTypeName")
     private String foodTypeName;
 
-    @JsonProperty("subCode")
-    private String subCode;
+    @JsonProperty("picUrl")
+    private String picUrl;
 
-    @JsonProperty("subName")
-    private String subName;
-
-    public FoodType(String foodTypeCode, String foodTypeName, String subCode, String subName) {
+    public FoodType(String foodTypeCode, String foodTypeName, String picUrl) {
         this.foodTypeCode = foodTypeCode;
         this.foodTypeName = foodTypeName;
-        this.subCode = subCode;
-        this.subName = subName;
+        this.picUrl = picUrl;
     }
 
     public String getFoodTypeCode() {
@@ -41,19 +37,11 @@ public class FoodType {
         this.foodTypeName = foodTypeName;
     }
 
-    public String getSubCode() {
-        return subCode;
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setSubCode(String subCode) {
-        this.subCode = subCode;
-    }
-
-    public String getSubName() {
-        return subName;
-    }
-
-    public void setSubName(String subName) {
-        this.subName = subName;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }
