@@ -9,9 +9,9 @@ import java.util.List;
 public class FoodListResponse extends BasicResponse {
 
     @JsonProperty("foodList")
-    private List<Food> foodList;
+    private List<FoodListItem> foodList;
 
-    public FoodListResponse(List<Food> foodList) {
+    public FoodListResponse(List<FoodListItem> foodList) {
         this.foodList = foodList;
     }
 }

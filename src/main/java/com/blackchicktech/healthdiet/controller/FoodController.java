@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/food")
 //通过restful更新食物
@@ -39,7 +41,7 @@ public class FoodController {
     @RequestMapping(value = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public FoodListResponse getFoodList() {
-        return new FoodListResponse(foodService.toDomainFoodList());
+        return new FoodListResponse(Collections.emptyList());
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

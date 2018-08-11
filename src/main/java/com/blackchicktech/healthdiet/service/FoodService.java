@@ -2,18 +2,27 @@ package com.blackchicktech.healthdiet.service;
 
 import com.blackchicktech.healthdiet.domain.FoodType;
 import com.blackchicktech.healthdiet.entity.Food;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 
 //食材相关
 @Service
 public class FoodService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
+
     private Map<String, Food> cache = new HashMap<>();
 
-    private Set<FoodType> typeCache = new HashSet<>();
+    private List<FoodType> typeCache = new LinkedList<>();
 
     @PostConstruct
     public void reloadCache() {
@@ -23,28 +32,7 @@ public class FoodService {
         cache.put("3-1-305,", new Food("3-1-305", "豆腐脑", "someurl", "常见食物", "3", "1", "千卡", "15"));
         cache.put("4-8-002,", new Food("4-8-002", "白花菜", "someurl", "常见食物", "4", "8", "千卡", "0"));
 
-        typeCache.add(new FoodType("1", "谷类", "1.pic"));
-        typeCache.add(new FoodType("2", "薯类淀粉", "2.pic"));
-        typeCache.add(new FoodType("3", "干豆类", "3.pic"));
-        typeCache.add(new FoodType("4", "蔬菜类", "4.pic"));
-        typeCache.add(new FoodType("5", "菌藻类", "5.pic"));
-        typeCache.add(new FoodType("6", "水果类", "6.pic"));
-        typeCache.add(new FoodType("7", "坚果种子", "7.pic"));
-        typeCache.add(new FoodType("8", "畜肉类", "8.pic"));
-        typeCache.add(new FoodType("9", "禽肉类", "9.pic"));
-        typeCache.add(new FoodType("10", "乳类", "10.pic"));
-        typeCache.add(new FoodType("11", "蛋类", "11.pic"));
-        typeCache.add(new FoodType("12", "鱼虾蟹贝类", "12.pic"));
-        typeCache.add(new FoodType("13", "婴幼儿食品", "13.pic"));
-        typeCache.add(new FoodType("14", "小吃甜饼", "14.pic"));
-        typeCache.add(new FoodType("15", "速食食品", "15.pic"));
-        typeCache.add(new FoodType("16", "饮料", "16.pic"));
-        typeCache.add(new FoodType("17", "魔法制品类", "17.pic"));
-        typeCache.add(new FoodType("18", "糖果蜜饯", "18.pic"));
-        typeCache.add(new FoodType("19", "油脂类", "19.pic"));
-        typeCache.add(new FoodType("20", "调味品类", "20.pic"));
-        typeCache.add(new FoodType("21", "其他", "21.pic"));
-
+        reloadFoodRanking();
     }
 
     public boolean addFood() {
@@ -80,5 +68,29 @@ public class FoodService {
             result.add(domainFood);
         }
         return result;
+    }
+
+    private void reloadFoodRanking() {
+        Reader in = null;
+        try {
+            in = new InputStreamReader(FoodService.class.getResourceAsStream("/food-type-rank.csv"));
+            Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader("rank","alias","typeId").parse(in);
+            for (CSVRecord record : records) {
+                String rank = record.get("rank"); //貌似没用
+                String name = record.get("alias");
+                String typeId = record.get("typeId");
+                typeCache.add(new FoodType(typeId, name, typeId+".pic"));
+            }
+            logger.info("Finished to load food rank");
+        } catch (Exception e) {
+            logger.warn("Fail to read food rank " + e.getMessage());
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e) {
+                }
+            }
+        }
     }
 }
