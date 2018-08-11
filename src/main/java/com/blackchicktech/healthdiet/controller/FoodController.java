@@ -58,7 +58,7 @@ public class FoodController {
 
     @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodDetailResponse getFoodDetailById(@RequestParam String foodId){
+    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId){
         return new FoodDetailResponse();
     }
 }
