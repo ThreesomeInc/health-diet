@@ -11,6 +11,8 @@ import java.util.Map;
 public class Constants {
 
 	public final static String ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，需要控制蛋白质摄入以延缓肾脏功能的进一步恶化。同时，您的%s偏高，建议%s饮食。";
+	public final static String WITHOUT_NEOPATHY_ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，需要控制蛋白质摄入以延缓肾脏功能的进一步恶化。";
+
 
 	public final static Map<String, OtherDiseaseSuggestDiet> SUGGESTED_DIET = ImmutableMap.<String, OtherDiseaseSuggestDiet>builder()
 			.put("hyperuricacidemia", new OtherDiseaseSuggestDiet("高尿酸", "尿酸", "低嘌呤"))
