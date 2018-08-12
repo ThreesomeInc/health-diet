@@ -10,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-
 @RestController
 @RequestMapping("/food")
 //通过restful更新食物
@@ -74,7 +72,7 @@ public class FoodController {
         return foodService.getFoodById(foodId, openId);
     }
 
-    @RequestMapping(value="/{foodId}", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/detail/{foodId}", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus
     public ResponseEntity getFoodDetailById(@PathVariable String foodId,
                                                 @RequestParam("openId") String openId,

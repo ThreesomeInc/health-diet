@@ -1,7 +1,6 @@
 package com.blackchicktech.healthdiet.service;
 
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
-import com.blackchicktech.healthdiet.domain.FoodDieticianAdvice;
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.domain.FoodType;
 import com.blackchicktech.healthdiet.entity.Food;
