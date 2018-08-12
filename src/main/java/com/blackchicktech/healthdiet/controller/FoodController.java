@@ -3,8 +3,11 @@ package com.blackchicktech.healthdiet.controller;
 import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.service.FoodService;
 import com.blackchicktech.healthdiet.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -13,6 +16,8 @@ import java.util.Collections;
 @RequestMapping("/food")
 //通过restful更新食物
 public class FoodController {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(FoodController.class);
 
     @Autowired
     private UserService userService;
@@ -58,7 +63,18 @@ public class FoodController {
 
     @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId, @RequestParam("openId") String openId){
+    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId,
+                                                @RequestParam("openId") String openId){
         return foodService.getFoodById(foodId, openId);
+    }
+
+    @RequestMapping(value="/{foodId}", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus
+    public ResponseEntity getFoodDetailById(@PathVariable String foodId,
+                                                @RequestParam("openId") String openId,
+                                                @RequestParam("frequency") String frequency){
+
+        LOGGER.info("User " + openId + " eat food " + foodId + ":" + frequency );
+        return ResponseEntity.ok().build();
     }
 }

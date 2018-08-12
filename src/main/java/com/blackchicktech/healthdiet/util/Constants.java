@@ -46,6 +46,13 @@ public class Constants {
 			.put("hyperglycemia", "高血糖")
 			.put("hyperuricacidemia", "高尿酸").build();
 
+	public final static Map<String, String> OTHER_DISEASE_ELEMENTS = ImmutableMap.<String, String>builder()
+			.put("hypertension", "血压")
+			.put("triglyceride", "甘油三酯")
+			.put("cholesterol", "胆固醇")
+			.put("hyperglycemia", "血糖")
+			.put("hyperuricacidemia", "尿酸").build();
+
 
 	public final static Map<String, String> IRRITABILITY = ImmutableMap.<String, String>builder()
 			.put("milk", "奶")
