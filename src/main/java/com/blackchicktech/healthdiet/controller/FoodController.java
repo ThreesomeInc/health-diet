@@ -58,7 +58,7 @@ public class FoodController {
 
     @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodDetailResponse getFoodDetailById(@PathVariable String foodCode, @RequestParam("openId") String openId){
-        return foodService.getFoodByCode(foodCode, openId);
+    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId, @RequestParam("openId") String openId){
+        return foodService.getFoodById(foodId, openId);
     }
 }

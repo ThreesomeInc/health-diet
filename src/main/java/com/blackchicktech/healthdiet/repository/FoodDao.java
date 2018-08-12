@@ -1,8 +1,8 @@
 package com.blackchicktech.healthdiet.repository;
 
-import com.blackchicktech.healthdiet.entity.Food;
+import com.blackchicktech.healthdiet.entity.FoodTbl;
 
 public interface FoodDao {
 
-    public Food getFoodByCode(String foodCode);
+     FoodTbl getFoodById(String foodId);
 }

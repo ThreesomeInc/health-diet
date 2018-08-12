@@ -4,6 +4,7 @@ import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
 import com.blackchicktech.healthdiet.domain.FoodDieticianAdvice;
 import com.blackchicktech.healthdiet.domain.FoodType;
 import com.blackchicktech.healthdiet.entity.Food;
+import com.blackchicktech.healthdiet.entity.FoodTbl;
 import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import org.apache.commons.csv.CSVFormat;
@@ -107,20 +108,21 @@ public class FoodService {
         }
     }
 
-    public FoodDetailResponse getFoodByCode(String foodCode, String openId){
+    public FoodDetailResponse getFoodById(String foodId, String openId){
         User user = userService.getUserByOpenId(openId);
-        Food food = foodDao.getFoodByCode(foodCode);
+        FoodTbl food = foodDao.getFoodById(foodId);
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
-        foodDetailResponse.setName(food.getFood_name());
+        foodDetailResponse.setName(food.getFoodName());
         foodDetailResponse.setAdvice(deduceDieticianAdvice(food, user));
         foodDetailResponse.setComposition(deduceCompostions(food));
         return foodDetailResponse;
 
     }
 
-    private FoodDieticianAdvice deduceDieticianAdvice(Food food, User user){
+    private FoodDieticianAdvice deduceDieticianAdvice(FoodTbl food, User user){
         int nephroticPeriod = user.getNephroticPeriod();
         String otherDiseases = user.getOtherDiseases();
+        String foodId = food.getFoodId();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
 
         } else {
@@ -129,11 +131,11 @@ public class FoodService {
         return null;
     }
 
-    private Map<String, String> deduceCompostions(Food food){
+    private Map<String, String> deduceCompostions(FoodTbl food){
         Map<String, String> compositions = new HashMap<>();
         String waterQuantity = food.getWater();
         compositions.put("水", waterQuantity+"克");
-        String energyQuantity = food.getEnergy_kcal();
+        String energyQuantity = food.getEnergy();
         compositions.put("热量", energyQuantity+"千卡");
         String proteinQuantity = food.getProtein();
         compositions.put("蛋白质", proteinQuantity+"克");
