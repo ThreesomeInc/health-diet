@@ -1,5 +1,18 @@
 USE test;
 
+CREATE TABLE `user_tbl` (
+  `open_id` varchar(255) NOT NULL,
+  `gender` varchar(45) DEFAULT NULL,
+  `birthday` varchar(45) DEFAULT NULL,
+  `height` varchar(45) DEFAULT NULL,
+  `weight` varchar(45) DEFAULT NULL,
+  `sport_rate` varchar(45) DEFAULT NULL,
+  `nephrotic_period` varchar(45) DEFAULT NULL,
+  `treatment_method` varchar(255) DEFAULT NULL,
+  `other_diseases` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`open_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+
 CREATE TABLE `food_tbl` (
   `food_id` varchar(45) NOT NULL,
   `food_code` varchar(45) DEFAULT NULL,
