@@ -56,9 +56,10 @@ public class FoodController {
         return new FoodTypeListResponse(foodService.listFoodType());
     }
 
+    // /food/1-1-123?openId=xxxxxxxxx
     @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId){
+    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId, @RequestParam("openId") String openId){
         return new FoodDetailResponse();
     }
 }
