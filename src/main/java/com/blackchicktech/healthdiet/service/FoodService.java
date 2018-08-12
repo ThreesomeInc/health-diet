@@ -1,6 +1,8 @@
 package com.blackchicktech.healthdiet.service;
 
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
+import com.blackchicktech.healthdiet.domain.FoodDieticianAdvice;
+import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.domain.FoodType;
 import com.blackchicktech.healthdiet.entity.Food;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
@@ -60,8 +62,8 @@ public class FoodService {
         return true;
     }
 
-    public List<Food> listFood() {  //分页
-        return new ArrayList<>(cache.values());
+    public List<FoodListItem> listFood(String foodTypeCode) {  //分页
+        return foodDao.getFoodByTypeId(foodTypeCode);
     }
 
     public List<FoodType> listFoodType() {
@@ -70,21 +72,6 @@ public class FoodService {
 
     public FoodType getFoodType(String typeCode, String subTypeCode) {
         return null;
-    }
-
-    public List<com.blackchicktech.healthdiet.domain.Food> toDomainFoodList() {
-        List<com.blackchicktech.healthdiet.domain.Food> result = new ArrayList<>();
-        for (Food food : cache.values()) {
-            com.blackchicktech.healthdiet.domain.Food domainFood = new com.blackchicktech.healthdiet.domain.Food();
-            domainFood.setFoodId(String.valueOf(food.getId()));
-            domainFood.setFoodName(food.getFoodName());
-            domainFood.setFoodType(getFoodType(food.getType(), food.getSubType()));
-            domainFood.setPicUrl(food.getPicUrl());
-            domainFood.setUnit(food.getUnit());
-            domainFood.setValue(food.getValue());
-            result.add(domainFood);
-        }
-        return result;
     }
 
     private void reloadFoodRanking() {

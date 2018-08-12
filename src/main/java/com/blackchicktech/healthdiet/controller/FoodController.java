@@ -40,8 +40,8 @@ public class FoodController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodListResponse getFoodList() {
-        return new FoodListResponse(Collections.emptyList());
+    public FoodListResponse getFoodList(@RequestParam("typeId") String typeId) {
+        return new FoodListResponse(foodService.listFood(typeId));
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
