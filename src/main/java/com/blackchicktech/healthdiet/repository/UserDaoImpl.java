@@ -21,8 +21,11 @@ public class UserDaoImpl {
     private RowMapper rowMapper = new BeanPropertyRowMapper(User.class);
 
     public User getUserByOpenId(String openId){
-        List<User> users = jdbcTemplate.query("SELECT * from USER where openId = " + openId, rowMapper);
-        return users.get(0);
+        List<User> users = jdbcTemplate.query("SELECT * from user_tbl where open_id = " + openId, rowMapper);
+        if(users != null){
+            return users.get(0);
+        }
+        return null;
 
     }
 }
