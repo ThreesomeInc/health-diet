@@ -62,16 +62,30 @@ create table test.food_repository
 
 create table test.food_element_evaluation(
    id int auto_increment primary key,
-   food_code int;
-   protein_evaluation int;
-   fat_evalaution int;
-   cho_evaluation int;
-   cholesterol_evaluation int;
+   food_code int,
+   protein_evaluation int,
+   fat_evalaution int,
+   cho_evaluation int,
+   cholesterol_evaluation int,
    purine_evaluation int;
-   k_evaluation int;
+   k_evaluation int,
    na_evaluation int;
-   p_evaluation int;
-)
+   p_evaluation int
+);
 
 alter table test.food_element_evaluation add constraint 'food_evaluation_fk'
 foreign key ('food_code') references 'food_repository'('code') on delete cascade on update cascade;
+
+
+
+create table test.USER(
+    openId VARCHAR(255) PRIMARY KEY,
+    gender VARCHAR(10),
+    birthDay VARCHAR(20),
+    height int,
+    weight float,
+    sportRate VARCHAR(20),
+    nephroticPeriod int,
+    treatmentMethod VARCHAR(100),
+    otherDiseases VARCHAR(100)
+);

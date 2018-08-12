@@ -1,6 +1,6 @@
 package com.blackchicktech.healthdiet.repository;
 
-import com.blackchicktech.healthdiet.entity.Food;
+import com.blackchicktech.healthdiet.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,17 +13,16 @@ import java.util.List;
  * Created by Eric Cen on 2018/8/12.
  */
 @Repository
-public class FoodDaoImpl implements FoodDao{
+public class UserDaoImpl {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper rowMapper = new BeanPropertyRowMapper(Food.class);
+    private RowMapper rowMapper = new BeanPropertyRowMapper(User.class);
 
-    @Override
-    public Food getFoodByCode(String foodCode) {
-        List<Food> foodList = jdbcTemplate.query("SELECT * from food_repository where code = " + foodCode,
-                rowMapper);
-        return foodList.get(0);
+    public User getUserByOpenId(String openId){
+        List<User> users = jdbcTemplate.query("SELECT * from USER where openId = " + openId, rowMapper);
+        return users.get(0);
+
     }
 }

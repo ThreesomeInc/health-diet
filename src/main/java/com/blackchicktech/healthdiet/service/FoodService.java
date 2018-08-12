@@ -3,8 +3,8 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
 import com.blackchicktech.healthdiet.domain.FoodDieticianAdvice;
 import com.blackchicktech.healthdiet.domain.FoodType;
-import com.blackchicktech.healthdiet.domain.UserDataInfo;
 import com.blackchicktech.healthdiet.entity.Food;
+import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -25,7 +25,8 @@ public class FoodService {
     @Autowired
     private FoodDaoImpl foodDao;
 
-
+    @Autowired
+    private UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
@@ -105,17 +106,18 @@ public class FoodService {
         }
     }
 
-    public FoodDetailResponse getFoodByCode(String foodCode, UserDataInfo userDataInfo){
+    public FoodDetailResponse getFoodByCode(String foodCode, String openId){
+        User user = userService.getUserByOpenId(openId);
         Food food = foodDao.getFoodByCode(foodCode);
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFood_name());
-        foodDetailResponse.setAdvice(deduceDieticianAdvice(food, userDataInfo));
+        foodDetailResponse.setAdvice(deduceDieticianAdvice(food, user));
         foodDetailResponse.setComposition(deduceCompostion(food));
         return foodDetailResponse;
 
     }
 
-    private FoodDieticianAdvice deduceDieticianAdvice(Food food, UserDataInfo userDataInfo){
+    private FoodDieticianAdvice deduceDieticianAdvice(Food food, User user){
         return null;
     }
 
