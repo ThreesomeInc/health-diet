@@ -24,7 +24,7 @@ public class FoodDetailResponse extends BasicResponse{
     private Map<String, String> composition;
 
     @JsonProperty("foodDieticianAdvice")
-    private FoodDieticianAdvice foodDieticianAdvice;
+    private String foodDieticianAdvice;
 
     public String getName() {
         return name;
@@ -58,11 +58,11 @@ public class FoodDetailResponse extends BasicResponse{
         this.composition = composition;
     }
 
-    public FoodDieticianAdvice getAdvice() {
+    public String getAdvice() {
         return foodDieticianAdvice;
     }
 
-    public void setAdvice(FoodDieticianAdvice advice) {
+    public void setAdvice(String advice) {
         this.foodDieticianAdvice = advice;
     }
 }

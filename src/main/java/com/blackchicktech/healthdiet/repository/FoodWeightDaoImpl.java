@@ -21,12 +21,18 @@ public class FoodWeightDaoImpl {
     private RowMapper rowMapper = new BeanPropertyRowMapper(FoodWeight.class);
 
 
-    public FoodWeight getFoodWeightByFoodCode(String foodCode){
-        List<FoodWeight> foodWeightList = jdbcTemplate.query("SELECT * from food_weight_tbl where food_code = " + foodCode, rowMapper);
+    public FoodWeight getFoodWeightByFoodId(String foodId){
+        List<FoodWeight> foodWeightList = jdbcTemplate.query("SELECT * from food_weight_tbl where food_id = " + foodId, rowMapper);
         if(foodWeightList != null){
             return foodWeightList.get(0);
         } else {
             return null;
         }
+    }
+
+    public List<FoodWeight> getFoodWeightByProteinWeight(String proteinWeight){
+        List<FoodWeight> foodWeights = jdbcTemplate.query("SELECT * from food_weight_tbl where protein_weight = " +
+                                                            proteinWeight + " order by rand() limit 3", rowMapper);
+        return foodWeights;
     }
 }

@@ -1,12 +1,14 @@
 package com.blackchicktech.healthdiet.service;
 
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
-import com.blackchicktech.healthdiet.domain.FoodDieticianAdvice;
 import com.blackchicktech.healthdiet.domain.FoodType;
 import com.blackchicktech.healthdiet.entity.Food;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
+import com.blackchicktech.healthdiet.entity.FoodWeight;
 import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
+import com.blackchicktech.healthdiet.repository.FoodWeightDaoImpl;
+import com.blackchicktech.healthdiet.util.Constants;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
@@ -29,6 +31,9 @@ public class FoodService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FoodWeightDaoImpl foodWeightDao;
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
@@ -119,16 +124,43 @@ public class FoodService {
 
     }
 
-    private FoodDieticianAdvice deduceDieticianAdvice(FoodTbl food, User user){
+    private String deduceDieticianAdvice(FoodTbl food, User user){
         int nephroticPeriod = user.getNephroticPeriod();
         String otherDiseases = user.getOtherDiseases();
         String foodId = food.getFoodId();
+        FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
+        StringBuffer dieticianAdvice = new StringBuffer();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
 
         } else {
-
+            int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
+            dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
+            if(proteinWeight == 1){
+                dieticianAdvice.append("该食物蛋白含量低，建议经常食用");
+            } else if(proteinWeight == 2){
+                dieticianAdvice.append("该食物蛋白含量适中，可适量食用");
+            } else {
+                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
+                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeight("1");
+                List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
+                for(int i = 0; i < foodList.size(); i++){
+                    dieticianAdvice.append(foodList.get(i));
+                    if(i != foodList.size()){
+                        dieticianAdvice.append(",");
+                    }
+                }
+            }
         }
-        return null;
+        return dieticianAdvice.toString();
+    }
+
+    private List<FoodTbl> deduceRecommendFood(List<FoodWeight> foodWeights){
+        List<FoodTbl> foodList = new ArrayList<>();
+        for(FoodWeight foodWeight : foodWeights){
+            FoodTbl food = foodDao.getFoodById(foodWeight.getFoodId());
+            foodList.add(food);
+        }
+        return foodList;
     }
 
     private Map<String, String> deduceCompostions(FoodTbl food){
