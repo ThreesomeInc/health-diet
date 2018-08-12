@@ -66,6 +66,10 @@ public class FoodService {
         return foodDao.getFoodByTypeId(foodTypeCode);
     }
 
+    public List<FoodListItem> listFoodByName(String foodName) {
+        return foodDao.getFoodByName(foodName);
+    }
+
     public List<FoodType> listFoodType() {
         return new ArrayList<>(typeCache);
     }

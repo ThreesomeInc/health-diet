@@ -48,4 +48,20 @@ public class FoodDaoImpl implements FoodDao{
                 });
         return foodListItems;
     }
+
+    public List<FoodListItem> getFoodByName(String foodName) {
+        List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * from food_tbl where food_name like  %" + foodName + "%",
+                new RowMapper<FoodListItem>() {
+                    @Override
+                    public FoodListItem mapRow(ResultSet resultSet, int i) throws SQLException {
+                        FoodListItem foodListItem = new FoodListItem(
+                                resultSet.getString("food_id"),
+                                resultSet.getString("food_name"),
+                                "somePic.pic",
+                                resultSet.getString("energy"));
+                        return foodListItem;
+                    }
+                });
+        return foodListItems;
+    }
 }
