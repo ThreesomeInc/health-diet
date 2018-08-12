@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Created by Eric Cen on 2018/8/12.
@@ -23,6 +24,11 @@ public class UserDaoImpl {
     private RowMapper rowMapper = new BeanPropertyRowMapper(User.class);
 
     public void createUser(UserInfo userInfo, UserDataInfo userDataInfo) {
+        StringJoiner treatJoiner = new StringJoiner(",");
+        userDataInfo.getTreatmentMethod().forEach(treatJoiner::add);
+
+        StringJoiner diseaseJoiner = new StringJoiner(",");
+        userDataInfo.getOtherDisease().forEach(diseaseJoiner::add);
         jdbcTemplate.update(
             "INSERT INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?)",
                 userInfo.getOpenId(),
@@ -32,8 +38,8 @@ public class UserDaoImpl {
                 userDataInfo.getWeight(),
                 userDataInfo.getSportRate(),
                 userDataInfo.getNephroticPeriod(),
-                userDataInfo.getTreatmentMethod(),
-                userDataInfo.getOtherDisease()
+                treatJoiner.toString(),
+                diseaseJoiner.toString()
         );
     }
 
