@@ -58,4 +58,8 @@ public class Constants {
 			.put("corn", "玉米")
 			.build();
 
+
+	public final static String DIETICIAN_ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，而且%s偏高，";
+	public final static String DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE = "您的肾脏功能属于第%s期，";
+
 }

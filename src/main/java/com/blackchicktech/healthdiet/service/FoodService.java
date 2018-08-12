@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
@@ -112,16 +113,42 @@ public class FoodService {
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFood_name());
         foodDetailResponse.setAdvice(deduceDieticianAdvice(food, user));
-        foodDetailResponse.setComposition(deduceCompostion(food));
+        foodDetailResponse.setComposition(deduceCompostions(food));
         return foodDetailResponse;
 
     }
 
     private FoodDieticianAdvice deduceDieticianAdvice(Food food, User user){
+        int nephroticPeriod = user.getNephroticPeriod();
+        String otherDiseases = user.getOtherDiseases();
+        if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
+
+        } else {
+
+        }
         return null;
     }
 
-    private Map<String, String> deduceCompostion(Food food){
-        return null;
+    private Map<String, String> deduceCompostions(Food food){
+        Map<String, String> compositions = new HashMap<>();
+        String waterQuantity = food.getWater();
+        compositions.put("水", waterQuantity+"克");
+        String energyQuantity = food.getEnergy_kcal();
+        compositions.put("热量", energyQuantity+"千卡");
+        String proteinQuantity = food.getProtein();
+        compositions.put("蛋白质", proteinQuantity+"克");
+        String fatQuantity = food.getFat();
+        compositions.put("脂肪", fatQuantity+"克");
+        String choQuantity = food.getCho();
+        compositions.put("碳水化合物", choQuantity + "克");
+        String pQuantity = food.getP();
+        compositions.put("磷", pQuantity+"克");
+        String kQuantity = food.getK();
+        compositions.put("钾", kQuantity+"克");
+        String naQuantity = food.getNa();
+        compositions.put("钠", naQuantity+"克");
+        return compositions;
     }
+
+
 }
