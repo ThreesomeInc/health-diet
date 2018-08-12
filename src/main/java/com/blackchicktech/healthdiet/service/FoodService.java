@@ -83,7 +83,9 @@ public class FoodService {
         Reader in = null;
         try {
             in = new InputStreamReader(FoodService.class.getResourceAsStream("/food-type-rank.csv"));
-            Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader("rank","alias","typeId").parse(in);
+            Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader("rank","alias","typeId")
+                    .withSkipHeaderRecord()
+                    .parse(in);
             for (CSVRecord record : records) {
                 String rank = record.get("rank"); //貌似没用
                 String name = record.get("alias");
