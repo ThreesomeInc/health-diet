@@ -45,8 +45,14 @@ public class FoodController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodListResponse getFoodList() {
-        return new FoodListResponse(Collections.emptyList());
+    public FoodListResponse getFoodList(@RequestParam("typeId") String typeId) {
+        return new FoodListResponse(foodService.listFood(typeId));
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public FoodListResponse getFoodListByName(@RequestParam("name") String name) {
+        return new FoodListResponse(foodService.listFoodByName(name));
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -61,7 +67,7 @@ public class FoodController {
         return new FoodTypeListResponse(foodService.listFoodType());
     }
 
-    @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/detail/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public FoodDetailResponse getFoodDetailById(@PathVariable String foodId,
                                                 @RequestParam("openId") String openId){

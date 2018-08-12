@@ -1,5 +1,6 @@
 package com.blackchicktech.healthdiet.repository;
 
+import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -7,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -28,5 +31,37 @@ public class FoodDaoImpl implements FoodDao{
             return foodList.get(0);
         }
         return null;
+    }
+
+    public List<FoodListItem> getFoodByTypeId(String typeId) {
+        List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * from food_tbl where food_code = " + typeId,
+                new RowMapper<FoodListItem>() {
+                    @Override
+                    public FoodListItem mapRow(ResultSet resultSet, int i) throws SQLException {
+                        FoodListItem foodListItem = new FoodListItem(
+                                resultSet.getString("food_id"),
+                                resultSet.getString("food_name"),
+                                "somePic.pic",
+                                resultSet.getString("energy"));
+                        return foodListItem;
+                    }
+                });
+        return foodListItems;
+    }
+
+    public List<FoodListItem> getFoodByName(String foodName) {
+        List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * from food_tbl where food_name like  %" + foodName + "%",
+                new RowMapper<FoodListItem>() {
+                    @Override
+                    public FoodListItem mapRow(ResultSet resultSet, int i) throws SQLException {
+                        FoodListItem foodListItem = new FoodListItem(
+                                resultSet.getString("food_id"),
+                                resultSet.getString("food_name"),
+                                "somePic.pic",
+                                resultSet.getString("energy"));
+                        return foodListItem;
+                    }
+                });
+        return foodListItems;
     }
 }
