@@ -30,7 +30,7 @@ public class ExcelImporter {
             System.out.println("Begin to load workbook " + file.getName());
             workbook = new XSSFWorkbook(new FileInputStream(file));
             XSSFSheet sheet1 = workbook.getSheetAt(0);
-            int totalRows = sheet1.getLastRowNum() + 1;
+            int totalRows = 2054;  //后面是有格式的脏数据
             System.out.println("Read sheet " + sheet1.getSheetName() + " total " + totalRows + " rows");
             //row 0 是header
             for (int i = 3; i < totalRows; i++) {
@@ -132,11 +132,16 @@ public class ExcelImporter {
     }
 
     private static String readCellAsString(XSSFCell cell) {
+        if (cell == null) {
+            return null;
+        }
         switch (cell.getCellTypeEnum()) {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
                 return "" + cell.getNumericCellValue();
+            case BLANK:
+                return null;
             default:
                 throw new RuntimeException("Not supported cell type");
         }
