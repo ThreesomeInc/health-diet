@@ -120,11 +120,12 @@ public class FoodService {
         String otherDiseases = user.getOtherDiseases();
         String foodId = food.getFoodId();
         FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
+        int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
         StringBuffer dieticianAdvice = new StringBuffer();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
-
+            String[] otherDiseasesArray = otherDiseases.split(",");
+            
         } else {
-            int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
             dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
             if(proteinWeight == 1){
                 dieticianAdvice.append("该食物蛋白含量低，建议经常食用");
