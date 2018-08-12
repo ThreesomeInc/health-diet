@@ -75,10 +75,9 @@ public class FoodController {
     @RequestMapping(value="/detail/{foodId}", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus
     public ResponseEntity getFoodDetailById(@PathVariable String foodId,
-                                                @RequestParam("openId") String openId,
-                                                @RequestParam("frequency") String frequency){
+                                            @RequestBody FoodEatFrequency foodEatFrequency){
 
-        LOGGER.info("User " + openId + " eat food " + foodId + ":" + frequency );
+        LOGGER.info("User " + foodEatFrequency.getOpenId() + " eat food " + foodId + ":" + foodEatFrequency.getFrequency() );
         return ResponseEntity.ok().build();
     }
 }
