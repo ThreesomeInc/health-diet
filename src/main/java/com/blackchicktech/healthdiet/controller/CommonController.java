@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-//@RestController
-//@RequestMapping("/common")
+@RestController
+@RequestMapping("/common")
 public class CommonController {
 
 	@Value("${app.appId}")
