@@ -11,7 +11,7 @@ CREATE TABLE `user_tbl` (
   `treatment_method` varchar(255) DEFAULT NULL,
   `other_diseases` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`open_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `food_tbl` (
   `food_id` varchar(45) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE `food_tbl` (
   `unit` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`food_id`),
   FULLTEXT KEY `NAME_INDEX` (`food_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 CREATE TABLE `food_weight_tbl` (

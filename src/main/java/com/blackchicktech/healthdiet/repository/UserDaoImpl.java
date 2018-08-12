@@ -1,5 +1,7 @@
 package com.blackchicktech.healthdiet.repository;
 
+import com.blackchicktech.healthdiet.domain.UserDataInfo;
+import com.blackchicktech.healthdiet.domain.UserInfo;
 import com.blackchicktech.healthdiet.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -20,8 +22,23 @@ public class UserDaoImpl {
 
     private RowMapper rowMapper = new BeanPropertyRowMapper(User.class);
 
+    public void createUser(UserInfo userInfo, UserDataInfo userDataInfo) {
+        jdbcTemplate.update(
+            "INSERT INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?)",
+                userInfo.getOpenId(),
+                userDataInfo.getGender(),
+                userDataInfo.getBirthDay(),
+                userDataInfo.getHeight(),
+                userDataInfo.getWeight(),
+                userDataInfo.getSportRate(),
+                userDataInfo.getNephroticPeriod(),
+                userDataInfo.getTreatmentMethod(),
+                userDataInfo.getOtherDisease()
+        );
+    }
+
     public User getUserByOpenId(String openId){
-        List<User> users = jdbcTemplate.query("SELECT * from USER where openId = " + openId, rowMapper);
+        List<User> users = jdbcTemplate.query("SELECT * from user_tbl where openId = " + openId, rowMapper);
         return users.get(0);
 
     }
