@@ -5,10 +5,10 @@ spring:
         url: jdbc:mysql://173.254.228.220:3306/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
         username: root
         password: Martin!1234
-    h2:
-      console:
-        enabled: true
-        path: /h2
+#    h2:
+#      console:
+#        enabled: true
+#        path: /h2
 #        settings:
 #          web-allow-others: true
 #    datasource:
