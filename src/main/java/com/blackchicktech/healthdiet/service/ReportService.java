@@ -392,8 +392,13 @@ public class ReportService {
 				otherDiseaseResult.append(separator).append(otherDiseaseSuggestDiet.getElement());
 			}
 		}
-		return String.format(Constants.ADVICE_TEMPLATE, nephroticPeriod,
-				otherDiseaseResult.toString(), suggestDiets.toString());
+		if(!otherDiseases.isEmpty()){
+			return String.format(Constants.ADVICE_TEMPLATE, nephroticPeriod,
+					otherDiseaseResult.toString(), suggestDiets.toString());
+		} else {
+			return String.format(Constants.WITHOUT_NEOPATHY_ADVICE_TEMPLATE, nephroticPeriod);
+		}
+
 	}
 
 	private String deduceSlogan() {
