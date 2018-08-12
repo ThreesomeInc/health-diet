@@ -8,8 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -35,9 +33,7 @@ public class FoodDaoImpl implements FoodDao{
 
     public List<FoodListItem> getFoodByTypeId(String typeId) {
         List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * from food_tbl where food_code = " + typeId,
-                new RowMapper<FoodListItem>() {
-                    @Override
-                    public FoodListItem mapRow(ResultSet resultSet, int i) throws SQLException {
+                (resultSet, i) -> {
                         FoodListItem foodListItem = new FoodListItem(
                                 resultSet.getString("food_id"),
                                 resultSet.getString("food_name"),
@@ -45,15 +41,13 @@ public class FoodDaoImpl implements FoodDao{
                                 resultSet.getString("energy"));
                         return foodListItem;
                     }
-                });
+                );
         return foodListItems;
     }
 
     public List<FoodListItem> getFoodByName(String foodName) {
         List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * from food_tbl where food_name like  %" + foodName + "%",
-                new RowMapper<FoodListItem>() {
-                    @Override
-                    public FoodListItem mapRow(ResultSet resultSet, int i) throws SQLException {
+                (resultSet, i) -> {
                         FoodListItem foodListItem = new FoodListItem(
                                 resultSet.getString("food_id"),
                                 resultSet.getString("food_name"),
@@ -61,7 +55,7 @@ public class FoodDaoImpl implements FoodDao{
                                 resultSet.getString("energy"));
                         return foodListItem;
                     }
-                });
+                );
         return foodListItems;
     }
 }
