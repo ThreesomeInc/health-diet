@@ -56,9 +56,9 @@ public class FoodController {
         return new FoodTypeListResponse(foodService.listFoodType());
     }
 
-    @RequestMapping(value="/{foodId}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/{foodCode}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public FoodDetailResponse getFoodDetailById(@PathVariable String foodId){
-        return new FoodDetailResponse();
+    public FoodDetailResponse getFoodDetailById(@PathVariable String foodCode, @RequestBody UserDataInfo userDataInfo){
+        return foodService.getFoodByCode(foodCode, userDataInfo);
     }
 }

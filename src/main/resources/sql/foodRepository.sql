@@ -59,3 +59,19 @@ create table test.food_repository
   remark varchar(255) null,
   protein_devide_p varchar(10) null
 );
+
+create table test.food_element_evaluation(
+   id int auto_increment primary key,
+   food_code int;
+   protein_evaluation int;
+   fat_evalaution int;
+   cho_evaluation int;
+   cholesterol_evaluation int;
+   purine_evaluation int;
+   k_evaluation int;
+   na_evaluation int;
+   p_evaluation int;
+)
+
+alter table test.food_element_evaluation add constraint 'food_evaluation_fk'
+foreign key ('food_code') references 'food_repository'('code') on delete cascade on update cascade;

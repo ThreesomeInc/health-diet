@@ -43,7 +43,7 @@ public class RadixTreeDemo {
     public void testCacheStartingCategories() {
         Assert.assertEquals(Arrays.asList("01-1-205", "01-1-408", "01-1-503"), Lists.newArrayList(cache.getKeysStartingWith("01-1")));
         Assert.assertEquals(true, StreamSupport.stream(cache.getValuesForKeysStartingWith("01-1").spliterator(), false)
-                .allMatch(item -> Arrays.asList("01-1-205", "01-1-408", "01-1-503").contains(item.getFoodId())));
+                .allMatch(item -> Arrays.asList("01-1-205", "01-1-408", "01-1-503").contains(item.getFood_code())));
 
 
     }

@@ -3,6 +3,8 @@ package com.blackchicktech.healthdiet.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Map;
+
 /**
  * Created by Eric Cen on 2018/8/11.
  */
@@ -19,7 +21,7 @@ public class FoodDetailResponse extends BasicResponse{
     private String preference;
 
     @JsonProperty("composition")
-    private String composition;
+    private Map<String, String> composition;
 
     @JsonProperty("foodDieticianAdvice")
     private FoodDieticianAdvice foodDieticianAdvice;
@@ -48,11 +50,11 @@ public class FoodDetailResponse extends BasicResponse{
         this.preference = preference;
     }
 
-    public String getComposition() {
+    public Map<String, String> getComposition() {
         return composition;
     }
 
-    public void setComposition(String composition) {
+    public void setComposition(Map<String, String> composition) {
         this.composition = composition;
     }
 

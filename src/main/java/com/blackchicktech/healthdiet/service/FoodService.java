@@ -1,22 +1,31 @@
 package com.blackchicktech.healthdiet.service;
 
+import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
+import com.blackchicktech.healthdiet.domain.FoodDieticianAdvice;
 import com.blackchicktech.healthdiet.domain.FoodType;
+import com.blackchicktech.healthdiet.domain.UserDataInfo;
 import com.blackchicktech.healthdiet.entity.Food;
+import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.URL;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.*;
 
 //食材相关
 @Service
 public class FoodService {
+
+    @Autowired
+    private FoodDaoImpl foodDao;
+
+
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
@@ -59,7 +68,7 @@ public class FoodService {
         List<com.blackchicktech.healthdiet.domain.Food> result = new ArrayList<>();
         for (Food food : cache.values()) {
             com.blackchicktech.healthdiet.domain.Food domainFood = new com.blackchicktech.healthdiet.domain.Food();
-            domainFood.setFoodId(food.getFoodId());
+            domainFood.setFoodId(String.valueOf(food.getId()));
             domainFood.setFoodName(food.getFoodName());
             domainFood.setFoodType(getFoodType(food.getType(), food.getSubType()));
             domainFood.setPicUrl(food.getPicUrl());
@@ -92,5 +101,23 @@ public class FoodService {
                 }
             }
         }
+    }
+
+    public FoodDetailResponse getFoodByCode(String foodCode, UserDataInfo userDataInfo){
+        Food food = foodDao.getFoodByCode(foodCode);
+        FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
+        foodDetailResponse.setName(food.getFood_name());
+        foodDetailResponse.setAdvice(deduceDieticianAdvice(food, userDataInfo));
+        foodDetailResponse.setComposition(deduceCompostion(food));
+        return foodDetailResponse;
+
+    }
+
+    private FoodDieticianAdvice deduceDieticianAdvice(Food food, UserDataInfo userDataInfo){
+        return null;
+    }
+
+    private Map<String, String> deduceCompostion(Food food){
+        return null;
     }
 }
