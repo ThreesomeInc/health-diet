@@ -7,13 +7,5 @@ cache:
 jdk: oraclejdk8
 before_install:
   - chmod +x mvnw
-
-deploy:
-  provider: script
-  
-  script:
-  - jdk_switcher use oraclejdk8
+install:
   - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
-  skip_cleanup: true
-  on:
-    tags: true
