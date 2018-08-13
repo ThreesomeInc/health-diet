@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ public class FoodDetailResponse extends BasicResponse{
     private String name;
 
     @JsonProperty("label")
-    private String label;
+    private List<String> label;
 
     @JsonProperty("frequency")
     private String frequency;
@@ -42,11 +43,11 @@ public class FoodDetailResponse extends BasicResponse{
         this.name = name;
     }
 
-    public String getLabel() {
+    public List<String> getLabel() {
         return label;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(List<String> label) {
         this.label = label;
     }
 

@@ -19,6 +19,36 @@ public class FoodWeight {
 
     private String naWeight;
 
+    private String purineWeight;
+
+    private String cholesterolWeight;
+
+    private String pWeight;
+
+    public String getPurineWeight() {
+        return purineWeight;
+    }
+
+    public void setPurineWeight(String purineWeight) {
+        this.purineWeight = purineWeight;
+    }
+
+    public String getCholesterolWeight() {
+        return cholesterolWeight;
+    }
+
+    public void setCholesterolWeight(String cholesterolWeight) {
+        this.cholesterolWeight = cholesterolWeight;
+    }
+
+    public String getpWeight() {
+        return pWeight;
+    }
+
+    public void setpWeight(String pWeight) {
+        this.pWeight = pWeight;
+    }
+
     public String getFoodId() {
         return foodId;
     }

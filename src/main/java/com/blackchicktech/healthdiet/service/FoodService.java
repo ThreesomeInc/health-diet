@@ -104,8 +104,14 @@ public class FoodService {
         String foodId = food.getFoodId();
         int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
         StringBuilder dieticianAdvice = new StringBuilder();
+        StringBuilder otherDiseasesConbinations = new StringBuilder();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
             String[] otherDiseasesArray = otherDiseases.split(",");
+            for(int i = 0; i < otherDiseasesArray.length; i++){
+                otherDiseasesConbinations.append(Constants.OTHER_DISEASE_ELEMENTS.get(otherDiseasesArray[i]));
+            }
+            dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_TEMPLATE,
+                    nephroticPeriod, otherDiseasesConbinations));
             
         } else {
             dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
@@ -128,39 +134,40 @@ public class FoodService {
         return dieticianAdvice.toString();
     }
 
-    private String deduceLabel(FoodWeight foodWeight){
-        StringBuffer label = new StringBuffer();
+    private List<String> deduceLabel(FoodWeight foodWeight){
+        List<String> label = new ArrayList<>();
+
         int proteinWeight = Integer.valueOf(foodWeight.getProteinWeight());
         int choWeight = Integer.valueOf(foodWeight.getChoWeight());
         int fatWeight = Integer.valueOf(foodWeight.getFatWeight());
         int kWeight = Integer.valueOf(foodWeight.getkWeight());
         int naWeight = Integer.valueOf(foodWeight.getNaWeight());
         if(proteinWeight == 1){
-           label.append("低蛋白/");
+            label.add("低蛋白");
         } else if (proteinWeight == 3){
-           label.append("高蛋白/");
+            label.add("高蛋白");
         }
         if(choWeight == 1){
-            label.append("低碳水化合物/");
+            label.add("低碳水化合物");
         } else if(choWeight == 3){
-            label.append("高碳水化合物/");
+            label.add("高碳水化合物");
         }
         if(fatWeight == 1){
-            label.append("低脂肪/");
+            label.add("低脂肪");
         } else if(fatWeight == 3){
-            label.append("高脂肪/");
+            label.add("高脂肪");
         }
         if(kWeight == 1){
-            label.append("低钾/");
+            label.add("低钾");
         } else if(kWeight == 3){
-            label.append("高钾/");
+            label.add("高钾");
         }
         if(naWeight == 1){
-            label.append("低钠");
+            label.add("低钠");
         } else if(naWeight == 3){
-            label.append("高钠");
+            label.add("高钠");
         }
-        return label.toString();
+        return label;
     }
 
     private List<FoodTbl> deduceRecommendFood(List<FoodWeight> foodWeights){

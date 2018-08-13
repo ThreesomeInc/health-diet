@@ -43,5 +43,8 @@ CREATE TABLE `food_weight_tbl` (
   `cho_weight` varchar(45) DEFAULT NULL,
   `k_weight` varchar(45) DEFAULT NULL,
   `na_weight` varchar(45) DEFAULT NULL,
+  `cholesterol_weight` varchar(45) DEFAULT NULL,
+  `purine_weight` varchar(45) DEFAULT NULL,
+  `p_weight` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`food_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
