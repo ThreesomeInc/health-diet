@@ -5,6 +5,8 @@ cache:
   directories:
   - "$HOME/.m2"
 jdk: oraclejdk8
+before_install:
+  - chmod +x mvnw
 
 deploy:
   provider: script
