@@ -1,4 +1,4 @@
-USE test;
+USE health_diet;
 
 CREATE TABLE `user_tbl` (
   `open_id` varchar(255) NOT NULL,
