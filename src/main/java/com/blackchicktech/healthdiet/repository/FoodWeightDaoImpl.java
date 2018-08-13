@@ -22,17 +22,15 @@ public class FoodWeightDaoImpl {
 
 
     public FoodWeight getFoodWeightByFoodId(String foodId){
-        List<FoodWeight> foodWeightList = jdbcTemplate.query("SELECT * from food_weight_tbl where food_id = " + foodId, rowMapper);
-        if(foodWeightList != null){
-            return foodWeightList.get(0);
-        } else {
-            return null;
-        }
+        List<FoodWeight> foodWeightList = jdbcTemplate.query("SELECT * from food_weight_tbl where food_id = ?",
+                                                                rowMapper, foodId);
+        return foodWeightList.stream().findFirst().orElse(null);
     }
 
-    public List<FoodWeight> getFoodWeightByProteinWeight(String proteinWeight){
-        List<FoodWeight> foodWeights = jdbcTemplate.query("SELECT * from food_weight_tbl where protein_weight = " +
-                                                            proteinWeight + " order by rand() limit 3", rowMapper);
+    public List<FoodWeight> getFoodWeightByProteinWeightAndSubCode(String proteinWeight, String subCode){
+        List<FoodWeight> foodWeights = jdbcTemplate.query("SELECT * from food_weight_tbl where " +
+                                                            " protein_weight = ? and sub_code = ? limit 3" ,
+                                                            rowMapper, proteinWeight, subCode);
         return foodWeights;
     }
 }

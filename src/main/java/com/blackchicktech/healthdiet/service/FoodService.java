@@ -102,7 +102,12 @@ public class FoodService {
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         String otherDiseases = user.getOtherDiseases();
         String foodId = food.getFoodId();
+        String subCode = food.getSubCode();
         int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
+        int purineWeight = Integer.valueOf(foodWeight.getPurineWeight());
+        int cholesterolWeight = Integer.valueOf(foodWeight.getCholesterolWeight());
+        int naWeight = Integer.valueOf(foodWeight.getNaWeight());
+        int fatWeight = Integer.valueOf(foodWeight.getFatWeight());
         StringBuilder dieticianAdvice = new StringBuilder();
         StringBuilder otherDiseasesConbinations = new StringBuilder();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
@@ -112,6 +117,21 @@ public class FoodService {
             }
             dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_TEMPLATE,
                     nephroticPeriod, otherDiseasesConbinations));
+            if(proteinWeight == 1){
+                dieticianAdvice.append("该食物蛋白含量低，建议经常食用");
+            } else if(proteinWeight == 2){
+                dieticianAdvice.append("该食物蛋白含量适中，可适量食用");
+            } else {
+                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
+                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode("1", subCode);
+                List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
+                for(int i = 0; i < foodList.size(); i++){
+                    dieticianAdvice.append(foodList.get(i));
+                    if(i != foodList.size()){
+                        dieticianAdvice.append(",");
+                    }
+                }
+            }
             
         } else {
             dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
@@ -121,7 +141,7 @@ public class FoodService {
                 dieticianAdvice.append("该食物蛋白含量适中，可适量食用");
             } else {
                 dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
-                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeight("1");
+                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode("1", subCode);
                 List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
                 for(int i = 0; i < foodList.size(); i++){
                     dieticianAdvice.append(foodList.get(i));
@@ -142,6 +162,9 @@ public class FoodService {
         int fatWeight = Integer.valueOf(foodWeight.getFatWeight());
         int kWeight = Integer.valueOf(foodWeight.getkWeight());
         int naWeight = Integer.valueOf(foodWeight.getNaWeight());
+        int pWeight = Integer.valueOf(foodWeight.getpWeight().equals("null") ? "1":foodWeight.getpWeight());
+        int purineWeight = Integer.valueOf(foodWeight.getPurineWeight());
+        int cholesterolWeight = Integer.valueOf(foodWeight.getCholesterolWeight());
         if(proteinWeight == 1){
             label.add("低蛋白");
         } else if (proteinWeight == 3){
@@ -166,6 +189,21 @@ public class FoodService {
             label.add("低钠");
         } else if(naWeight == 3){
             label.add("高钠");
+        }
+        if(purineWeight == 1){
+            label.add("低嘌呤");
+        } else if(purineWeight == 3){
+            label.add("高嘌呤");
+        }
+        if(cholesterolWeight == 1){
+            label.add("低胆固醇");
+        }else if(cholesterolWeight == 3){
+            label.add("高胆固醇");
+        }
+        if(pWeight == 1){
+            label.add("低磷");
+        } else if(pWeight == 3){
+            label.add("高磷");
         }
         return label;
     }
