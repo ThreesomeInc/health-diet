@@ -124,6 +124,9 @@ public class FoodWeight {
                 ", choWeight='" + choWeight + '\'' +
                 ", kWeight='" + kWeight + '\'' +
                 ", naWeight='" + naWeight + '\'' +
+                ", purineWeight='" + purineWeight + '\'' +
+                ", cholesterolWeight='" + cholesterolWeight + '\'' +
+                ", pWeight='" + pWeight + '\'' +
                 '}';
     }
 }

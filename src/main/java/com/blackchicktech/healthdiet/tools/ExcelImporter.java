@@ -61,6 +61,9 @@ public class ExcelImporter {
                 foodWeight.setChoWeight(readCellAsString(row.getCell(16)));
                 foodWeight.setkWeight(readCellAsString(row.getCell(37)));
                 foodWeight.setNaWeight(readCellAsString(row.getCell(39)));
+                foodWeight.setpWeight(readCellAsString(row.getCell(58)));
+                foodWeight.setCholesterolWeight(readCellAsString(row.getCell(19)));
+                foodWeight.setPurineWeight(readCellAsString(row.getCell(22)));
                 foodWeights.add(foodWeight);
             }
         } catch (IOException e) {
@@ -114,7 +117,7 @@ public class ExcelImporter {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./food_weight_tbl.csv"));
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("food_id", "food_code", "sub_code", "protein_weight", "fat_weight", "cho_weight", "k_weight", "na_weight"))
+                        .withHeader("food_id", "food_code", "sub_code", "protein_weight", "fat_weight", "cho_weight", "k_weight", "na_weight","cholesterol_weight", "purine_weight", "p_weight"))
         ) {
             for (FoodWeight foodWeight : foodWeights) {
                 csvPrinter.printRecord(foodWeight.getFoodId(),
@@ -124,7 +127,10 @@ public class ExcelImporter {
                         foodWeight.getFatWeight(),
                         foodWeight.getChoWeight(),
                         foodWeight.getkWeight(),
-                        foodWeight.getNaWeight()
+                        foodWeight.getNaWeight(),
+                        foodWeight.getCholesterolWeight(),
+                        foodWeight.getPurineWeight(),
+                        foodWeight.getpWeight()
                         );
             }
             csvPrinter.flush();
