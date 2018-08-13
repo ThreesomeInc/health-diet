@@ -5,7 +5,7 @@ server:
         max-threads: 1000
         min-spare-threads: 30
     address: 127.0.0.1
-    port: 8081
+    port: 8080
     servlet:
       context-path: /
     error:
