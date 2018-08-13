@@ -17,14 +17,22 @@ public class FoodDetailResponse extends BasicResponse{
     @JsonProperty("label")
     private String label;
 
-    @JsonProperty("preference")
-    private String preference;
+    @JsonProperty("frequency")
+    private String frequency;
 
     @JsonProperty("composition")
     private Map<String, String> composition;
 
-    @JsonProperty("foodDieticianAdvice")
-    private String foodDieticianAdvice;
+    @JsonProperty("dieticianAdvice")
+    private String dieticianAdvice;
+
+    public String getDieticianAdvice() {
+        return dieticianAdvice;
+    }
+
+    public void setDieticianAdvice(String dieticianAdvice) {
+        this.dieticianAdvice = dieticianAdvice;
+    }
 
     public String getName() {
         return name;
@@ -42,12 +50,12 @@ public class FoodDetailResponse extends BasicResponse{
         this.label = label;
     }
 
-    public String getPreference() {
-        return preference;
+    public String getFrequency() {
+        return frequency;
     }
 
-    public void setPreference(String preference) {
-        this.preference = preference;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
     public Map<String, String> getComposition() {
@@ -58,11 +66,4 @@ public class FoodDetailResponse extends BasicResponse{
         this.composition = composition;
     }
 
-    public String getAdvice() {
-        return foodDieticianAdvice;
-    }
-
-    public void setAdvice(String advice) {
-        this.foodDieticianAdvice = advice;
-    }
 }
