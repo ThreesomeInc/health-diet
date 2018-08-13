@@ -23,6 +23,16 @@ public class User {
 
     private String otherDiseases;
 
+    private String irritability;
+
+    public String getIrritability() {
+        return irritability;
+    }
+
+    public void setIrritability(String irritability) {
+        this.irritability = irritability;
+    }
+
     public String getOpenId() {
         return openId;
     }
