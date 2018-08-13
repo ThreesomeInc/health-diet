@@ -10,6 +10,7 @@ CREATE TABLE `user_tbl` (
   `nephrotic_period` varchar(45) DEFAULT NULL,
   `treatment_method` varchar(255) DEFAULT NULL,
   `other_diseases` varchar(255) DEFAULT NULL,
+  `irritability` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
