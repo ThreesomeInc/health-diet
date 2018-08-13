@@ -3,7 +3,6 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.domain.FoodType;
-import com.blackchicktech.healthdiet.entity.Food;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
 import com.blackchicktech.healthdiet.entity.FoodWeight;
 import com.blackchicktech.healthdiet.entity.User;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
@@ -38,28 +36,8 @@ public class FoodService {
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
-    private Map<String, Food> cache = new HashMap<>();
-
     private List<FoodType> typeCache = new LinkedList<>();
 
-    @PostConstruct
-    public void reloadCache() {
-        //读入缓存 mock用于开发测试
-        cache.put("1-1-503,", new Food("1-1-503", "面筋(肉馅)", "someurl", "常见食物", "1", "1", "千卡", "364"));
-        cache.put("2-1-107,", new Food("2-1-107", "马铃薯(煮)", "someurl", "常见食物", "2", "1", "千卡", "65"));
-        cache.put("3-1-305,", new Food("3-1-305", "豆腐脑", "someurl", "常见食物", "3", "1", "千卡", "15"));
-        cache.put("4-8-002,", new Food("4-8-002", "白花菜", "someurl", "常见食物", "4", "8", "千卡", "0"));
-
-        reloadFoodRanking();
-    }
-
-    public boolean addFood() {
-        return true;
-    }
-
-    public boolean deleteFood() {
-        return true;
-    }
 
     public List<FoodListItem> listFood(String foodTypeCode) {  //分页
         return foodDao.getFoodByTypeId(foodTypeCode);
@@ -106,23 +84,24 @@ public class FoodService {
     public FoodDetailResponse getFoodById(String foodId, String openId){
         User user = userService.getUserByOpenId(openId);
         FoodTbl food = foodDao.getFoodById(foodId);
+        FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFoodName());
-        foodDetailResponse.setAdvice(deduceDieticianAdvice(food, user));
+        foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight,user));
         foodDetailResponse.setComposition(deduceCompostions(food));
+        foodDetailResponse.setLabel(deduceLabel(foodWeight));
         return foodDetailResponse;
 
     }
 
-    private String deduceDieticianAdvice(FoodTbl food, User user){
+    private String deduceDieticianAdvice(FoodTbl food, FoodWeight foodWeight, User user){
         //TODO: user null validation ? return temporarily for front-end testing
         if (user == null) {
             return "";
         }
-        int nephroticPeriod = user.getNephroticPeriod();
+        int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         String otherDiseases = user.getOtherDiseases();
         String foodId = food.getFoodId();
-        FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
         int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
         StringBuilder dieticianAdvice = new StringBuilder();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
@@ -147,6 +126,41 @@ public class FoodService {
             }
         }
         return dieticianAdvice.toString();
+    }
+
+    private String deduceLabel(FoodWeight foodWeight){
+        StringBuffer label = new StringBuffer();
+        int proteinWeight = Integer.valueOf(foodWeight.getProteinWeight());
+        int choWeight = Integer.valueOf(foodWeight.getChoWeight());
+        int fatWeight = Integer.valueOf(foodWeight.getFatWeight());
+        int kWeight = Integer.valueOf(foodWeight.getkWeight());
+        int naWeight = Integer.valueOf(foodWeight.getNaWeight());
+        if(proteinWeight == 1){
+           label.append("低蛋白/");
+        } else if (proteinWeight == 3){
+           label.append("高蛋白/");
+        }
+        if(choWeight == 1){
+            label.append("低碳水化合物/");
+        } else if(choWeight == 3){
+            label.append("高碳水化合物/");
+        }
+        if(fatWeight == 1){
+            label.append("低脂肪/");
+        } else if(fatWeight == 3){
+            label.append("高脂肪/");
+        }
+        if(kWeight == 1){
+            label.append("低钾/");
+        } else if(kWeight == 3){
+            label.append("高钾/");
+        }
+        if(naWeight == 1){
+            label.append("低钠");
+        } else if(naWeight == 3){
+            label.append("高钠");
+        }
+        return label.toString();
     }
 
     private List<FoodTbl> deduceRecommendFood(List<FoodWeight> foodWeights){

@@ -11,13 +11,13 @@ public class User {
 
     private String birthDay;
 
-    private int height;
+    private String height;
 
-    private float weight;
+    private String weight;
 
     private String sportRate;
 
-    private int nephroticPeriod;
+    private String nephroticPeriod;
 
     private String treatmentMethod;
 
@@ -47,19 +47,19 @@ public class User {
         this.birthDay = birthDay;
     }
 
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public float getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(float weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
@@ -71,11 +71,11 @@ public class User {
         this.sportRate = sportRate;
     }
 
-    public int getNephroticPeriod() {
+    public String getNephroticPeriod() {
         return nephroticPeriod;
     }
 
-    public void setNephroticPeriod(int nephroticPeriod) {
+    public void setNephroticPeriod(String nephroticPeriod) {
         this.nephroticPeriod = nephroticPeriod;
     }
 
