@@ -65,6 +65,42 @@ public class Constants {
 			.put("corn", "玉米")
 			.build();
 
+	public final static Map<String, String> FAT_WEIGHT_ADVICE = ImmutableMap.<String, String>builder()
+			.put("1", "脂肪含量低,")
+			.put("2", "脂肪含量适宜,")
+			.put("3", "脂肪含量高,")
+			.build();
+
+	public final static Map<String, String> PROTEIN_WEIGHT_ADVICE = ImmutableMap.<String, String>builder()
+			.put("1", "蛋白质含量低,")
+			.put("2", "蛋白质含量适宜,")
+			.put("3", "蛋白质含量高,")
+			.build();
+
+	public final static Map<String, String> NA_WEIGHT_ADVICE = ImmutableMap.<String, String>builder()
+			.put("1", "钠含量低,")
+			.put("2", "钠含量适宜,")
+			.put("3", "钠含量高,")
+			.build();
+
+	public final static Map<String, String> CHO_WEIGHT_ADVICE = ImmutableMap.<String, String>builder()
+			.put("1", "血糖含量低,")
+			.put("2", "血糖含量适宜,")
+			.put("3", "血糖含量高,")
+			.build();
+
+	public final static Map<String, String> CHOLESTEROL_WEIGHT_ADVICE = ImmutableMap.<String, String>builder()
+			.put("1", "胆固醇含量低,")
+			.put("2", "胆固醇含量适宜,")
+			.put("3", "胆固醇含量高,")
+			.build();
+
+	public final static Map<String, String> PURINE_WEIGHT_ADVICE = ImmutableMap.<String, String>builder()
+			.put("1", "嘌呤含量低,")
+			.put("2", "嘌呤含量适宜,")
+			.put("3", "嘌呤含量高,")
+			.build();
+
 
 	public final static String DIETICIAN_ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，而且%s偏高，";
 	public final static String DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE = "您的肾脏功能属于第%s期，";
