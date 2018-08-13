@@ -15,8 +15,6 @@ info:
 tags:
 - name: Food
   description: Secured calls for food related
-- name: developers
-  description: Operations available to regular developers
 
 paths:
   /food/detail/{foodId}:
@@ -121,7 +119,10 @@ definitions:
         example: "不吃"
 
 # Added by API Auto Mocking Plugin
-host: kidneyhealty.com.cn
-basePath: /
+# host: kidneyhealty.com.cn
+# basePath: /
 schemes:
  - https
+# Added by API Auto Mocking Plugin
+host: kidneyhealty.com.cn
+basePath: /
