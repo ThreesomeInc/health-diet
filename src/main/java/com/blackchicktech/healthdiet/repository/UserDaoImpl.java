@@ -31,7 +31,7 @@ public class UserDaoImpl {
 		StringJoiner diseaseJoiner = new StringJoiner(",");
 		userDataInfo.getOtherDisease().forEach(diseaseJoiner::add);
 		jdbcTemplate.update(
-				"INSERT INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?)",
+				"REPLACE INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?)",
 				userInfo.getOpenId(),
 				userDataInfo.getGender(),
 				userDataInfo.getBirthDay(),
