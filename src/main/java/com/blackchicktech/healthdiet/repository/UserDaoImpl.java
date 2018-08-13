@@ -30,8 +30,11 @@ public class UserDaoImpl {
 
 		StringJoiner diseaseJoiner = new StringJoiner(",");
 		userDataInfo.getOtherDisease().forEach(diseaseJoiner::add);
+
+		StringJoiner irritabilityJoiner = new StringJoiner(",");
+		userDataInfo.getIrritability().forEach(irritabilityJoiner::add);
 		jdbcTemplate.update(
-				"REPLACE INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?)",
+				"REPLACE INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)",
 				userInfo.getOpenId(),
 				userDataInfo.getGender(),
 				userDataInfo.getBirthDay(),
@@ -40,7 +43,8 @@ public class UserDaoImpl {
 				userDataInfo.getSportRate(),
 				userDataInfo.getNephroticPeriod(),
 				treatJoiner.toString(),
-				diseaseJoiner.toString()
+				diseaseJoiner.toString(),
+				irritabilityJoiner.toString()
 		);
 	}
 
