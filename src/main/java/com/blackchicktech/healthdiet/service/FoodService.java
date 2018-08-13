@@ -115,12 +115,16 @@ public class FoodService {
     }
 
     private String deduceDieticianAdvice(FoodTbl food, User user){
+        //TODO: user null validation ? return temporarily for front-end testing
+        if (user == null) {
+            return "";
+        }
         int nephroticPeriod = user.getNephroticPeriod();
         String otherDiseases = user.getOtherDiseases();
         String foodId = food.getFoodId();
         FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
         int proteinWeight = Integer.parseInt(foodWeight.getProteinWeight());
-        StringBuffer dieticianAdvice = new StringBuffer();
+        StringBuilder dieticianAdvice = new StringBuilder();
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
             String[] otherDiseasesArray = otherDiseases.split(",");
             
