@@ -9,45 +9,21 @@ public class FoodWeight {
 
     private String subCode;
 
-    private String proteinWeight;
+    private int proteinWeight;
 
-    private String fatWeight;
+    private int fatWeight;
 
-    private String choWeight;
+    private int choWeight;
 
-    private String kWeight;
+    private int kWeight;
 
-    private String naWeight;
+    private int naWeight;
 
-    private String purineWeight;
+    private int purineWeight;
 
-    private String cholesterolWeight;
+    private int cholesterolWeight;
 
-    private String pWeight;
-
-    public String getPurineWeight() {
-        return purineWeight;
-    }
-
-    public void setPurineWeight(String purineWeight) {
-        this.purineWeight = purineWeight;
-    }
-
-    public String getCholesterolWeight() {
-        return cholesterolWeight;
-    }
-
-    public void setCholesterolWeight(String cholesterolWeight) {
-        this.cholesterolWeight = cholesterolWeight;
-    }
-
-    public String getpWeight() {
-        return pWeight;
-    }
-
-    public void setpWeight(String pWeight) {
-        this.pWeight = pWeight;
-    }
+    private int pWeight;
 
     public String getFoodId() {
         return foodId;
@@ -73,44 +49,68 @@ public class FoodWeight {
         this.subCode = subCode;
     }
 
-    public String getProteinWeight() {
+    public int getProteinWeight() {
         return proteinWeight;
     }
 
-    public void setProteinWeight(String proteinWeight) {
+    public void setProteinWeight(int proteinWeight) {
         this.proteinWeight = proteinWeight;
     }
 
-    public String getFatWeight() {
+    public int getFatWeight() {
         return fatWeight;
     }
 
-    public void setFatWeight(String fatWeight) {
+    public void setFatWeight(int fatWeight) {
         this.fatWeight = fatWeight;
     }
 
-    public String getChoWeight() {
+    public int getChoWeight() {
         return choWeight;
     }
 
-    public void setChoWeight(String choWeight) {
+    public void setChoWeight(int choWeight) {
         this.choWeight = choWeight;
     }
 
-    public String getkWeight() {
+    public int getkWeight() {
         return kWeight;
     }
 
-    public void setkWeight(String kWeight) {
+    public void setkWeight(int kWeight) {
         this.kWeight = kWeight;
     }
 
-    public String getNaWeight() {
+    public int getNaWeight() {
         return naWeight;
     }
 
-    public void setNaWeight(String naWeight) {
+    public void setNaWeight(int naWeight) {
         this.naWeight = naWeight;
+    }
+
+    public int getPurineWeight() {
+        return purineWeight;
+    }
+
+    public void setPurineWeight(int purineWeight) {
+        this.purineWeight = purineWeight;
+    }
+
+    public int getCholesterolWeight() {
+        return cholesterolWeight;
+    }
+
+    public void setCholesterolWeight(int cholesterolWeight) {
+        this.cholesterolWeight = cholesterolWeight;
+    }
+
+    public int getpWeight() {
+        return pWeight;
+    }
+
+    public void setpWeight(int pWeight) {
+        this.pWeight = pWeight;
     }
 
     @Override
@@ -119,14 +119,14 @@ public class FoodWeight {
                 "foodId='" + foodId + '\'' +
                 ", foodCode='" + foodCode + '\'' +
                 ", subCode='" + subCode + '\'' +
-                ", proteinWeight='" + proteinWeight + '\'' +
-                ", fatWeight='" + fatWeight + '\'' +
-                ", choWeight='" + choWeight + '\'' +
-                ", kWeight='" + kWeight + '\'' +
-                ", naWeight='" + naWeight + '\'' +
-                ", purineWeight='" + purineWeight + '\'' +
-                ", cholesterolWeight='" + cholesterolWeight + '\'' +
-                ", pWeight='" + pWeight + '\'' +
+                ", proteinWeight=" + proteinWeight +
+                ", fatWeight=" + fatWeight +
+                ", choWeight=" + choWeight +
+                ", kWeight=" + kWeight +
+                ", naWeight=" + naWeight +
+                ", purineWeight=" + purineWeight +
+                ", cholesterolWeight=" + cholesterolWeight +
+                ", pWeight=" + pWeight +
                 '}';
     }
 }
