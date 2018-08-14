@@ -274,9 +274,9 @@ public class FoodService {
         Map<String, String> compositions = new HashMap<>();
         String waterQuantity = food.getWater();
         compositions.put("水", waterQuantity + "克");
-        String energyQuantity = food.getEnergy();
+        double energyQuantity = food.getEnergy();
         compositions.put("热量", energyQuantity + "千卡");
-        String proteinQuantity = food.getProtein();
+        double proteinQuantity = food.getProtein();
         compositions.put("蛋白质", proteinQuantity + "克");
         String fatQuantity = food.getFat();
         compositions.put("脂肪", fatQuantity + "克");

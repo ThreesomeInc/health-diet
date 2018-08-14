@@ -42,8 +42,8 @@ public class ExcelImporter {
                 foodTbl.setFoodId(readCellAsString(row.getCell(4)));
                 foodTbl.setFoodName(readCellAsString(row.getCell(5)));
                 foodTbl.setWater(readCellAsString(row.getCell(7)));
-                foodTbl.setEnergy(readCellAsString(row.getCell(8)));
-                foodTbl.setProtein(readCellAsString(row.getCell(10)));
+                foodTbl.setEnergy(readCellAsDouble(row.getCell(8)));
+                foodTbl.setProtein(readCellAsDouble(row.getCell(10)));
                 foodTbl.setFat(readCellAsString(row.getCell(12)));
                 foodTbl.setCho(readCellAsString(row.getCell(14)));
                 foodTbl.setP(readCellAsString(row.getCell(35)));
@@ -59,7 +59,7 @@ public class ExcelImporter {
                 foodWeight.setProteinWeight(readAsInt(row.getCell(11)));
                 foodWeight.setFatWeight(readAsInt(row.getCell(13)));
                 foodWeight.setChoWeight(readAsInt(row.getCell(16)));
-                foodWeight.setkWeight(readAsInt(row.getCell(37)));
+//                foodWeight.setkWeight(readAsInt(row.getCell(37)));
                 foodWeight.setNaWeight(readAsInt(row.getCell(39)));
 //                foodWeight.setpWeight(readAsInt(row.getCell(58)));
                 foodWeight.setCholesterolWeight(readAsInt(row.getCell(19)));
@@ -80,7 +80,7 @@ public class ExcelImporter {
         }
 
         saveFoodTblToCsv(foodTbls);
-        saveFoodWeightToCsv(foodWeights);
+//        saveFoodWeightToCsv(foodWeights);
     }
 
     private static void saveFoodTblToCsv(List<FoodTbl> foodTbls) throws IOException {
@@ -185,7 +185,7 @@ public class ExcelImporter {
 
     private static double readCellAsDouble(XSSFCell cell) {
         if (cell == null) {
-            return 0.0;
+            throw new RuntimeException("Int could not be null");
         }
         switch (cell.getCellTypeEnum()) {
             case STRING:
@@ -198,6 +198,14 @@ public class ExcelImporter {
     }
 
     private static double parseDataToDouble(String rawData) {
-        return 0.0;
+        if (rawData.contains("*")) {
+            return Double.parseDouble(rawData.replace("*",""));
+        } else {
+            try {
+                return Double.parseDouble(rawData);
+            } catch (Exception e) {
+                return 0.0;
+            }
+        }
     }
 }

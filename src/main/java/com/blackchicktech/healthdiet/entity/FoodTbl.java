@@ -15,9 +15,9 @@ public class FoodTbl {
 
     private String water;
 
-    private String energy;
+    private double energy;
 
-    private String protein;
+    private double protein;
 
     private String fat;
 
@@ -81,19 +81,19 @@ public class FoodTbl {
         this.water = water;
     }
 
-    public String getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(String energy) {
+    public void setEnergy(double energy) {
         this.energy = energy;
     }
 
-    public String getProtein() {
+    public double getProtein() {
         return protein;
     }
 
-    public void setProtein(String protein) {
+    public void setProtein(double protein) {
         this.protein = protein;
     }
 
@@ -162,8 +162,8 @@ public class FoodTbl {
                 ", foodId='" + foodId + '\'' +
                 ", foodName='" + foodName + '\'' +
                 ", water='" + water + '\'' +
-                ", energy='" + energy + '\'' +
-                ", protein='" + protein + '\'' +
+                ", energy=" + energy +
+                ", protein=" + protein +
                 ", fat='" + fat + '\'' +
                 ", cho='" + cho + '\'' +
                 ", cholesterol='" + cholesterol + '\'' +
