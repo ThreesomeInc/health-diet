@@ -213,7 +213,7 @@ public class FoodService {
         int proteinWeight = Integer.valueOf(foodWeight.getProteinWeight());
         int choWeight = Integer.valueOf(foodWeight.getChoWeight());
         int fatWeight = Integer.valueOf(foodWeight.getFatWeight());
-        int kWeight = Integer.valueOf(foodWeight.getkWeight());
+        //int kWeight = Integer.valueOf(foodWeight.getkWeight());
         int naWeight = Integer.valueOf(foodWeight.getNaWeight());
 //        int pWeight = Integer.valueOf(foodWeight.getpWeight().equals("null") ? "1" : foodWeight.getpWeight());
         int purineWeight = Integer.valueOf(foodWeight.getPurineWeight());
@@ -233,11 +233,11 @@ public class FoodService {
         } else if (fatWeight == 3) {
             label.add("高脂肪");
         }
-        if (kWeight == 1) {
+        /*if (kWeight == 1) {
             label.add("低钾");
         } else if (kWeight == 3) {
             label.add("高钾");
-        }
+        }*/
         if (naWeight == 1) {
             label.add("低钠");
         } else if (naWeight == 3) {
@@ -282,10 +282,10 @@ public class FoodService {
         compositions.put("脂肪", fatQuantity + "克");
         String choQuantity = food.getCho();
         compositions.put("碳水化合物", choQuantity + "克");
-        String pQuantity = food.getP();
+        /*String pQuantity = food.getP();
         compositions.put("磷", pQuantity + "克");
         String kQuantity = food.getK();
-        compositions.put("钾", kQuantity + "克");
+        compositions.put("钾", kQuantity + "克");*/
         String naQuantity = food.getNa();
         compositions.put("钠", naQuantity + "克");
         return compositions;
