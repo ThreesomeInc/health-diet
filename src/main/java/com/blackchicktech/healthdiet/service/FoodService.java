@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.domain.FoodType;
+import com.blackchicktech.healthdiet.entity.Food;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
 import com.blackchicktech.healthdiet.entity.FoodWeight;
 import com.blackchicktech.healthdiet.entity.User;
@@ -17,9 +18,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 //食材相关
 @Service
@@ -36,7 +44,20 @@ public class FoodService {
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
+    private Map<String, Food> cache = new HashMap<>();
+
     private List<FoodType> typeCache = new LinkedList<>();
+
+    @PostConstruct
+    public void reloadCache() {
+        //读入缓存 mock用于开发测试
+        cache.put("1-1-503,", new Food("1-1-503", "面筋(肉馅)", "someurl", "常见食物", "1", "1", "千卡", "364"));
+        cache.put("2-1-107,", new Food("2-1-107", "马铃薯(煮)", "someurl", "常见食物", "2", "1", "千卡", "65"));
+        cache.put("3-1-305,", new Food("3-1-305", "豆腐脑", "someurl", "常见食物", "3", "1", "千卡", "15"));
+        cache.put("4-8-002,", new Food("4-8-002", "白花菜", "someurl", "常见食物", "4", "8", "千卡", "0"));
+
+        reloadFoodRanking();
+    }
 
 
     public List<FoodListItem> listFood(String foodTypeCode) {  //分页
@@ -85,6 +106,7 @@ public class FoodService {
         User user = userService.getUserByOpenId(openId);
         FoodTbl food = foodDao.getFoodById(foodId);
         FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
+
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFoodName());
         foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight,user));
@@ -110,6 +132,7 @@ public class FoodService {
         String choWeight = foodWeight.getChoWeight();
         StringBuilder dieticianAdvice = new StringBuilder();
         StringBuilder otherDiseasesConbinations = new StringBuilder();
+
         if(otherDiseases != null && !StringUtils.isEmpty(otherDiseases)){
             String[] otherDiseasesArray = otherDiseases.split(",");
             List<String> otherDiseasesList = Arrays.asList(otherDiseasesArray);

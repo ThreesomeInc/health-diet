@@ -78,24 +78,28 @@ definitions:
     required:
     - name
     - composition
-    - foodDieticianAdvice
+    - dieticianAdvice
     properties:
       name:
         type: string
         example: "小麦(粒)"
       label:
+        type: array
+        items:
+          type: string
+          example: "低脂肪"
+      frequency:
         type: string
-        example: "低脂肪，低碳水化合物，低胆固醇，低嘌呤"
-      preference:
-        type: string
-        enum: ["偶然", "时常","不吃", ""]
-        example: "不吃"
+        enum:
+          - "不吃"
+          - "偶然吃"
+          - "经常吃"
       composition:
         type: object
         additionalProperties:
           type: string
           example: "1.3克"
-      foodDieticianAdvice:
+      dieticianAdvice:
         type: string
         example: "您的肾脏功能属于第一期，血压偏高，该食物蛋白质和纳含量适中，可适量食用。"
 
@@ -109,14 +113,17 @@ definitions:
     properties:
       openId:
         type: string
-        example: "o6_bmjrPTlm6_2sgVt7hMZOPfL2M"
+        example: "owygB5R_uHJQaut02wAkUkcaDrmU"
       foodId:
         type: string
-        example: "1"
+        example: "01-1-101"
       frequency:
         type: string
-        enum: ["偶然", "时常","不吃", ""]
-        example: "不吃"
+        enum:
+          - "不吃"
+          - "偶然吃"
+          - "经常吃"
+
 
 # Added by API Auto Mocking Plugin
 # host: kidneyhealty.com.cn
