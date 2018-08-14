@@ -9,3 +9,8 @@ before_install:
   - chmod +x mvnw
 install:
   - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
+deploy:
+  provider: s3
+  access_key_id: "AKIAJBQHBADFXFHBP2AA"
+  secret_access_key: "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"
+  bucket: "s3.martinho0330.com"
