@@ -124,20 +124,25 @@ public class FoodService {
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         String otherDiseases = user.getOtherDiseases();
         String subCode = food.getSubCode();
+        List<String> lowWeight = new ArrayList<>();
+        List<String> mediumWeight = new ArrayList<>();
+        List<String> highWeight = new ArrayList<>();
+        deduceWeight(lowWeight,mediumWeight,highWeight,foodWeight);
+
         int proteinWeight = foodWeight.getProteinWeight();
-        int purineWeight = foodWeight.getPurineWeight();
-        int cholesterolWeight = foodWeight.getCholesterolWeight();
-        int naWeight = foodWeight.getNaWeight();
-        int fatWeight = foodWeight.getFatWeight();
-        int choWeight = foodWeight.getChoWeight();
         StringBuilder dieticianAdvice = new StringBuilder();
         StringBuilder otherDiseasesConbinations = new StringBuilder();
+        List<String> otherDiseaseFoodWeightFields = new ArrayList<>();
 
         if (otherDiseases != null && !StringUtils.isEmpty(otherDiseases)) {
             String[] otherDiseasesArray = otherDiseases.split(",");
-            List<String> otherDiseasesList = Arrays.asList(otherDiseasesArray);
+            logger.info("Other Diseases: \n");
+            Arrays.stream(otherDiseasesArray).forEach(logger::info);
+
             for (int i = 0; i < otherDiseasesArray.length; i++) {
-                if (i != otherDiseasesArray.length) {
+                otherDiseaseFoodWeightFields.add(Constants.WEIGHT_FILED_DISEASE_MAP.get(otherDiseasesArray[i]));
+
+                if (i != otherDiseasesArray.length - 1) {
                     otherDiseasesConbinations.append(Constants.OTHER_DISEASE_ELEMENTS.get(otherDiseasesArray[i]))
                             .append(",");
                 } else {
@@ -148,31 +153,43 @@ public class FoodService {
             dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_TEMPLATE,
                     nephroticPeriod, otherDiseasesConbinations));
             dieticianAdvice.append("该食物");
-            dieticianAdvice.append(Constants.PROTEIN_WEIGHT_ADVICE.get(proteinWeight));
-            if (otherDiseasesList.contains("triglyceride")) {
-                dieticianAdvice.append(",").append(Constants.FAT_WEIGHT_ADVICE.get(fatWeight));
+            if(!lowWeight.isEmpty()){
+                for(int i = 0; i < lowWeight.size(); i++){
+                    if(i != lowWeight.size() - 1){
+                        dieticianAdvice.append(lowWeight.get(i)).append(",");
+                    } else {
+                        dieticianAdvice.append(lowWeight.get(i)).append("低,");
+                    }
+                }
             }
-            if (otherDiseasesList.contains("hyperglycemia")) {
-                dieticianAdvice.append(",").append(Constants.CHO_WEIGHT_ADVICE.get(choWeight));
+            if(!mediumWeight.isEmpty()){
+                for(int i = 0; i < mediumWeight.size(); i++){
+                    if(i != mediumWeight.size() - 1){
+                        dieticianAdvice.append(mediumWeight.get(i)).append(",");
+                    } else {
+                        dieticianAdvice.append(mediumWeight.get(i)).append("适中,");
+                    }
+                }
             }
-            if (otherDiseasesList.contains("hypertension")) {
-                dieticianAdvice.append(",").append(Constants.NA_WEIGHT_ADVICE.get(naWeight));
-            }
-            if (otherDiseasesList.contains("hyperuricacidemia")) {
-                dieticianAdvice.append(",").append(Constants.PURINE_WEIGHT_ADVICE.get(purineWeight));
-            }
-            if (otherDiseasesList.contains("cholesterol")) {
-                dieticianAdvice.append(",").append(Constants.CHOLESTEROL_WEIGHT_ADVICE.get(cholesterolWeight));
+            if(!highWeight.isEmpty()){
+                dieticianAdvice.append("但");
+                for(int i = 0; i < highWeight.size(); i++){
+                    if(i != highWeight.size() - 1){
+                        dieticianAdvice.append(highWeight.get(i)).append(",");
+                    } else {
+                        dieticianAdvice.append(highWeight.get(i)).append("偏高,");
+                    }
+                }
             }
 
             int maxWeight = getMaxWeight(foodWeight);
 
             if (maxWeight == 1) {
-                dieticianAdvice.append("可食用。");
+                dieticianAdvice.append(",可食用。");
             } else if (maxWeight == 2) {
-                dieticianAdvice.append("可适量食用。");
+                dieticianAdvice.append(",可适量食用。");
             } else {
-                dieticianAdvice.append("不适宜您食用。");
+                dieticianAdvice.append(",不适宜您食用,推荐的食物有: ").append(deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, subCode));
             }
 
         } else {
@@ -183,11 +200,11 @@ public class FoodService {
                 dieticianAdvice.append("该食物蛋白含量适中，可适量食用。");
             } else {
                 dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
-                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode("1", subCode);
+                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, subCode);
                 List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
                 for (int i = 0; i < foodList.size(); i++) {
                     dieticianAdvice.append(foodList.get(i));
-                    if (i != foodList.size()) {
+                    if (i != foodList.size() - 1) {
                         dieticianAdvice.append(",");
                     }
                 }
@@ -196,48 +213,101 @@ public class FoodService {
         return dieticianAdvice.toString();
     }
 
+    public static void main(String... args){
+        FoodService service = new FoodService();
+        FoodWeight foodWeight = new FoodWeight();
+        foodWeight.setPurineWeight(3);
+        foodWeight.setProteinWeight(1);
+        foodWeight.setCholesterolWeight(3);
+        foodWeight.setFatWeight(2);
+        foodWeight.setChoWeight(1);
+        foodWeight.setNaWeight(3);
+        User user = new User();
+        user.setOtherDiseases("hyperuricacidemia,hypertension,cholesterol");
+        user.setNephroticPeriod("1");
+        FoodTbl foodTbl = new FoodTbl();
+        foodTbl.setSubCode("1");
+        service.deduceDieticianAdvice(foodTbl, foodWeight,user);
+    }
+
+    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
+                              List<String> highWeight, FoodWeight foodWeight){
+
+        int proteinWeight = foodWeight.getProteinWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,proteinWeight, "蛋白质");
+        int purineWeight = foodWeight.getPurineWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,purineWeight, "嘌呤");
+        int cholesterolWeight = foodWeight.getCholesterolWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,cholesterolWeight, "胆固醇");
+        int naWeight = foodWeight.getNaWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,naWeight, "钠");
+        int fatWeight = foodWeight.getFatWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,fatWeight, "脂肪");
+        int choWeight = foodWeight.getChoWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,choWeight, "碳水化合物");
+    }
+
+    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
+                              List<String> highWeight, int foodWeight, String element){
+        if(foodWeight == 1){
+            lowWeight.add(element);
+        } else if(foodWeight == 2){
+            mediumWeight.add(element);
+        } else {
+            highWeight.add(element);
+        }
+    }
+
+    private String deduceFoodForMultiDisease(List<String> multiWeightFields, String subCode){
+        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, subCode);
+        StringBuffer foods = new StringBuffer();
+        for(int i = 0; i < foodWeights.size(); i++){
+            String foodId = foodWeights.get(i).getFoodId();
+            FoodTbl food = foodDao.getFoodById(foodId);
+            if(i != foodWeights.size() - 1){
+                foods.append(food).append(",");
+            } else {
+                foods.append(food).append("。");
+            }
+        }
+        return foods.toString();
+    }
+
     private int getMaxWeight(FoodWeight foodWeight) {
         List<Integer> weights = new ArrayList<>();
-        weights.add(Integer.valueOf(foodWeight.getProteinWeight()));
-        weights.add(Integer.valueOf(foodWeight.getPurineWeight()));
-        weights.add(Integer.valueOf(foodWeight.getCholesterolWeight()));
-        weights.add(Integer.valueOf(foodWeight.getNaWeight()));
-        weights.add(Integer.valueOf(foodWeight.getFatWeight()));
-        weights.add(Integer.valueOf(foodWeight.getChoWeight()));
+        weights.add(foodWeight.getProteinWeight());
+        weights.add(foodWeight.getPurineWeight());
+        weights.add(foodWeight.getCholesterolWeight());
+        weights.add(foodWeight.getNaWeight());
+        weights.add(foodWeight.getFatWeight());
+        weights.add(foodWeight.getChoWeight());
         return Collections.max(weights);
     }
 
     private List<String> deduceLabel(FoodWeight foodWeight) {
         List<String> label = new ArrayList<>();
 
-        int proteinWeight = Integer.valueOf(foodWeight.getProteinWeight());
-        int choWeight = Integer.valueOf(foodWeight.getChoWeight());
-        int fatWeight = Integer.valueOf(foodWeight.getFatWeight());
-        //int kWeight = Integer.valueOf(foodWeight.getkWeight());
-        int naWeight = Integer.valueOf(foodWeight.getNaWeight());
-//        int pWeight = Integer.valueOf(foodWeight.getpWeight().equals("null") ? "1" : foodWeight.getpWeight());
-        int purineWeight = Integer.valueOf(foodWeight.getPurineWeight());
-        int cholesterolWeight = Integer.valueOf(foodWeight.getCholesterolWeight());
+        int proteinWeight = foodWeight.getProteinWeight();
+        int choWeight = foodWeight.getChoWeight();
+        int fatWeight = foodWeight.getFatWeight();
+        int naWeight = foodWeight.getNaWeight();
+        int purineWeight = foodWeight.getPurineWeight();
+        int cholesterolWeight = foodWeight.getCholesterolWeight();
         if (proteinWeight == 1) {
             label.add("低蛋白");
         } else if (proteinWeight == 3) {
             label.add("高蛋白");
         }
         if (choWeight == 1) {
-            label.add("低碳水化合物");
+            label.add("低糖");
         } else if (choWeight == 3) {
-            label.add("高碳水化合物");
+            label.add("高糖");
         }
         if (fatWeight == 1) {
             label.add("低脂肪");
         } else if (fatWeight == 3) {
             label.add("高脂肪");
         }
-        /*if (kWeight == 1) {
-            label.add("低钾");
-        } else if (kWeight == 3) {
-            label.add("高钾");
-        }*/
         if (naWeight == 1) {
             label.add("低钠");
         } else if (naWeight == 3) {
@@ -253,11 +323,6 @@ public class FoodService {
         } else if (cholesterolWeight == 3) {
             label.add("高胆固醇");
         }
-//        if (pWeight == 1) {
-//            label.add("低磷");
-//        } else if (pWeight == 3) {
-//            label.add("高磷");
-//        }
         return label;
     }
 
@@ -282,10 +347,6 @@ public class FoodService {
         compositions.put("脂肪", fatQuantity + "克");
         String choQuantity = food.getCho();
         compositions.put("碳水化合物", choQuantity + "克");
-        /*String pQuantity = food.getP();
-        compositions.put("磷", pQuantity + "克");
-        String kQuantity = food.getK();
-        compositions.put("钾", kQuantity + "克");*/
         String naQuantity = food.getNa();
         compositions.put("钠", naQuantity + "克");
         return compositions;

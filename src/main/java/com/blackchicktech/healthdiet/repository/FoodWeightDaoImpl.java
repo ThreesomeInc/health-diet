@@ -27,10 +27,21 @@ public class FoodWeightDaoImpl {
         return foodWeightList.stream().findFirst().orElse(null);
     }
 
-    public List<FoodWeight> getFoodWeightByProteinWeightAndSubCode(String proteinWeight, String subCode){
+    public List<FoodWeight> getFoodWeightByProteinWeightAndSubCode(int proteinWeight, String subCode){
         List<FoodWeight> foodWeights = jdbcTemplate.query("SELECT * from food_weight_tbl where " +
                                                             " protein_weight = ? and sub_code = ? limit 3" ,
                                                             rowMapper, proteinWeight, subCode);
+        return foodWeights;
+    }
+
+    public List<FoodWeight> getFoodWeightByMultiWeightFieldsAndSubCode(List<String> multiWeightFields, String subCode){
+        StringBuffer sqlSegment = new StringBuffer();
+        for(int i = 0; i < multiWeightFields.size(); i++){
+            sqlSegment.append(multiWeightFields.get(i)).append(" = 1 and ");
+        }
+        String sql = "SELECT * from food_weight_tbl where protein_weight = 1 and " +
+                sqlSegment + " sub_code = " + subCode + " limit 3";
+        List<FoodWeight> foodWeights = jdbcTemplate.query(sql, rowMapper);
         return foodWeights;
     }
 }
