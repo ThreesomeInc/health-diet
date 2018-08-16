@@ -183,6 +183,7 @@ public class FoodService {
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         String otherDiseases = user.getOtherDiseases();
         String subCode = food.getSubCode();
+        String foodCode = food.getFoodCode();
 
         int proteinWeight = foodWeight.getProteinWeight();
         StringBuilder dieticianAdvice = new StringBuilder();
@@ -247,7 +248,11 @@ public class FoodService {
             } else if (maxWeight == 2) {
                 dieticianAdvice.append("可适量食用。");
             } else {
-                dieticianAdvice.append("不适宜您食用。 \n 推荐的食物有: ").append(deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, subCode));
+                dieticianAdvice.append("不适宜您食用。 \n");
+                String recommendFoods = deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, foodCode,subCode);
+                if(recommendFoods != null){
+                    dieticianAdvice.append("推荐的食物有: ").append(recommendFoods);
+                }
             }
 
         } else {
@@ -257,27 +262,37 @@ public class FoodService {
             } else if (proteinWeight == 2) {
                 dieticianAdvice.append("该食物蛋白含量适中，可适量食用。");
             } else {
-                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。\n 推荐低蛋白食物有:");
-                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, subCode);
-                List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
-                for (int i = 0; i < foodList.size(); i++) {
-                    dieticianAdvice.append(foodList.get(i));
-                    if (i != foodList.size() - 1) {
-                        dieticianAdvice.append(",");
-                    }
+                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。\n");
+                String recommendFood  = deduceRecommendFood(foodCode, subCode);
+                if(recommendFood != null){
+                   dieticianAdvice.append("推荐低蛋白食物有:").append(recommendFood);
                 }
             }
         }
         return dieticianAdvice.toString();
     }
 
-    private List<FoodTbl> deduceRecommendFood(List<FoodWeight> foodWeights){
+    private String deduceRecommendFood(String foodCode, String subCode){
+        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, foodCode, subCode);
+        if(foodWeights == null && foodWeights.size() == 0){
+            return null;
+        }
+
         List<FoodTbl> foodList = new ArrayList<>();
         for (FoodWeight foodWeight : foodWeights) {
             FoodTbl food = foodDao.getFoodById(foodWeight.getFoodId());
             foodList.add(food);
         }
-        return foodList;
+        StringBuffer dieticianAdvice = new StringBuffer();
+        for (int i = 0; i < foodList.size(); i++) {
+            dieticianAdvice.append(foodList.get(i));
+            if (i != foodList.size() - 1) {
+                dieticianAdvice.append(",");
+            } else {
+                dieticianAdvice.append("。");
+            }
+        }
+        return dieticianAdvice.toString();
     }
 
     public static void main(String... args){
@@ -335,9 +350,15 @@ public class FoodService {
         }
     }
 
-    private String deduceFoodForMultiDisease(List<String> multiWeightFields, String subCode){
-        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, subCode);
+    private String deduceFoodForMultiDisease(List<String> multiWeightFields, String foodCode, String subCode){
+        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, foodCode, subCode);
+
+        if(foodWeights == null || foodWeights.size() == 0){
+            return null;
+        }
+
         StringBuffer foods = new StringBuffer();
+
         for(int i = 0; i < foodWeights.size(); i++){
             String foodId = foodWeights.get(i).getFoodId();
             FoodTbl food = foodDao.getFoodById(foodId);
