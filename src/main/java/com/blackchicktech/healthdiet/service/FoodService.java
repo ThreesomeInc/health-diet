@@ -215,30 +215,30 @@ public class FoodService {
             if(!lowWeight.isEmpty()){
                 for(int i = 0; i < lowWeight.size(); i++){
                     if(i != lowWeight.size() - 1){
-                        dieticianAdvice.append(lowWeight.get(i)).append(",");
+                        dieticianAdvice.append(lowWeight.get(i)).append("、");
                     } else {
-                        dieticianAdvice.append(lowWeight.get(i)).append("含量低,");
+                        dieticianAdvice.append(lowWeight.get(i)).append("含量低, ");
                     }
                 }
             }
             if(!mediumWeight.isEmpty()){
                 for(int i = 0; i < mediumWeight.size(); i++){
                     if(i != mediumWeight.size() - 1){
-                        dieticianAdvice.append(mediumWeight.get(i)).append(",");
+                        dieticianAdvice.append(mediumWeight.get(i)).append("、");
                     } else {
-                        dieticianAdvice.append(mediumWeight.get(i)).append("含量适中,");
+                        dieticianAdvice.append(mediumWeight.get(i)).append("含量适中, ");
                     }
                 }
             }
             if(!highWeight.isEmpty()){
-                if(!lowWeight.isEmpty() && mediumWeight.isEmpty()){
+                if(lowWeight.isEmpty() && mediumWeight.isEmpty()){
                     dieticianAdvice.append("但");
                 }
                 for(int i = 0; i < highWeight.size(); i++){
                     if(i != highWeight.size() - 1){
-                        dieticianAdvice.append(highWeight.get(i)).append(",");
+                        dieticianAdvice.append(highWeight.get(i)).append("、");
                     } else {
-                        dieticianAdvice.append(highWeight.get(i)).append("含量偏高,");
+                        dieticianAdvice.append(highWeight.get(i)).append("含量偏高, ");
                     }
                 }
             }
@@ -253,21 +253,21 @@ public class FoodService {
                 dieticianAdvice.append("不适宜您食用。 \n");
                 String recommendFoods = deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, foodCode,subCode);
                 if(recommendFoods != null){
-                    dieticianAdvice.append("推荐的食物有: ").append(recommendFoods);
+                    dieticianAdvice.append("以下食材更适合您: ").append(recommendFoods);
                 }
             }
 
         } else {
             dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
             if (proteinWeight == 1) {
-                dieticianAdvice.append("该食物蛋白含量低，建议经常食用。");
+                dieticianAdvice.append("该食物蛋白含量低，可经常食用。");
             } else if (proteinWeight == 2) {
                 dieticianAdvice.append("该食物蛋白含量适中，可适量食用。");
             } else {
                 dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。\n");
                 String recommendFood  = deduceRecommendFood(foodCode, subCode);
                 if(recommendFood != null){
-                   dieticianAdvice.append("推荐低蛋白食物有:").append(recommendFood);
+                   dieticianAdvice.append("以下食材更适合您: ").append(recommendFood);
                 }
             }
         }
@@ -289,7 +289,7 @@ public class FoodService {
         for (int i = 0; i < foodList.size(); i++) {
             dieticianAdvice.append(foodList.get(i));
             if (i != foodList.size() - 1) {
-                dieticianAdvice.append(",");
+                dieticianAdvice.append("、");
             } else {
                 dieticianAdvice.append("。");
             }
