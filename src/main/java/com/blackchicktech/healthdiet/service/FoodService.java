@@ -231,7 +231,9 @@ public class FoodService {
                 }
             }
             if(!highWeight.isEmpty()){
-                dieticianAdvice.append("但");
+                if(!lowWeight.isEmpty() && mediumWeight.isEmpty()){
+                    dieticianAdvice.append("但");
+                }
                 for(int i = 0; i < highWeight.size(); i++){
                     if(i != highWeight.size() - 1){
                         dieticianAdvice.append(highWeight.get(i)).append(",");
