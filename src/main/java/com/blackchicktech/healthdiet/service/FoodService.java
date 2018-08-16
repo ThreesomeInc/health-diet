@@ -231,7 +231,7 @@ public class FoodService {
                 }
             }
             if(!highWeight.isEmpty()){
-                if(lowWeight.isEmpty() && mediumWeight.isEmpty()){
+                if(!lowWeight.isEmpty() || !mediumWeight.isEmpty()){
                     dieticianAdvice.append("但");
                 }
                 for(int i = 0; i < highWeight.size(); i++){
@@ -365,7 +365,7 @@ public class FoodService {
             String foodId = foodWeights.get(i).getFoodId();
             FoodTbl food = foodDao.getFoodById(foodId);
             if(i != foodWeights.size() - 1){
-                foods.append(food.getFoodName()).append(",");
+                foods.append(food.getFoodName()).append("、");
             } else {
                 foods.append(food.getFoodName()).append("。");
             }
