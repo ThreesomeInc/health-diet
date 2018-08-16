@@ -30,11 +30,11 @@ public class FoodWeightDaoImpl {
     public List<FoodWeight> getFoodWeightByProteinWeightAndSubCode(int proteinWeight, String foodCode, String subCode){
         List<FoodWeight> result;
         result = jdbcTemplate.query("SELECT * from food_weight_tbl where " +
-                                                            " protein_weight < ? and food_code = ?  and sub_code = ? limit 3" ,
+                                                            " protein_weight < ? and food_code = ?  and sub_code = ? order by rand() limit 3" ,
                                                             rowMapper, proteinWeight, foodCode, subCode);
         if(result == null || result.size() == 0){
             result = jdbcTemplate.query("SELECT * from food_weight_tbl where " +
-                            " protein_weight < ? and food_code = ? limit 3" ,
+                            " protein_weight < ? and food_code = ? order by rand() limit 3" ,
                     rowMapper, proteinWeight, foodCode);
         }
         return result;
@@ -47,11 +47,11 @@ public class FoodWeightDaoImpl {
         }
         List<FoodWeight> result;
         String sqlWithFoodCodeAndSubCode = "SELECT * from food_weight_tbl where protein_weight < 3 and " +
-                sqlSegment + " food_Code = " + foodCode + " and sub_code = " + subCode + " limit 3";
+                sqlSegment + " food_Code = " + foodCode + " and sub_code = " + subCode + " order by rand() limit 3";
         result = jdbcTemplate.query(sqlWithFoodCodeAndSubCode, rowMapper);
         if(result == null || result.size() == 0){
             String sqlWithFoodCode = "SELECT * from food_weight_tbl where protein_weight < 3 and " +
-                    sqlSegment + " food_Code = " + foodCode + " limit 3";
+                    sqlSegment + " food_Code = " + foodCode + " order by rand() limit 3";
             result = jdbcTemplate.query(sqlWithFoodCode, rowMapper);
         }
         return result;
