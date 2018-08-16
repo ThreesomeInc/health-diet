@@ -1,5 +1,7 @@
 package com.blackchicktech.healthdiet.entity;
 
+import java.util.Map;
+
 public class Food implements Entity {
 
     private int id; //保留字段做key
@@ -647,5 +649,10 @@ public class Food implements Entity {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public Map<String, Object[]> getFieldInfo() {
+        throw new IllegalStateException("not supported yet");
     }
 }

@@ -1,5 +1,7 @@
 package com.blackchicktech.healthdiet.entity;
 
+import java.util.Map;
+
 public class DietHistory extends BasicEntity {
 
     private String openId;
@@ -50,5 +52,10 @@ public class DietHistory extends BasicEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public Map<String, Object[]> getFieldInfo() {
+        throw new IllegalStateException("not supported yet");
     }
 }
