@@ -51,10 +51,10 @@ public class FoodService {
     @PostConstruct
     public void reloadCache() {
         //读入缓存 mock用于开发测试
-        cache.put("1-1-503,", new Food("1-1-503", "面筋(肉馅)", "someurl", "常见食物", "1", "1", "千卡", "364"));
-        cache.put("2-1-107,", new Food("2-1-107", "马铃薯(煮)", "someurl", "常见食物", "2", "1", "千卡", "65"));
-        cache.put("3-1-305,", new Food("3-1-305", "豆腐脑", "someurl", "常见食物", "3", "1", "千卡", "15"));
-        cache.put("4-8-002,", new Food("4-8-002", "白花菜", "someurl", "常见食物", "4", "8", "千卡", "0"));
+        cache.put("01-1-503,", new Food("01-1-503", "面筋(肉馅)", "someurl", "常见食物", "01", "1", "克", "364"));
+        cache.put("02-1-107,", new Food("02-1-107", "马铃薯(煮)", "someurl", "常见食物", "02", "1", "克", "65"));
+        cache.put("03-1-305,", new Food("03-1-305", "豆腐脑", "someurl", "常见食物", "03", "1", "克", "15"));
+        cache.put("04-8-002,", new Food("04-8-002", "白花菜", "someurl", "常见食物", "04", "8", "克", "0"));
 
         reloadFoodRanking();
     }
@@ -217,7 +217,7 @@ public class FoodService {
                     if(i != lowWeight.size() - 1){
                         dieticianAdvice.append(lowWeight.get(i)).append(",");
                     } else {
-                        dieticianAdvice.append(lowWeight.get(i)).append("低,");
+                        dieticianAdvice.append(lowWeight.get(i)).append("含量低,");
                     }
                 }
             }
@@ -226,7 +226,7 @@ public class FoodService {
                     if(i != mediumWeight.size() - 1){
                         dieticianAdvice.append(mediumWeight.get(i)).append(",");
                     } else {
-                        dieticianAdvice.append(mediumWeight.get(i)).append("适中,");
+                        dieticianAdvice.append(mediumWeight.get(i)).append("含量适中,");
                     }
                 }
             }
@@ -236,7 +236,7 @@ public class FoodService {
                     if(i != highWeight.size() - 1){
                         dieticianAdvice.append(highWeight.get(i)).append(",");
                     } else {
-                        dieticianAdvice.append(highWeight.get(i)).append("偏高,");
+                        dieticianAdvice.append(highWeight.get(i)).append("含量偏高,");
                     }
                 }
             }
@@ -244,7 +244,7 @@ public class FoodService {
             int maxWeight = getMaxWeight(foodWeight, otherDiseasesList);
 
             if (maxWeight == 1) {
-                dieticianAdvice.append("可食用。");
+                dieticianAdvice.append("可经常食用。");
             } else if (maxWeight == 2) {
                 dieticianAdvice.append("可适量食用。");
             } else {
