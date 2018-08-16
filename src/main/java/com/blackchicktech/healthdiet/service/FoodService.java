@@ -243,11 +243,11 @@ public class FoodService {
             int maxWeight = getMaxWeight(foodWeight, otherDiseasesList);
 
             if (maxWeight == 1) {
-                dieticianAdvice.append(",可食用。");
+                dieticianAdvice.append("可食用。");
             } else if (maxWeight == 2) {
-                dieticianAdvice.append(",可适量食用。");
+                dieticianAdvice.append("可适量食用。");
             } else {
-                dieticianAdvice.append(",不适宜您食用,推荐的食物有: ").append(deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, subCode));
+                dieticianAdvice.append("不适宜您食用。 \n 推荐的食物有: ").append(deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, subCode));
             }
 
         } else {
@@ -257,7 +257,7 @@ public class FoodService {
             } else if (proteinWeight == 2) {
                 dieticianAdvice.append("该食物蛋白含量适中，可适量食用。");
             } else {
-                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
+                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。\n 推荐低蛋白食物有:");
                 List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, subCode);
                 List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
                 for (int i = 0; i < foodList.size(); i++) {
@@ -371,7 +371,8 @@ public class FoodService {
         }
 
         return Collections.max(weights);
-    }}
+    }
+}
 
 
 
