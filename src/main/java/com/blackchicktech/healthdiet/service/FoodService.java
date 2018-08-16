@@ -116,175 +116,7 @@ public class FoodService {
 
     }
 
-    private String deduceDieticianAdvice(FoodTbl food, FoodWeight foodWeight, User user) {
-        //TODO: user null validation ? return temporarily for front-end testing
-        if (user == null) {
-            return "";
-        }
-        int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
-        String otherDiseases = user.getOtherDiseases();
-        String subCode = food.getSubCode();
-        List<String> lowWeight = new ArrayList<>();
-        List<String> mediumWeight = new ArrayList<>();
-        List<String> highWeight = new ArrayList<>();
-        deduceWeight(lowWeight,mediumWeight,highWeight,foodWeight);
-
-        int proteinWeight = foodWeight.getProteinWeight();
-        StringBuilder dieticianAdvice = new StringBuilder();
-        StringBuilder otherDiseasesConbinations = new StringBuilder();
-        List<String> otherDiseaseFoodWeightFields = new ArrayList<>();
-
-        if (otherDiseases != null && !StringUtils.isEmpty(otherDiseases)) {
-            String[] otherDiseasesArray = otherDiseases.split(",");
-            logger.info("Other Diseases: \n");
-            Arrays.stream(otherDiseasesArray).forEach(logger::info);
-
-            for (int i = 0; i < otherDiseasesArray.length; i++) {
-                otherDiseaseFoodWeightFields.add(Constants.WEIGHT_FILED_DISEASE_MAP.get(otherDiseasesArray[i]));
-
-                if (i != otherDiseasesArray.length - 1) {
-                    otherDiseasesConbinations.append(Constants.OTHER_DISEASE_ELEMENTS.get(otherDiseasesArray[i]))
-                            .append(",");
-                } else {
-                    otherDiseasesConbinations.append(Constants.OTHER_DISEASE_ELEMENTS.get(otherDiseasesArray[i]));
-                }
-
-            }
-            dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_TEMPLATE,
-                    nephroticPeriod, otherDiseasesConbinations));
-            dieticianAdvice.append("该食物");
-            if(!lowWeight.isEmpty()){
-                for(int i = 0; i < lowWeight.size(); i++){
-                    if(i != lowWeight.size() - 1){
-                        dieticianAdvice.append(lowWeight.get(i)).append(",");
-                    } else {
-                        dieticianAdvice.append(lowWeight.get(i)).append("低,");
-                    }
-                }
-            }
-            if(!mediumWeight.isEmpty()){
-                for(int i = 0; i < mediumWeight.size(); i++){
-                    if(i != mediumWeight.size() - 1){
-                        dieticianAdvice.append(mediumWeight.get(i)).append(",");
-                    } else {
-                        dieticianAdvice.append(mediumWeight.get(i)).append("适中,");
-                    }
-                }
-            }
-            if(!highWeight.isEmpty()){
-                dieticianAdvice.append("但");
-                for(int i = 0; i < highWeight.size(); i++){
-                    if(i != highWeight.size() - 1){
-                        dieticianAdvice.append(highWeight.get(i)).append(",");
-                    } else {
-                        dieticianAdvice.append(highWeight.get(i)).append("偏高,");
-                    }
-                }
-            }
-
-            int maxWeight = getMaxWeight(foodWeight);
-
-            if (maxWeight == 1) {
-                dieticianAdvice.append(",可食用。");
-            } else if (maxWeight == 2) {
-                dieticianAdvice.append(",可适量食用。");
-            } else {
-                dieticianAdvice.append(",不适宜您食用,推荐的食物有: ").append(deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, subCode));
-            }
-
-        } else {
-            dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
-            if (proteinWeight == 1) {
-                dieticianAdvice.append("该食物蛋白含量低，建议经常食用。");
-            } else if (proteinWeight == 2) {
-                dieticianAdvice.append("该食物蛋白含量适中，可适量食用。");
-            } else {
-                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
-                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, subCode);
-                List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
-                for (int i = 0; i < foodList.size(); i++) {
-                    dieticianAdvice.append(foodList.get(i));
-                    if (i != foodList.size() - 1) {
-                        dieticianAdvice.append(",");
-                    }
-                }
-            }
-        }
-        return dieticianAdvice.toString();
-    }
-
-    public static void main(String... args){
-        FoodService service = new FoodService();
-        FoodWeight foodWeight = new FoodWeight();
-        foodWeight.setPurineWeight(3);
-        foodWeight.setProteinWeight(1);
-        foodWeight.setCholesterolWeight(3);
-        foodWeight.setFatWeight(2);
-        foodWeight.setChoWeight(1);
-        foodWeight.setNaWeight(3);
-        User user = new User();
-        user.setOtherDiseases("hyperuricacidemia,hypertension,cholesterol");
-        user.setNephroticPeriod("1");
-        FoodTbl foodTbl = new FoodTbl();
-        foodTbl.setSubCode("1");
-        service.deduceDieticianAdvice(foodTbl, foodWeight,user);
-    }
-
-    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
-                              List<String> highWeight, FoodWeight foodWeight){
-
-        int proteinWeight = foodWeight.getProteinWeight();
-        deduceWeight(lowWeight,mediumWeight,highWeight,proteinWeight, "蛋白质");
-        int purineWeight = foodWeight.getPurineWeight();
-        deduceWeight(lowWeight,mediumWeight,highWeight,purineWeight, "嘌呤");
-        int cholesterolWeight = foodWeight.getCholesterolWeight();
-        deduceWeight(lowWeight,mediumWeight,highWeight,cholesterolWeight, "胆固醇");
-        int naWeight = foodWeight.getNaWeight();
-        deduceWeight(lowWeight,mediumWeight,highWeight,naWeight, "钠");
-        int fatWeight = foodWeight.getFatWeight();
-        deduceWeight(lowWeight,mediumWeight,highWeight,fatWeight, "脂肪");
-        int choWeight = foodWeight.getChoWeight();
-        deduceWeight(lowWeight,mediumWeight,highWeight,choWeight, "碳水化合物");
-    }
-
-    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
-                              List<String> highWeight, int foodWeight, String element){
-        if(foodWeight == 1){
-            lowWeight.add(element);
-        } else if(foodWeight == 2){
-            mediumWeight.add(element);
-        } else {
-            highWeight.add(element);
-        }
-    }
-
-    private String deduceFoodForMultiDisease(List<String> multiWeightFields, String subCode){
-        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, subCode);
-        StringBuffer foods = new StringBuffer();
-        for(int i = 0; i < foodWeights.size(); i++){
-            String foodId = foodWeights.get(i).getFoodId();
-            FoodTbl food = foodDao.getFoodById(foodId);
-            if(i != foodWeights.size() - 1){
-                foods.append(food).append(",");
-            } else {
-                foods.append(food).append("。");
-            }
-        }
-        return foods.toString();
-    }
-
-    private int getMaxWeight(FoodWeight foodWeight) {
-        List<Integer> weights = new ArrayList<>();
-        weights.add(foodWeight.getProteinWeight());
-        weights.add(foodWeight.getPurineWeight());
-        weights.add(foodWeight.getCholesterolWeight());
-        weights.add(foodWeight.getNaWeight());
-        weights.add(foodWeight.getFatWeight());
-        weights.add(foodWeight.getChoWeight());
-        return Collections.max(weights);
-    }
-
-    private List<String> deduceLabel(FoodWeight foodWeight) {
+    private List<String> deduceLabel(FoodWeight foodWeight){
         List<String> label = new ArrayList<>();
 
         int proteinWeight = foodWeight.getProteinWeight();
@@ -326,16 +158,7 @@ public class FoodService {
         return label;
     }
 
-    private List<FoodTbl> deduceRecommendFood(List<FoodWeight> foodWeights) {
-        List<FoodTbl> foodList = new ArrayList<>();
-        for (FoodWeight foodWeight : foodWeights) {
-            FoodTbl food = foodDao.getFoodById(foodWeight.getFoodId());
-            foodList.add(food);
-        }
-        return foodList;
-    }
-
-    private Map<String, String> deduceCompostions(FoodTbl food) {
+    private Map<String, String> deduceCompostions(FoodTbl food){
         Map<String, String> compositions = new HashMap<>();
         String waterQuantity = food.getWater();
         compositions.put("水", waterQuantity + "克");
@@ -352,5 +175,204 @@ public class FoodService {
         return compositions;
     }
 
+    private String deduceDieticianAdvice(FoodTbl food, FoodWeight foodWeight, User user) {
+        //TODO: user null validation ? return temporarily for front-end testing
+        if (user == null) {
+            return "";
+        }
+        int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
+        String otherDiseases = user.getOtherDiseases();
+        String subCode = food.getSubCode();
 
-}
+        int proteinWeight = foodWeight.getProteinWeight();
+        StringBuilder dieticianAdvice = new StringBuilder();
+        StringBuilder otherDiseasesConbinations = new StringBuilder();
+        List<String> otherDiseaseFoodWeightFields = new ArrayList<>();
+
+        if (otherDiseases != null && !StringUtils.isEmpty(otherDiseases)) {
+            String[] otherDiseasesArray = otherDiseases.split(",");
+            logger.info("Other Diseases: \n");
+            Arrays.stream(otherDiseasesArray).forEach(logger::info);
+            List<String> otherDiseasesList = Arrays.asList(otherDiseasesArray);
+            List<String> lowWeight = new ArrayList<>();
+            List<String> mediumWeight = new ArrayList<>();
+            List<String> highWeight = new ArrayList<>();
+            deduceWeight(lowWeight,mediumWeight,highWeight,foodWeight,otherDiseasesList);
+            for (int i = 0; i < otherDiseasesArray.length; i++) {
+                otherDiseaseFoodWeightFields.add(Constants.WEIGHT_FILED_DISEASE_MAP.get(otherDiseasesArray[i]));
+                if (i != otherDiseasesArray.length - 1) {
+                    otherDiseasesConbinations.append(Constants.OTHER_DISEASE_ELEMENTS.get(otherDiseasesArray[i]))
+                            .append(",");
+                } else {
+                    otherDiseasesConbinations.append(Constants.OTHER_DISEASE_ELEMENTS.get(otherDiseasesArray[i]));
+                }
+
+            }
+            dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_TEMPLATE,
+                    nephroticPeriod, otherDiseasesConbinations));
+            dieticianAdvice.append("该食物");
+            if(!lowWeight.isEmpty()){
+                for(int i = 0; i < lowWeight.size(); i++){
+                    if(i != lowWeight.size() - 1){
+                        dieticianAdvice.append(lowWeight.get(i)).append(",");
+                    } else {
+                        dieticianAdvice.append(lowWeight.get(i)).append("低,");
+                    }
+                }
+            }
+            if(!mediumWeight.isEmpty()){
+                for(int i = 0; i < mediumWeight.size(); i++){
+                    if(i != mediumWeight.size() - 1){
+                        dieticianAdvice.append(mediumWeight.get(i)).append(",");
+                    } else {
+                        dieticianAdvice.append(mediumWeight.get(i)).append("适中,");
+                    }
+                }
+            }
+            if(!highWeight.isEmpty()){
+                dieticianAdvice.append("但");
+                for(int i = 0; i < highWeight.size(); i++){
+                    if(i != highWeight.size() - 1){
+                        dieticianAdvice.append(highWeight.get(i)).append(",");
+                    } else {
+                        dieticianAdvice.append(highWeight.get(i)).append("偏高,");
+                    }
+                }
+            }
+
+            int maxWeight = getMaxWeight(foodWeight, otherDiseasesList);
+
+            if (maxWeight == 1) {
+                dieticianAdvice.append(",可食用。");
+            } else if (maxWeight == 2) {
+                dieticianAdvice.append(",可适量食用。");
+            } else {
+                dieticianAdvice.append(",不适宜您食用,推荐的食物有: ").append(deduceFoodForMultiDisease(otherDiseaseFoodWeightFields, subCode));
+            }
+
+        } else {
+            dieticianAdvice.append(String.format(Constants.DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE, nephroticPeriod));
+            if (proteinWeight == 1) {
+                dieticianAdvice.append("该食物蛋白含量低，建议经常食用。");
+            } else if (proteinWeight == 2) {
+                dieticianAdvice.append("该食物蛋白含量适中，可适量食用。");
+            } else {
+                dieticianAdvice.append("该食物蛋白含量偏高，不适宜您食用。推荐低蛋白食物有:");
+                List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, subCode);
+                List<FoodTbl> foodList = deduceRecommendFood(foodWeights);
+                for (int i = 0; i < foodList.size(); i++) {
+                    dieticianAdvice.append(foodList.get(i));
+                    if (i != foodList.size() - 1) {
+                        dieticianAdvice.append(",");
+                    }
+                }
+            }
+        }
+        return dieticianAdvice.toString();
+    }
+
+    private List<FoodTbl> deduceRecommendFood(List<FoodWeight> foodWeights){
+        List<FoodTbl> foodList = new ArrayList<>();
+        for (FoodWeight foodWeight : foodWeights) {
+            FoodTbl food = foodDao.getFoodById(foodWeight.getFoodId());
+            foodList.add(food);
+        }
+        return foodList;
+    }
+
+    public static void main(String... args){
+        FoodService service = new FoodService();
+        FoodWeight foodWeight = new FoodWeight();
+        foodWeight.setPurineWeight(3);
+        foodWeight.setProteinWeight(1);
+        foodWeight.setCholesterolWeight(3);
+        foodWeight.setFatWeight(2);
+        foodWeight.setChoWeight(1);
+        foodWeight.setNaWeight(3);
+        User user = new User();
+        user.setOtherDiseases("hyperuricacidemia,hypertension,cholesterol");
+        user.setNephroticPeriod("1");
+        FoodTbl foodTbl = new FoodTbl();
+        foodTbl.setSubCode("1");
+        service.deduceDieticianAdvice(foodTbl, foodWeight,user);
+    }
+
+    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
+                              List<String> highWeight, FoodWeight foodWeight, List<String> otherDiseaseList){
+
+        int proteinWeight = foodWeight.getProteinWeight();
+        deduceWeight(lowWeight,mediumWeight,highWeight,proteinWeight, "蛋白质");
+        if(otherDiseaseList.contains("hyperuricacidemia")){
+            int purineWeight = foodWeight.getPurineWeight();
+            deduceWeight(lowWeight,mediumWeight,highWeight,purineWeight, "嘌呤");
+        }
+        if(otherDiseaseList.contains("cholesterol")){
+            int cholesterolWeight = foodWeight.getCholesterolWeight();
+            deduceWeight(lowWeight,mediumWeight,highWeight,cholesterolWeight, "胆固醇");
+        }
+        if(otherDiseaseList.contains("hypertension")){
+            int naWeight = foodWeight.getNaWeight();
+            deduceWeight(lowWeight,mediumWeight,highWeight,naWeight, "钠");
+        }
+        if(otherDiseaseList.contains("triglyceride")){
+            int fatWeight = foodWeight.getFatWeight();
+            deduceWeight(lowWeight,mediumWeight,highWeight,fatWeight, "脂肪");
+        }
+        if(otherDiseaseList.contains("hyperglycemia")){
+            int choWeight = foodWeight.getChoWeight();
+            deduceWeight(lowWeight,mediumWeight,highWeight,choWeight, "碳水化合物");
+        }
+    }
+
+    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
+                              List<String> highWeight, int foodWeight, String element){
+        if(foodWeight == 1){
+            lowWeight.add(element);
+        } else if(foodWeight == 2){
+            mediumWeight.add(element);
+        } else {
+            highWeight.add(element);
+        }
+    }
+
+    private String deduceFoodForMultiDisease(List<String> multiWeightFields, String subCode){
+        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, subCode);
+        StringBuffer foods = new StringBuffer();
+        for(int i = 0; i < foodWeights.size(); i++){
+            String foodId = foodWeights.get(i).getFoodId();
+            FoodTbl food = foodDao.getFoodById(foodId);
+            if(i != foodWeights.size() - 1){
+                foods.append(food.getFoodName()).append(",");
+            } else {
+                foods.append(food.getFoodName()).append("。");
+            }
+        }
+        return foods.toString();
+    }
+
+    private int getMaxWeight(FoodWeight foodWeight, List<String> otherDiseases) {
+        List<Integer> weights = new ArrayList<>();
+        weights.add(foodWeight.getProteinWeight());
+        if (otherDiseases.contains("hyperuricacidemia")) {
+            weights.add(foodWeight.getPurineWeight());
+        }
+        if (otherDiseases.contains("cholesterol")) {
+            weights.add(foodWeight.getCholesterolWeight());
+        }
+        if (otherDiseases.contains("hypertension")) {
+            weights.add(foodWeight.getNaWeight());
+        }
+        if (otherDiseases.contains("triglyceride")) {
+            weights.add(foodWeight.getFatWeight());
+        }
+
+        if (otherDiseases.contains("hyperglycemia")) {
+            weights.add(foodWeight.getChoWeight());
+        }
+
+        return Collections.max(weights);
+    }}
+
+
+
+
