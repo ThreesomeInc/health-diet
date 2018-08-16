@@ -273,7 +273,7 @@ public class FoodService {
     }
 
     private String deduceRecommendFood(String foodCode, String subCode){
-        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(1, foodCode, subCode);
+        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(2, foodCode, subCode);
         if(foodWeights == null && foodWeights.size() == 0){
             return null;
         }
