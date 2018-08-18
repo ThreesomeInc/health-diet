@@ -87,6 +87,7 @@ public class FoodController {
 	}
 
 	@PostMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
 	public PreferenceResponse pushPreference(@RequestParam String foodId,
 											 @RequestParam String userId,
 											 @RequestParam int preference) {
@@ -94,6 +95,7 @@ public class FoodController {
 	}
 
 	@GetMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
 	public PreferenceResponse getPreference(@RequestParam String foodId,
 											@RequestParam String userId) {
 		return preferenceService.listPreference(userId, foodId);
