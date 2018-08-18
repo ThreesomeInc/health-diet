@@ -77,6 +77,7 @@ public class FoodService {
     }
 
     private void reloadFoodRanking() {
+        logger.info("Begin to load food rank");
         Reader in = null;
         try {
             in = new InputStreamReader(FoodService.class.getResourceAsStream("/food-type-rank.csv"));
@@ -89,7 +90,7 @@ public class FoodService {
                 String typeId = record.get("typeId");
                 typeCache.add(new FoodType(typeId, name, typeId + ".pic"));
             }
-            logger.info("Finished to load food rank");
+            logger.info("Finished to load food rank, total {0} records loaded.", typeCache.size());
         } catch (Exception e) {
             logger.warn("Fail to read food rank " + e.getMessage());
         } finally {
