@@ -47,4 +47,29 @@ CREATE TABLE `food_weight_tbl` (
   `purine_weight` int DEFAULT NULL,
 --   `p_weight` int DEFAULT NULL,
   PRIMARY KEY (`food_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `recipe_tbl` (
+  `recipe_id` varchar(45) NOT NULL,
+  `recipe_name` varchar(45) DEFAULT NULL,
+  `cook_method` varchar(45) DEFAULT NULL,
+  `taste` varchar(45) DEFAULT NULL,
+  `cuisine` varchar(45) DEFAULT NULL,
+  `meal_time` varchar(45) DEFAULT NULL,
+  `category` varchar(45) DEFAULT NULL,
+  `material` varchar(45) DEFAULT NULL,
+  `main_ingredients` varchar(256) DEFAULT NULL,
+  `supplementary` varchar(256) DEFAULT NULL,
+  `cookingnote` TEXT,
+  `energy` float(10,2) DEFAULT NULL,
+  `protein` float(10,2) DEFAULT NULL,
+  `protein_weight` int DEFAULT NULL,
+  `fat_weight` int DEFAULT NULL,
+  `cho_weight` int DEFAULT NULL,
+  `na_weight` int DEFAULT NULL,
+  `cholesterol_weight` int DEFAULT NULL,
+  `purine_weight` int DEFAULT NULL,
+  `ckd_category` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`recipe_id`),
+  FULLTEXT KEY `NAME_INDEX` (`recipe_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
