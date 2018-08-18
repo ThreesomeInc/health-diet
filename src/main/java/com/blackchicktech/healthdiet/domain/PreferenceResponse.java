@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PreferenceResponse extends BasicResponse {
 
-	@JsonProperty("errorCode")
+	@JsonProperty("message")
 	private String message;
 
-	@JsonProperty("errorCode")
+	@JsonProperty("preference")
 	private int preference;
 
 	public int getPreference() {
