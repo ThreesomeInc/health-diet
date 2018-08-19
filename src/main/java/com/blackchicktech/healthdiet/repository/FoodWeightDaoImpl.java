@@ -1,6 +1,8 @@
 package com.blackchicktech.healthdiet.repository;
 
 import com.blackchicktech.healthdiet.entity.FoodWeight;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +21,8 @@ public class FoodWeightDaoImpl {
     private JdbcTemplate jdbcTemplate;
 
     private RowMapper rowMapper = new BeanPropertyRowMapper(FoodWeight.class);
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(FoodWeightDaoImpl.class);
 
 
     public FoodWeight getFoodWeightByFoodId(String foodId){
@@ -41,6 +45,7 @@ public class FoodWeightDaoImpl {
     }
 
     public List<FoodWeight> getFoodWeightByMultiWeightFieldsAndSubCode(List<String> multiWeightFields, String foodCode, String subCode){
+        LOGGER.debug("Getting FoodWeight by multi weight fields:" + multiWeightFields);
         StringBuffer sqlSegment = new StringBuffer();
         for(int i = 0; i < multiWeightFields.size(); i++){
             sqlSegment.append(multiWeightFields.get(i)).append(" < 3 and ");
@@ -48,10 +53,12 @@ public class FoodWeightDaoImpl {
         List<FoodWeight> result;
         String sqlWithFoodCodeAndSubCode = "SELECT * from food_weight_tbl where protein_weight < 3 and " +
                 sqlSegment + " food_Code = " + foodCode + " and sub_code = " + subCode + " order by rand() limit 3";
+        LOGGER.debug("SQLWithFoodCodeAndSubCode: " + sqlWithFoodCodeAndSubCode);
         result = jdbcTemplate.query(sqlWithFoodCodeAndSubCode, rowMapper);
         if(result == null || result.size() == 0){
             String sqlWithFoodCode = "SELECT * from food_weight_tbl where protein_weight < 3 and " +
                     sqlSegment + " food_Code = " + foodCode + " order by rand() limit 3";
+            LOGGER.debug("SQLWithFoodCode: " + sqlWithFoodCode);
             result = jdbcTemplate.query(sqlWithFoodCode, rowMapper);
         }
         return result;

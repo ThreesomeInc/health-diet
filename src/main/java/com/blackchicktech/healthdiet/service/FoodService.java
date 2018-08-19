@@ -43,7 +43,7 @@ public class FoodService {
     @Autowired
     private PreferenceService preferenceService;
 
-    private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FoodService.class);
 
     private Map<String, Food> cache = new HashMap<>();
 
@@ -78,7 +78,7 @@ public class FoodService {
     }
 
     private void reloadFoodRanking() {
-        logger.info("Begin to load food rank");
+        LOGGER.info("Begin to load food rank");
         Reader in = null;
         try {
             in = new InputStreamReader(FoodService.class.getResourceAsStream("/food-type-rank.csv"));
@@ -91,9 +91,9 @@ public class FoodService {
                 String typeId = record.get("typeId");
                 typeCache.add(new FoodType(typeId, name, typeId + ".pic"));
             }
-            logger.info("Finished to load food rank, total {0} records loaded.", typeCache.size());
+            LOGGER.info("Finished to load food rank, total {0} records loaded.", typeCache.size());
         } catch (Exception e) {
-            logger.warn("Fail to read food rank " + e.getMessage());
+            LOGGER.warn("Fail to read food rank " + e.getMessage());
         } finally {
             if (in != null) {
                 try {
@@ -124,7 +124,7 @@ public class FoodService {
 
     private List<String> deduceLabel(FoodWeight foodWeight){
         List<String> label = new ArrayList<>();
-
+        LOGGER.info("Deduce Food Label: " + foodWeight);
         int proteinWeight = foodWeight.getProteinWeight();
         int choWeight = foodWeight.getChoWeight();
         int fatWeight = foodWeight.getFatWeight();
@@ -198,8 +198,8 @@ public class FoodService {
 
         if (otherDiseases != null && !StringUtils.isEmpty(otherDiseases)) {
             String[] otherDiseasesArray = otherDiseases.split(",");
-            logger.info("Other Diseases: \n");
-            Arrays.stream(otherDiseasesArray).forEach(logger::info);
+            LOGGER.info("Other Diseases: \n");
+            Arrays.stream(otherDiseasesArray).forEach(LOGGER::info);
             List<String> otherDiseasesList = Arrays.asList(otherDiseasesArray);
             List<String> lowWeight = new ArrayList<>();
             List<String> mediumWeight = new ArrayList<>();
@@ -303,22 +303,6 @@ public class FoodService {
         return dieticianAdvice.toString();
     }
 
-    public static void main(String... args){
-        FoodService service = new FoodService();
-        FoodWeight foodWeight = new FoodWeight();
-        foodWeight.setPurineWeight(3);
-        foodWeight.setProteinWeight(1);
-        foodWeight.setCholesterolWeight(3);
-        foodWeight.setFatWeight(2);
-        foodWeight.setChoWeight(1);
-        foodWeight.setNaWeight(3);
-        User user = new User();
-        user.setOtherDiseases("hyperuricacidemia,hypertension,cholesterol");
-        user.setNephroticPeriod("1");
-        FoodTbl foodTbl = new FoodTbl();
-        foodTbl.setSubCode("1");
-        service.deduceDieticianAdvice(foodTbl, foodWeight,user);
-    }
 
     private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
                               List<String> highWeight, FoodWeight foodWeight, List<String> otherDiseaseList){
