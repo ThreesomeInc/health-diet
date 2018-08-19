@@ -33,9 +33,9 @@ public class RecipeController {
 	@ResponseBody
 	public RecipeTypeResponse getAllRecipeTypes() {
 		List<Map<String, String>> recipeTypes = Lists.newArrayList(
-				ImmutableMap.of("mealtime", "用餐时间"),
-				ImmutableMap.of("category", "素荤"),
-				ImmutableMap.of("style", "菜系")
+				ImmutableMap.of("key", "mealtime", "value", "时间"),
+				ImmutableMap.of("key", "category", "value", "素荤"),
+				ImmutableMap.of("key", "style", "value", "菜系")
 		);
 		return new RecipeTypeResponse(recipeTypes);
 	}
