@@ -1,28 +1,36 @@
 package com.blackchicktech.healthdiet.service;
 
-import com.blackchicktech.healthdiet.entity.Food;
+import com.blackchicktech.healthdiet.entity.Recipe;
+import com.blackchicktech.healthdiet.repository.RecipeDaoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 //食谱
 @Service
 public class RecipeService {
 
-    public void reloadCache() {
-        //读入缓存
+    @Autowired
+    private RecipeDaoImpl recipeDao;
+
+    public List<String> getCategoryList() {
+        return recipeDao.getAllCategory();
     }
 
-    public boolean addRecipe() {
-        return true;
+    public List<String> getMealTimeList() {
+        return recipeDao.getAllMealTime();
     }
 
-    public boolean deleteRecipe() {
-        return true;
+    public List<Recipe> getRecipeListByCategroy(String category) {
+        return recipeDao.getRecipeByCategory(category);
     }
 
-    public List<Food> listRecipe() {  //分页
-        return Collections.emptyList();
+    public List<Recipe> getRecipeListByMealTime(String mealTime) {
+        return recipeDao.getRecipeByMealTime(mealTime);
+    }
+
+    public Recipe getRecipeById(String recipeId) {
+        return recipeDao.getRecipeById(recipeId);
     }
 }
