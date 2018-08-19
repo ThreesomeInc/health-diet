@@ -1,5 +1,7 @@
 package com.blackchicktech.healthdiet;
 
+import com.blackchicktech.healthdiet.util.DefaultEncryptor;
+import org.jasypt.encryption.StringEncryptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +21,10 @@ public class HealthDietApplication {
 //
 //	}
 
-	
+	@Bean(name = "jasyptStringEncryptor")
+	public StringEncryptor stringEncryptor() {
+		return new DefaultEncryptor();
+	}
 
 	@Bean
 	public View jsonView() {

@@ -4,7 +4,7 @@ spring:
         driverClassName: com.mysql.jdbc.Driver
         url: jdbc:mysql://119.29.229.56:8081/health_diet?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
         username: health
-        password: /F9D%<Y-V{]Zv)~q
+        password: ENC(rGNiKeTCh+6ytetsg/jE3VDACK7LpM5koTX8Xd7NPYI=)
 #    h2:
 #      console:
 #        enabled: true

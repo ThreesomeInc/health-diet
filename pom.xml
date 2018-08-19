@@ -34,6 +34,7 @@
 		<okhttp.version>3.10.0</okhttp.version>
 		<poi.version>3.17</poi.version>
 		<guava.version>25.1-jre</guava.version>
+		<jasypt.version>2.1.0</jasypt.version>
 	</properties>
 
 	<repositories>
@@ -69,6 +70,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>${jasypt.version}</version>
 		</dependency>
 		<!-- by ivan begin-->
 		<!--<dependency>-->
