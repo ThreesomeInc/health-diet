@@ -113,4 +113,63 @@ public class Constants {
 	public final static String DIETICIAN_ADVICE_TEMPLATE = "您的肾脏功能属于第%s期，而且%s偏高，";
 	public final static String DIETICIAN_ADVICE_WITHOUT_NEOPATHY_TEMPLATE = "您的肾脏功能属于第%s期，";
 
+	public final static String[] CKD_FOOD = {"谷薯类", "淀粉", "绿叶蔬菜", "瓜果蔬菜", "奶类", "肉蛋类", "油脂类"};
+	public final static String[] CKD_FOOD_WITHOUT_MILK = {"谷薯类", "淀粉", "绿叶蔬菜", "瓜果蔬菜", "肉蛋类", "油脂类"};
+	public final static Map<String, Integer> CKD_FOOD_SPEC_BASE = ImmutableMap.<String, Integer>builder()
+			.put("谷薯类",50)
+			.put("淀粉", 100)
+			.put("绿叶蔬菜", 250)
+			.put("瓜果蔬菜", 200)
+			.put("奶类", 230)
+			.put("肉蛋类", 55)
+			.put("油脂类", 10)
+			.build();
+	public final static Map<String, Integer> CKD_FOOD_WITHOUT_MILK_SPEC_BASE = ImmutableMap.<String, Integer>builder()
+			.put("谷薯类",50)
+			.put("淀粉", 100)
+			.put("绿叶蔬菜", 250)
+			.put("瓜果蔬菜", 200)
+			.put("肉蛋类", 55)
+			.put("油脂类", 10)
+			.build();
+
+	public final static double[] CKD_FOOD_40_6 = {1.5,1.5,1.0,1.0,1.0,1.0,4.0};
+	public final static double[] CKD_FOOD_45_6 = {1.5,1.5,1.0,1.0,1.0,1.5,4.5};
+	public final static double[] CKD_FOOD_50_6 = {2.0,2.0,1.0,2.0,1.0,1.5,3.0};
+	public final static double[] CKD_FOOD_55_6 = {2.0,2.5,1.0,2.0,1.0,2.0,3.5};
+	public final static double[] CKD_FOOD_60_6 = {2.5,2.5,1.0,2.0,1.0,2.0,4.0};
+	public final static double[] CKD_FOOD_65_6 = {3.0,2.5,1.0,2.0,1.0,2.0,4.5};
+	public final static double[] CKD_FOOD_70_6 = {3.0,2.5,1.0,2.0,1.0,2.5,5.0};
+	public final static double[] CKD_FOOD_75_6 = {3.0,3.0,1.0,2.0,1.0,3.0,5.5};
+
+	public final static double[] CKD_FOOD_WITHOUTMILK_40_6 = {1.5,1.5,1.0,1.0,1.64,4.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_45_6 = {1.5,1.5,1.0,1.0,2.14,4.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_50_6 = {2.0,2.0,1.0,2.0,2.14,3.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_55_6 = {2.0,2.5,1.0,2.0,2.64,3.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_60_6 = {2.5,2.5,1.0,2.0,2.64,4.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_65_6 = {3.0,2.5,1.0,2.0,2.64,4.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_70_6 = {3.0,2.5,1.0,2.0,3.14,5.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_75_6 = {3.0,3.0,1.0,2.0,3.64,5.5};
+
+	public final static double[] CKD_FOOD_40_8 = {2,0.5,1.0,1.0,1.0,2.0,3.5};
+	public final static double[] CKD_FOOD_45_8 = {2.5,0.5,1.0,1.0,1.0,2.0,4.0};
+	public final static double[] CKD_FOOD_50_8 = {3.0,0.5,1.0,1.0,1.0,2.5,4.5};
+	public final static double[] CKD_FOOD_55_8 = {3.5,0.5,1.0,2.0,1.0,2.5,5.0};
+	public final static double[] CKD_FOOD_60_8 = {4.0,0.5,1.0,2.0,1.0,3.0,5.0};
+	public final static double[] CKD_FOOD_65_8 = {4.0,0.5,1.0,2.0,1.0,3.5,5.5};
+	public final static double[] CKD_FOOD_70_8 = {4.5,0.75,1.0,2.0,1.0,4.0,5.5};
+	public final static double[] CKD_FOOD_75_8 = {5.0,0.75,1.0,2.0,1.0,4.0,6};
+
+	public final static double[] CKD_FOOD_WITHOUTMILK_40_8 = {2,0.5,1.0,1.0,2.64,3.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_45_8 = {2.5,0.5,1.0,1.0,2.64,4.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_50_8 = {3.0,0.5,1.0,2.0,3.14,4.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_55_8 = {3.5,0.5,1.0,2.0,3.14,5.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_60_8 = {4.0,0.5,1.0,2.0,3.64,5.0};
+	public final static double[] CKD_FOOD_WITHOUTMILK_65_8 = {4.0,0.5,1.0,2.0,4.14,5.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_70_8 = {4.5,0.75,1.0,2.0,4.64,5.5};
+	public final static double[] CKD_FOOD_WITHOUTMILK_75_8 = {5.0,0.75,1.0,2.0,4.64,6};
+
+
+
+
 }
