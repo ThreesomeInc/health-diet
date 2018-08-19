@@ -35,7 +35,7 @@ public class RecipeDaoImpl {
 
 	public List<Recipe> getRecipeByName(String recipeName) {
 		List<Recipe> foodListItems = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE recipe_name LIKE ?",
-				rowMapper, recipeName);
+				rowMapper, "%" + recipeName + "%");
 		return foodListItems;
 	}
 

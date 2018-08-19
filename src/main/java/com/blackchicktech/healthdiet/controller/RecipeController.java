@@ -40,6 +40,12 @@ public class RecipeController {
 		return new RecipeTypeResponse(recipeTypes);
 	}
 
+	@GetMapping(value = "/search/{key}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public RecipeSearchResponse search(@PathVariable("key") String key) {
+		return new RecipeSearchResponse(recipeService.getByName(key).stream().map(Recipe::getRecipeName).collect(Collectors.toList()));
+	}
+
 	@RequestMapping(value = "/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public RecipeTypeListResponse getAllByType(@PathVariable("type") String type) {
