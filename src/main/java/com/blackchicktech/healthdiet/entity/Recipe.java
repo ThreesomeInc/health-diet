@@ -14,6 +14,14 @@ public class Recipe implements Entity {
 
 	private String cuisine;
 
+	private String ageGroup;
+
+	private String difficulty;
+
+	private int prepareTime;
+
+	private int cookingTime;
+
 	private String mealTime;
 
 	private String category;
@@ -42,7 +50,49 @@ public class Recipe implements Entity {
 
 	private int purineWeight;
 
+	private int kWeight;
+
 	private String ckdCategory;
+
+	public int getkWeight() {
+		return kWeight;
+	}
+
+	public void setkWeight(int kWeight) {
+		this.kWeight = kWeight;
+	}
+
+	public String getAgeGroup() {
+		return ageGroup;
+	}
+
+	public void setAgeGroup(String ageGroup) {
+		this.ageGroup = ageGroup;
+	}
+
+	public String getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public int getPrepareTime() {
+		return prepareTime;
+	}
+
+	public void setPrepareTime(int prepareTime) {
+		this.prepareTime = prepareTime;
+	}
+
+	public int getCookingTime() {
+		return cookingTime;
+	}
+
+	public void setCookingTime(int cookingTime) {
+		this.cookingTime = cookingTime;
+	}
 
 	public String getRecipeId() {
 		return recipeId;

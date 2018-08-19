@@ -137,7 +137,7 @@ public class ExcelImporter {
         }
     }
 
-    private static String readCellAsString(XSSFCell cell) {
+    public static String readCellAsString(XSSFCell cell) {
         if (cell == null) {
             return null;
         }
@@ -154,7 +154,7 @@ public class ExcelImporter {
     }
 
     // read number field 1.0 as string 1
-    private static String readCellAsIntString(XSSFCell cell) {
+    public static String readCellAsIntString(XSSFCell cell) {
         if (cell == null) {
             throw new RuntimeException("Id could not be null");
         }
@@ -168,7 +168,7 @@ public class ExcelImporter {
         }
     }
 
-    private static int readAsInt(XSSFCell cell) {
+    public static int readAsInt(XSSFCell cell) {
         if (cell == null) {
             throw new RuntimeException("Int could not be null");
         }
@@ -183,9 +183,9 @@ public class ExcelImporter {
         }
     }
 
-    private static double readCellAsDouble(XSSFCell cell) {
+    public static double readCellAsDouble(XSSFCell cell) {
         if (cell == null) {
-            throw new RuntimeException("Int could not be null");
+            throw new RuntimeException("Double could not be null");
         }
         switch (cell.getCellTypeEnum()) {
             case STRING:
@@ -194,6 +194,20 @@ public class ExcelImporter {
                 return cell.getNumericCellValue();
             default:
                 return 0.0;
+        }
+    }
+
+    public static float readCellAsFloat(XSSFCell cell) {
+        if (cell == null) {
+            throw new RuntimeException("Float could not be null");
+        }
+        switch (cell.getCellTypeEnum()) {
+            case STRING:
+                return Float.valueOf(cell.getStringCellValue());
+            case NUMERIC:
+                return (float)cell.getNumericCellValue();
+            default:
+                return 0.0f;
         }
     }
 

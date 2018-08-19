@@ -55,6 +55,10 @@ CREATE TABLE `recipe_tbl` (
   `cook_method` varchar(45) DEFAULT NULL,
   `taste` varchar(45) DEFAULT NULL,
   `cuisine` varchar(45) DEFAULT NULL,
+  `age_group` varchar(45) DEFAULT NULL,
+  `difficulty` varchar(45) DEFAULT NULL,
+  `prepare_time` int DEFAULT NULL,
+  `cooking_time` int DEFAULT NULL,
   `meal_time` varchar(45) DEFAULT NULL,
   `category` varchar(45) DEFAULT NULL,
   `material` varchar(45) DEFAULT NULL,
@@ -69,6 +73,7 @@ CREATE TABLE `recipe_tbl` (
   `na_weight` int DEFAULT NULL,
   `cholesterol_weight` int DEFAULT NULL,
   `purine_weight` int DEFAULT NULL,
+  `k_weight` int DEFAULT NULL,
   `ckd_category` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`recipe_id`),
   FULLTEXT KEY `NAME_INDEX` (`recipe_name`)
