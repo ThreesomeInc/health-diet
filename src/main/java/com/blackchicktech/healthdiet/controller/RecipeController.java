@@ -4,6 +4,8 @@ import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.Recipe;
 import com.blackchicktech.healthdiet.service.RecipeService;
 import com.blackchicktech.healthdiet.service.UserService;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,10 +29,30 @@ public class RecipeController {
 	@Autowired
 	private RecipeService recipeService;
 
-	@RequestMapping(value = "/mealtime", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeTypeListResponse getAllMealTime() {
-		return new RecipeTypeListResponse(recipeService.getMealTimeList());
+	public RecipeTypeResponse getAllRecipeTypes() {
+		List<Map<String, String>> recipeTypes = Lists.newArrayList(
+				ImmutableMap.of("mealtime", "用餐时间"),
+				ImmutableMap.of("category", "素荤"),
+				ImmutableMap.of("style", "菜系")
+		);
+		return new RecipeTypeResponse(recipeTypes);
+	}
+
+	@RequestMapping(value = "/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public RecipeTypeListResponse getAllByType(@PathVariable("type") String type) {
+		switch (type) {
+			case "mealtime": {
+				return new RecipeTypeListResponse(recipeService.getMealTimeList());
+			}
+			case "category": {
+				return new RecipeTypeListResponse(recipeService.getCategoryList());
+			}
+			default:
+				throw new RuntimeException("not support yet");
+		}
 	}
 
 	@RequestMapping(value = "/mealtime/{mealtimeName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -41,12 +64,6 @@ public class RecipeController {
 			return new RecipeListResponse(Collections.emptyList());
 		}
 		return new RecipeListResponse(recipeList.stream().map(RecipeListItem::new).collect(Collectors.toList()));
-	}
-
-	@RequestMapping(value = "/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public RecipeTypeListResponse getAllCategory() {
-		return new RecipeTypeListResponse(recipeService.getCategoryList());
 	}
 
 	@RequestMapping(value = "/category/{categoryName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
