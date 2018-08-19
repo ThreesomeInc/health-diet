@@ -3,10 +3,8 @@ package com.blackchicktech.healthdiet.service;
 import com.blackchicktech.healthdiet.domain.FoodDetailResponse;
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.domain.FoodType;
-import com.blackchicktech.healthdiet.entity.Food;
-import com.blackchicktech.healthdiet.entity.FoodTbl;
-import com.blackchicktech.healthdiet.entity.FoodWeight;
-import com.blackchicktech.healthdiet.entity.User;
+import com.blackchicktech.healthdiet.domain.PreferenceResponse;
+import com.blackchicktech.healthdiet.entity.*;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.FoodWeightDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
@@ -41,6 +39,9 @@ public class FoodService {
 
     @Autowired
     private FoodWeightDaoImpl foodWeightDao;
+
+    @Autowired
+    private PreferenceService preferenceService;
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
@@ -107,12 +108,16 @@ public class FoodService {
         User user = userService.getUserByOpenId(openId);
         FoodTbl food = foodDao.getFoodById(foodId);
         FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
+        PreferenceResponse preference = preferenceService.listPreference(openId, foodId);
 
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFoodName());
         foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight, user));
         foodDetailResponse.setComposition(deduceCompostions(food));
         foodDetailResponse.setLabel(deduceLabel(foodWeight));
+        if (preference.getPreference() != 0) {
+			foodDetailResponse.setFrequency(String.valueOf(preference.getPreference()));
+		}
         return foodDetailResponse;
 
     }
