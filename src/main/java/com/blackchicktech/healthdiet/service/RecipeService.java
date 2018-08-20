@@ -1,11 +1,13 @@
 package com.blackchicktech.healthdiet.service;
 
+import com.blackchicktech.healthdiet.domain.RecipeListItem;
 import com.blackchicktech.healthdiet.entity.Recipe;
 import com.blackchicktech.healthdiet.repository.RecipeDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 //食谱
 @Service
@@ -34,8 +36,12 @@ public class RecipeService {
 		return recipeDao.getRecipeById(recipeId);
 	}
 
-	public List<Recipe> getRecommandRecipe(String foodName) {
-		return recipeDao.getRecommandRecipe(foodName);
+	public List<Recipe> getRecommendRecipe(String foodName) {
+		return recipeDao.getRecommendRecipe(foodName);
+	}
+
+	public List<RecipeListItem> getRecommendRecipeList(String foodName) {
+		return recipeDao.getRecommendRecipe(foodName).stream().map(RecipeListItem::new).collect(Collectors.toList());
 	}
 
 	public List<Recipe> getByName(String name) {

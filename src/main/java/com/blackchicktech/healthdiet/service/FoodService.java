@@ -43,6 +43,9 @@ public class FoodService {
     @Autowired
     private PreferenceService preferenceService;
 
+    @Autowired
+    private RecipeService recipeService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FoodService.class);
 
     private Map<String, Food> cache = new HashMap<>();
@@ -115,6 +118,7 @@ public class FoodService {
         foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight, user));
         foodDetailResponse.setComposition(deduceCompostions(food));
         foodDetailResponse.setLabel(deduceLabel(foodWeight));
+        foodDetailResponse.setRecipeList(recipeService.getRecommendRecipe(food.getFoodName()));
         if (preference.getPreference() != 0) {
 			foodDetailResponse.setFrequency(String.valueOf(preference.getPreference()));
 		}

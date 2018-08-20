@@ -48,7 +48,7 @@ public class RecipeDaoImpl {
 				rowMapper, category);
 	}
 
-	public List<Recipe> getRecommandRecipe(String foodName) {
+	public List<Recipe> getRecommendRecipe(String foodName) {
 	    List<Recipe> recipeList = jdbcTemplate.query("SELECT * FROM recipe_tbl where material LIKE ? ORDER BY RAND() LIMIT 3;",
                 rowMapper, "%" + foodName + "%");
 	    return recipeList;

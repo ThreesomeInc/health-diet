@@ -1,5 +1,6 @@
 package com.blackchicktech.healthdiet.domain;
 
+import com.blackchicktech.healthdiet.entity.Recipe;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -26,6 +27,9 @@ public class FoodDetailResponse extends BasicResponse{
 
     @JsonProperty("dieticianAdvice")
     private String dieticianAdvice;
+
+    @JsonProperty("recipeList")
+    private List<Recipe> recipeList;
 
     public String getDieticianAdvice() {
         return dieticianAdvice;
@@ -67,4 +71,11 @@ public class FoodDetailResponse extends BasicResponse{
         this.composition = composition;
     }
 
+    public List<Recipe> getRecipeList() {
+        return recipeList;
+    }
+
+    public void setRecipeList(List<Recipe> recipeList) {
+        this.recipeList = recipeList;
+    }
 }
