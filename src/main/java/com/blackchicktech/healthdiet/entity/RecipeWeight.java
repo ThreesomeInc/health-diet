@@ -1,5 +1,7 @@
 package com.blackchicktech.healthdiet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Map;
 
 public class RecipeWeight implements Entity {
@@ -99,6 +101,7 @@ public class RecipeWeight implements Entity {
 	}
 
 	@Override
+	@JsonIgnore
 	public Map<String, Object[]> getFieldInfo() {
 		throw new IllegalStateException("not supported yet");
 	}
