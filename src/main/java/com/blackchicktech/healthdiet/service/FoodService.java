@@ -182,6 +182,10 @@ public class FoodService {
         compositions.put("碳水化合物", choQuantity + "克");
         String naQuantity = food.getNa();
         compositions.put("钠", naQuantity + "克");
+        String pQuantity = food.getP();
+        compositions.put("磷", pQuantity+"克");
+        String kQuantity = food.getK();
+        compositions.put("钾", kQuantity+"克");
         return compositions;
     }
 
