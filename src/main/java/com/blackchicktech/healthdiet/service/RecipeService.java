@@ -34,8 +34,8 @@ public class RecipeService {
 		return recipeDao.getRecipeById(recipeId);
 	}
 
-	public List<Recipe> getRecommandRecipe(String foodName) {
-		return recipeDao.getRecommandRecipe(foodName);
+	public List<Recipe> getRecommendRecipe(String foodName) {
+		return recipeDao.getRecommendRecipe(foodName);
 	}
 
 	public List<Recipe> getByName(String name) {
