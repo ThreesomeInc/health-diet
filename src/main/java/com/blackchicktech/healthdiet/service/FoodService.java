@@ -118,7 +118,7 @@ public class FoodService {
         foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight, user));
         foodDetailResponse.setComposition(deduceCompostions(food));
         foodDetailResponse.setLabel(deduceLabel(foodWeight));
-        foodDetailResponse.setRecipeList(recipeService.getRecommendRecipe(food.getFoodName()));
+        foodDetailResponse.setRecipeList(recipeService.getRecommendRecipeList(food.getFoodName()));
         if (preference.getPreference() != 0) {
 			foodDetailResponse.setFrequency(String.valueOf(preference.getPreference()));
 		}

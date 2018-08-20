@@ -29,7 +29,7 @@ public class FoodDetailResponse extends BasicResponse{
     private String dieticianAdvice;
 
     @JsonProperty("recipeList")
-    private List<Recipe> recipeList;
+    private List<RecipeListItem> recipeList;
 
     public String getDieticianAdvice() {
         return dieticianAdvice;
@@ -71,11 +71,11 @@ public class FoodDetailResponse extends BasicResponse{
         this.composition = composition;
     }
 
-    public List<Recipe> getRecipeList() {
+    public List<RecipeListItem> getRecipeList() {
         return recipeList;
     }
 
-    public void setRecipeList(List<Recipe> recipeList) {
+    public void setRecipeList(List<RecipeListItem> recipeList) {
         this.recipeList = recipeList;
     }
 }
