@@ -67,6 +67,13 @@ CREATE TABLE `recipe_tbl` (
   `cookingnote` TEXT,
   `energy` float(10,2) DEFAULT NULL,
   `protein` float(10,2) DEFAULT NULL,
+  `ckd_category` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`recipe_id`),
+  FULLTEXT KEY `NAME_INDEX` (`recipe_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `recipe_weight_tbl` (
+  `recipe_id` varchar(45) NOT NULL,
   `protein_weight` int DEFAULT NULL,
   `fat_weight` int DEFAULT NULL,
   `cho_weight` int DEFAULT NULL,
@@ -74,7 +81,5 @@ CREATE TABLE `recipe_tbl` (
   `cholesterol_weight` int DEFAULT NULL,
   `purine_weight` int DEFAULT NULL,
   `k_weight` int DEFAULT NULL,
-  `ckd_category` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`recipe_id`),
-  FULLTEXT KEY `NAME_INDEX` (`recipe_name`)
+  PRIMARY KEY (`recipe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4

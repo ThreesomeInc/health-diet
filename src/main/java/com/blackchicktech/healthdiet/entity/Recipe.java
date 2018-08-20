@@ -38,61 +38,7 @@ public class Recipe implements Entity {
 
 	private float protein;
 
-	private int proteinWeight;
-
-	private int fatWeight;
-
-	private int choWeight;
-
-	private int naWeight;
-
-	private int cholesterolWeight;
-
-	private int purineWeight;
-
-	private int kWeight;
-
 	private String ckdCategory;
-
-	public int getkWeight() {
-		return kWeight;
-	}
-
-	public void setkWeight(int kWeight) {
-		this.kWeight = kWeight;
-	}
-
-	public String getAgeGroup() {
-		return ageGroup;
-	}
-
-	public void setAgeGroup(String ageGroup) {
-		this.ageGroup = ageGroup;
-	}
-
-	public String getDifficulty() {
-		return difficulty;
-	}
-
-	public void setDifficulty(String difficulty) {
-		this.difficulty = difficulty;
-	}
-
-	public int getPrepareTime() {
-		return prepareTime;
-	}
-
-	public void setPrepareTime(int prepareTime) {
-		this.prepareTime = prepareTime;
-	}
-
-	public int getCookingTime() {
-		return cookingTime;
-	}
-
-	public void setCookingTime(int cookingTime) {
-		this.cookingTime = cookingTime;
-	}
 
 	public String getRecipeId() {
 		return recipeId;
@@ -132,6 +78,38 @@ public class Recipe implements Entity {
 
 	public void setCuisine(String cuisine) {
 		this.cuisine = cuisine;
+	}
+
+	public String getAgeGroup() {
+		return ageGroup;
+	}
+
+	public void setAgeGroup(String ageGroup) {
+		this.ageGroup = ageGroup;
+	}
+
+	public String getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public int getPrepareTime() {
+		return prepareTime;
+	}
+
+	public void setPrepareTime(int prepareTime) {
+		this.prepareTime = prepareTime;
+	}
+
+	public int getCookingTime() {
+		return cookingTime;
+	}
+
+	public void setCookingTime(int cookingTime) {
+		this.cookingTime = cookingTime;
 	}
 
 	public String getMealTime() {
@@ -198,54 +176,6 @@ public class Recipe implements Entity {
 		this.protein = protein;
 	}
 
-	public int getProteinWeight() {
-		return proteinWeight;
-	}
-
-	public void setProteinWeight(int proteinWeight) {
-		this.proteinWeight = proteinWeight;
-	}
-
-	public int getFatWeight() {
-		return fatWeight;
-	}
-
-	public void setFatWeight(int fatWeight) {
-		this.fatWeight = fatWeight;
-	}
-
-	public int getChoWeight() {
-		return choWeight;
-	}
-
-	public void setChoWeight(int choWeight) {
-		this.choWeight = choWeight;
-	}
-
-	public int getNaWeight() {
-		return naWeight;
-	}
-
-	public void setNaWeight(int naWeight) {
-		this.naWeight = naWeight;
-	}
-
-	public int getCholesterolWeight() {
-		return cholesterolWeight;
-	}
-
-	public void setCholesterolWeight(int cholesterolWeight) {
-		this.cholesterolWeight = cholesterolWeight;
-	}
-
-	public int getPurineWeight() {
-		return purineWeight;
-	}
-
-	public void setPurineWeight(int purineWeight) {
-		this.purineWeight = purineWeight;
-	}
-
 	public String getCkdCategory() {
 		return ckdCategory;
 	}
@@ -262,6 +192,10 @@ public class Recipe implements Entity {
 				", cookMethod='" + cookMethod + '\'' +
 				", taste='" + taste + '\'' +
 				", cuisine='" + cuisine + '\'' +
+				", ageGroup='" + ageGroup + '\'' +
+				", difficulty='" + difficulty + '\'' +
+				", prepareTime=" + prepareTime +
+				", cookingTime=" + cookingTime +
 				", mealTime='" + mealTime + '\'' +
 				", category='" + category + '\'' +
 				", material='" + material + '\'' +
@@ -270,12 +204,6 @@ public class Recipe implements Entity {
 				", cookingnote='" + cookingnote + '\'' +
 				", energy=" + energy +
 				", protein=" + protein +
-				", proteinWeight=" + proteinWeight +
-				", fatWeight=" + fatWeight +
-				", choWeight=" + choWeight +
-				", naWeight=" + naWeight +
-				", cholesterolWeight=" + cholesterolWeight +
-				", purineWeight=" + purineWeight +
 				", ckdCategory='" + ckdCategory + '\'' +
 				'}';
 	}
