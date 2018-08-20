@@ -34,26 +34,28 @@ public class RecipeDaoImpl {
 	}
 
 	public List<Recipe> getRecipeByName(String recipeName) {
-		List<Recipe> foodListItems = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE recipe_name LIKE ?",
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE recipe_name LIKE ?",
 				rowMapper, "%" + recipeName + "%");
-		return foodListItems;
 	}
 
 	public List<Recipe> getRecipeByMealTime(String mealTime) {
-		List<Recipe> foodListItems = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE meal_time = ?",
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE meal_time = ?",
 				rowMapper, mealTime);
-		return foodListItems;
 	}
 
 	public List<Recipe> getRecipeByCategory(String category) {
-		List<Recipe> foodListItems = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE category = ?",
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE category = ?",
 				rowMapper, category);
-		return foodListItems;
 	}
 
+	public List<Recipe> getRecommandRecipe(String foodName) {
+	    List<Recipe> recipeList = jdbcTemplate.query("SELECT * FROM recipe_tbl where material LIKE ? ORDER BY RAND() LIMIT 3;",
+                rowMapper, "%" + foodName + "%");
+	    return recipeList;
+    }
+
 	public List<Recipe> getRecipeByCookMethod(String cookMethod) {
-		List<Recipe> foodListItems = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE cook_method = ?",
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE cook_method = ?",
 				rowMapper, cookMethod);
-		return foodListItems;
 	}
 }
