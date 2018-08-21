@@ -39,31 +39,32 @@ public class ExcelImporter {
                 foodTbl.setFoodCode(readCellAsIntString(row.getCell(0))); //类编码
                 foodTbl.setSubCode(readCellAsIntString(row.getCell(2)));
                 foodTbl.setSubName(readCellAsString(row.getCell(3)));
-                foodTbl.setFoodId(readCellAsString(row.getCell(4)));
-                foodTbl.setFoodName(readCellAsString(row.getCell(5)));
-                foodTbl.setWater(readCellAsString(row.getCell(7)));
-                foodTbl.setEnergy(readCellAsDouble(row.getCell(8)));
-                foodTbl.setProtein(readCellAsDouble(row.getCell(10)));
-                foodTbl.setFat(readCellAsString(row.getCell(12)));
-                foodTbl.setCho(readCellAsString(row.getCell(14)));
-                foodTbl.setP(readCellAsString(row.getCell(35)));
-                foodTbl.setK(readCellAsString(row.getCell(36)));
-                foodTbl.setNa(readCellAsString(row.getCell(38)));
-                foodTbl.setUnit(readCellAsString(row.getCell(59)));
+                foodTbl.setAlias(readCellAsString(row.getCell(4)));
+                foodTbl.setFoodId(readCellAsString(row.getCell(5)));
+                foodTbl.setFoodName(readCellAsString(row.getCell(6)));
+                foodTbl.setWater(readCellAsString(row.getCell(8)));
+                foodTbl.setEnergy(readCellAsDouble(row.getCell(9)));
+                foodTbl.setProtein(readCellAsDouble(row.getCell(11)));
+                foodTbl.setFat(readCellAsString(row.getCell(13)));
+                foodTbl.setCho(readCellAsString(row.getCell(15)));
+                foodTbl.setP(readCellAsString(row.getCell(36)));
+                foodTbl.setK(readCellAsString(row.getCell(37)));
+                foodTbl.setNa(readCellAsString(row.getCell(39)));
+                foodTbl.setUnit(readCellAsString(row.getCell(60)));
                 foodTbls.add(foodTbl);
 
                 FoodWeight foodWeight = new FoodWeight();
-                foodWeight.setFoodId(readCellAsString(row.getCell(4)));
+                foodWeight.setFoodId(readCellAsString(row.getCell(5)));
                 foodWeight.setFoodCode(readCellAsIntString(row.getCell(0))); //类编码
                 foodWeight.setSubCode(readCellAsIntString(row.getCell(2)));
-                foodWeight.setProteinWeight(readAsInt(row.getCell(11)));
-                foodWeight.setFatWeight(readAsInt(row.getCell(13)));
-                foodWeight.setChoWeight(readAsInt(row.getCell(16)));
+                foodWeight.setProteinWeight(readAsInt(row.getCell(12)));
+                foodWeight.setFatWeight(readAsInt(row.getCell(14)));
+                foodWeight.setChoWeight(readAsInt(row.getCell(17)));
 //                foodWeight.setkWeight(readAsInt(row.getCell(37)));
-                foodWeight.setNaWeight(readAsInt(row.getCell(39)));
+                foodWeight.setNaWeight(readAsInt(row.getCell(40)));
 //                foodWeight.setpWeight(readAsInt(row.getCell(58)));
-                foodWeight.setCholesterolWeight(readAsInt(row.getCell(19)));
-                foodWeight.setPurineWeight(readAsInt(row.getCell(22)));
+                foodWeight.setCholesterolWeight(readAsInt(row.getCell(20)));
+                foodWeight.setPurineWeight(readAsInt(row.getCell(23)));
                 foodWeights.add(foodWeight);
             }
         } catch (IOException e) {
@@ -88,13 +89,14 @@ public class ExcelImporter {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./food_tbl.csv"));
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit"))
+                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alais", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit"))
         ) {
             for (FoodTbl foodTbl : foodTbls) {
                 csvPrinter.printRecord(foodTbl.getFoodCode(),
                         foodTbl.getSubCode(),
                         foodTbl.getSubName(),
                         foodTbl.getFoodId(),
+                        foodTbl.getAlias(),
                         foodTbl.getFoodName(),
                         foodTbl.getWater(),
                         foodTbl.getEnergy(),

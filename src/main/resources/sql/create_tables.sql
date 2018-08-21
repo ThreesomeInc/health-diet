@@ -20,6 +20,7 @@ CREATE TABLE `food_tbl` (
   `sub_code` varchar(45) DEFAULT NULL,
   `sub_name` varchar(45) DEFAULT NULL,
   `food_name` varchar(256) DEFAULT NULL,
+  `food_alias` varchar(256) DEFAULT NULL,
   `water` varchar(45) DEFAULT NULL,
   `energy` float(10,2) DEFAULT NULL,
   `protein` float(10,2) DEFAULT NULL,
