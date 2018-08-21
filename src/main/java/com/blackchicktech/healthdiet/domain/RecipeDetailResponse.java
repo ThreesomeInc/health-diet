@@ -16,6 +16,9 @@ public class RecipeDetailResponse extends BasicResponse {
     @JsonProperty("taste")
     private String taste;
 
+    @JsonProperty("difficulty")
+    private String difficulty;
+
     @JsonProperty("mealTime")
     private String mealTime;
 
@@ -52,5 +55,6 @@ public class RecipeDetailResponse extends BasicResponse {
         this.energy = recipe.getEnergy();
         this.protein = recipe.getProtein();
         this.ckdCategory = recipe.getCkdCategory();
+        this.difficulty = recipe.getDifficulty();
     }
 }
