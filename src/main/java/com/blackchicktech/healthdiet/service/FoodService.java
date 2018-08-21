@@ -181,11 +181,13 @@ public class FoodService {
         String choQuantity = food.getCho();
         compositions.put("碳水化合物", choQuantity + "克");
         String naQuantity = food.getNa();
-        compositions.put("钠", naQuantity + "克");
+        compositions.put("钠", naQuantity + "毫克");
         String pQuantity = food.getP();
-        compositions.put("磷", pQuantity+"克");
+        compositions.put("磷", pQuantity+"毫克");
         String kQuantity = food.getK();
-        compositions.put("钾", kQuantity+"克");
+        compositions.put("钾", kQuantity+"毫克");
+        String cholesterolQuantity = food.getCholesterol();
+        compositions.put("胆固醇", cholesterolQuantity + "毫克");
         return compositions;
     }
 
