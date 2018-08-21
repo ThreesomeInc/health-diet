@@ -34,8 +34,7 @@ public class RecipeController {
 	public RecipeTypeResponse getAllRecipeTypes() {
 		List<Map<String, String>> recipeTypes = Lists.newArrayList(
 				ImmutableMap.of("key", "mealtime", "value", "时间"),
-				ImmutableMap.of("key", "category", "value", "素荤"),
-				ImmutableMap.of("key", "style", "value", "菜系")
+				ImmutableMap.of("key", "category", "value", "素荤")
 		);
 		return new RecipeTypeResponse(recipeTypes);
 	}
