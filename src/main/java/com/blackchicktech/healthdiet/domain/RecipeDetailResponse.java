@@ -4,6 +4,8 @@ import com.blackchicktech.healthdiet.entity.Recipe;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipeDetailResponse extends BasicResponse {
 
@@ -29,7 +31,7 @@ public class RecipeDetailResponse extends BasicResponse {
     private String material;
 
     @JsonProperty("mainIngredients")
-    private String mainIngredients;
+    private List<MainIngredient> mainIngredients;
 
     @JsonProperty("energy")
     private float energy;
@@ -40,7 +42,7 @@ public class RecipeDetailResponse extends BasicResponse {
     @JsonProperty("ckdCategory")
     private String ckdCategory;
 
-    public RecipeDetailResponse(Recipe recipe) {
+    public RecipeDetailResponse(Recipe recipe, List<MainIngredient> mainIngredients) {
         if (recipe == null) {
             //set parent value for error
         }
@@ -51,7 +53,7 @@ public class RecipeDetailResponse extends BasicResponse {
         this.mealTime = recipe.getMealTime();
         this.category = recipe.getCategory();
         this.material = recipe.getMaterial();
-        this.mainIngredients = recipe.getMainIngredients();
+        this.mainIngredients = mainIngredients;
         this.energy = recipe.getEnergy();
         this.protein = recipe.getProtein();
         this.ckdCategory = recipe.getCkdCategory();

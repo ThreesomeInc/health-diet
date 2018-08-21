@@ -89,7 +89,7 @@ public class ExcelImporter {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./food_tbl.csv"));
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alais", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit"))
+                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alias", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit"))
         ) {
             for (FoodTbl foodTbl : foodTbls) {
                 csvPrinter.printRecord(foodTbl.getFoodCode(),

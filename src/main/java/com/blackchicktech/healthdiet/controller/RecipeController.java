@@ -2,6 +2,7 @@ package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.Recipe;
+import com.blackchicktech.healthdiet.service.FoodService;
 import com.blackchicktech.healthdiet.service.RecipeService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.google.common.collect.ImmutableMap;
@@ -88,8 +89,8 @@ public class RecipeController {
 		Recipe recipe = recipeService.getRecipeById(recipeId);
 		if (recipe == null) {
 			LOGGER.info("Can not find recipe by id={0}", recipeId);
-			return new RecipeDetailResponse(null);
+			return new RecipeDetailResponse(null, Collections.emptyList());
 		}
-		return new RecipeDetailResponse(recipe);
+		return new RecipeDetailResponse(recipe, recipeService.getMappedMainIngredients(recipe.getMainIngredients()));
 	}
 }

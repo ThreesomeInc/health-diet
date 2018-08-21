@@ -55,4 +55,19 @@ public class FoodDaoImpl implements FoodDao {
 				, "%" + foodName + "%");
 		return foodListItems;
 	}
+
+	public FoodListItem getFoodByAlias(String alias) {
+		FoodListItem foodListItems = jdbcTemplate.queryForObject("SELECT * FROM food_tbl WHERE food_alias = ?",
+				(resultSet, i) -> {
+					FoodListItem foodListItem = new FoodListItem(
+							resultSet.getString("food_id"),
+							resultSet.getString("food_name"),
+							"somePic.pic",
+							resultSet.getString("energy"));
+					return foodListItem;
+				}
+				, alias);
+		return foodListItems;
+	}
+
 }
