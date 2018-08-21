@@ -33,7 +33,7 @@ public class RecipeController {
 	@ResponseBody
 	public RecipeTypeResponse getAllRecipeTypes() {
 		List<Map<String, String>> recipeTypes = Lists.newArrayList(
-				ImmutableMap.of("key", "mealtime", "value", "时间"),
+				ImmutableMap.of("key", "mealtime", "value", "早午晚"),
 				ImmutableMap.of("key", "category", "value", "素荤")
 		);
 		return new RecipeTypeResponse(recipeTypes);
