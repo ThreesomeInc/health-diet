@@ -21,7 +21,6 @@ public class RecipeImporter {
 
     public static void main(String[] args) throws Exception {
         excelImporter();
-        //csvImporter();
     }
 
     private static void excelImporter() throws IOException {
@@ -36,7 +35,7 @@ public class RecipeImporter {
             System.out.println("Begin to load workbook " + file.getName());
             workbook = new XSSFWorkbook(new FileInputStream(file));
             XSSFSheet sheet1 = workbook.getSheetAt(0);
-            int totalRows = 53;  //后面是有格式的脏数据
+            int totalRows = 57;  //后面是有格式的脏数据
             System.out.println("Read sheet " + sheet1.getSheetName() + " total " + totalRows + " rows");
             //row 0 是header
             for (int i = 3; i < totalRows; i++) {

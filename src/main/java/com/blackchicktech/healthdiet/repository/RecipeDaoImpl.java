@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -24,8 +25,7 @@ public class RecipeDaoImpl {
 	}
 
 	public List<String> getAllMealTime() {
-		List<String> list = jdbcTemplate.queryForList("SELECT DISTINCT meal_time FROM recipe_tbl", String.class);
-		return list;
+		return Arrays.asList("早餐","中餐","晚餐","加餐");
 	}
 
 	public List<String> getAllCategory() {
@@ -39,8 +39,8 @@ public class RecipeDaoImpl {
 	}
 
 	public List<Recipe> getRecipeByMealTime(String mealTime) {
-		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE meal_time = ?",
-				rowMapper, mealTime);
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE meal_time LIKE ?",
+				rowMapper, "%" + mealTime + "%");
 	}
 
 	public List<Recipe> getRecipeByCategory(String category) {
