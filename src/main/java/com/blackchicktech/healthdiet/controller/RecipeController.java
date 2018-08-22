@@ -2,7 +2,6 @@ package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.Recipe;
-import com.blackchicktech.healthdiet.service.FoodService;
 import com.blackchicktech.healthdiet.service.RecipeService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.google.common.collect.ImmutableMap;
@@ -85,7 +84,7 @@ public class RecipeController {
 
 	@RequestMapping(value = "/detail/{recipeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeDetailResponse getFoodDetailById(@PathVariable String recipeId) {
+	public RecipeDetailResponse getRecipeDetailById(@PathVariable String recipeId) {
 		Recipe recipe = recipeService.getRecipeById(recipeId);
 		if (recipe == null) {
 			LOGGER.info("Can not find recipe by id={0}", recipeId);
