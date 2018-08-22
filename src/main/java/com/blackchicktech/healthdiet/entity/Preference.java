@@ -10,10 +10,13 @@ public class Preference implements Entity {
 	private String foodName;
 	private String userName;
 
-	public Preference(String userOpenId, String foodId, int frequency) {
+	private String type;
+
+	public Preference(String userOpenId, String foodId, int frequency, String type) {
 		this.userOpenId = userOpenId;
 		this.foodId = foodId;
 		this.frequency = frequency;
+		this.type = type;
 	}
 
 	public Preference() {
@@ -24,6 +27,7 @@ public class Preference implements Entity {
 		map.put("user_open_id", new Object[]{userOpenId, "setUserOpenId", String.class});
 		map.put("food_id", new Object[]{foodId, "setFoodId", String.class});
 		map.put("food_name", new Object[]{foodName, "setFoodName", String.class});
+		map.put("type", new Object[]{type, "setType", String.class});
 		map.put("frequency", new Object[]{frequency, "setFrequency", int.class});
 		return map;
 	}
@@ -66,5 +70,13 @@ public class Preference implements Entity {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

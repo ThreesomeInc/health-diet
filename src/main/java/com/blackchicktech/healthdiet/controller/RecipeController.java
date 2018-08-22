@@ -1,7 +1,9 @@
 package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.domain.*;
+import com.blackchicktech.healthdiet.entity.Preference;
 import com.blackchicktech.healthdiet.entity.Recipe;
+import com.blackchicktech.healthdiet.service.PreferenceService;
 import com.blackchicktech.healthdiet.service.RecipeService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.google.common.collect.ImmutableMap;
@@ -28,6 +30,9 @@ public class RecipeController {
 
 	@Autowired
 	private RecipeService recipeService;
+
+	@Autowired
+	private PreferenceService preferenceService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
@@ -91,5 +96,20 @@ public class RecipeController {
 			return new RecipeDetailResponse(null, Collections.emptyList());
 		}
 		return new RecipeDetailResponse(recipe, recipeService.getMappedMainIngredients(recipe.getMainIngredients()));
+	}
+
+	@PostMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public PreferenceResponse pushPreference(@RequestParam String foodId,
+											 @RequestParam String userId,
+											 @RequestParam int preference) {
+		return preferenceService.save(new Preference(userId, foodId, preference, "recipe"));
+	}
+
+	@GetMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public PreferenceResponse getPreference(@RequestParam String foodId,
+											@RequestParam String userId) {
+		return preferenceService.listPreference(userId, foodId, "recipe");
 	}
 }

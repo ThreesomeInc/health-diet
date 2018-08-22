@@ -18,15 +18,15 @@ public class PreferenceDaoImpl extends AbstractDao<Preference> {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public List<Preference> listByUserId(String openId) {
-		return jdbcTemplate.query("SELECT * FROM user_preference WHERE user_open_id = ?", rowMapper, openId);
+	public List<Preference> listByUserId(String openId, String type) {
+		return jdbcTemplate.query("SELECT * FROM user_preference WHERE user_open_id = ? AND type=?", rowMapper, openId, type);
 	}
 
-	public Preference getPreference(String openId, String foodId) {
+	public Preference getPreference(String openId, String foodId, String type) {
 		return jdbcTemplate.query("SELECT p.*,f.food_name FROM user_preference p " +
 						"LEFT JOIN food_tbl f ON f.food_id=p.food_id " +
-						"WHERE p.user_open_id = ? AND p.food_id = ?",
-				rowMapper, openId, foodId).stream().findFirst().orElse(null);
+						"WHERE p.user_open_id = ? AND p.food_id = ? AND p.type=?",
+				rowMapper, openId, foodId, type).stream().findFirst().orElse(null);
 	}
 
 	public void savePreference(Preference preference) {

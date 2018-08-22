@@ -91,13 +91,13 @@ public class FoodController {
 	public PreferenceResponse pushPreference(@RequestParam String foodId,
 											 @RequestParam String userId,
 											 @RequestParam int preference) {
-		return preferenceService.save(new Preference(userId, foodId, preference));
+		return preferenceService.save(new Preference(userId, foodId, preference, "food"));
 	}
 
 	@GetMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public PreferenceResponse getPreference(@RequestParam String foodId,
 											@RequestParam String userId) {
-		return preferenceService.listPreference(userId, foodId);
+		return preferenceService.listPreference(userId, foodId, "food");
 	}
 }
