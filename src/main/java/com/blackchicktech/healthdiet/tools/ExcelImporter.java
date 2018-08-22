@@ -39,7 +39,7 @@ public class ExcelImporter {
                 foodTbl.setFoodCode(readCellAsIntString(row.getCell(0))); //类编码
                 foodTbl.setSubCode(readCellAsIntString(row.getCell(2)));
                 foodTbl.setSubName(readCellAsString(row.getCell(3)));
-                foodTbl.setAlias(readCellAsString(row.getCell(4)));
+                foodTbl.setFoodAlias(readCellAsString(row.getCell(4)));
                 foodTbl.setFoodId(readCellAsString(row.getCell(5)));
                 foodTbl.setFoodName(readCellAsString(row.getCell(6)));
                 foodTbl.setWater(readCellAsString(row.getCell(8)));
@@ -96,7 +96,7 @@ public class ExcelImporter {
                         foodTbl.getSubCode(),
                         foodTbl.getSubName(),
                         foodTbl.getFoodId(),
-                        foodTbl.getAlias(),
+                        foodTbl.getFoodAlias(),
                         foodTbl.getFoodName(),
                         foodTbl.getWater(),
                         foodTbl.getEnergy(),

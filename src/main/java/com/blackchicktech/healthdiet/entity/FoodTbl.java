@@ -33,7 +33,7 @@ public class FoodTbl {
 
     private String unit; //单位
 
-    private String alias; //别名
+    private String foodAlias; //别名
 
     public String getFoodCode() {
         return foodCode;
@@ -155,12 +155,12 @@ public class FoodTbl {
         this.unit = unit;
     }
 
-    public String getAlias() {
-        return alias;
+    public String getFoodAlias() {
+        return foodAlias;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setFoodAlias(String foodAlias) {
+        this.foodAlias = foodAlias;
     }
 
     @Override
@@ -181,7 +181,7 @@ public class FoodTbl {
                 ", k='" + k + '\'' +
                 ", na='" + na + '\'' +
                 ", unit='" + unit + '\'' +
-                ", alias='" + alias + '\'' +
+                ", foodAlias='" + foodAlias + '\'' +
                 '}';
     }
 }
