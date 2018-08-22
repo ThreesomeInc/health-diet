@@ -112,7 +112,7 @@ public class FoodService {
         User user = userService.getUserByOpenId(openId);
         FoodTbl food = foodDao.getFoodById(foodId);
         FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
-        PreferenceResponse preference = preferenceService.listPreference(openId, foodId);
+        PreferenceResponse preference = preferenceService.listPreference(openId, foodId, "food");
 
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFoodName());

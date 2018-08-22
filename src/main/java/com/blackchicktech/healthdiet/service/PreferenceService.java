@@ -20,8 +20,8 @@ public class PreferenceService {
 		return response;
 	}
 
-	public PreferenceResponse listPreference(String userId, String foodId) {
-		Preference preference = preferenceDao.getPreference(userId, foodId);
+	public PreferenceResponse listPreference(String userId, String foodId, String type) {
+		Preference preference = preferenceDao.getPreference(userId, foodId, type);
 		PreferenceResponse response = new PreferenceResponse();
 		Optional.ofNullable(preference).ifPresent(item -> response.setPreference(preference.getFrequency()));
 		return response;
