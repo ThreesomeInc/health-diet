@@ -19,13 +19,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 //食材相关
 @Service
@@ -169,26 +163,17 @@ public class FoodService {
     }
 
     private Map<String, String> deduceCompostions(FoodTbl food){
-        Map<String, String> compositions = new HashMap<>();
-        String waterQuantity = food.getWater();
-        compositions.put("水", waterQuantity + "克");
-        double energyQuantity = food.getEnergy();
-        compositions.put("热量", energyQuantity + "千卡");
-        double proteinQuantity = food.getProtein();
-        compositions.put("蛋白质", proteinQuantity + "克");
-        String fatQuantity = food.getFat();
-        compositions.put("脂肪", fatQuantity + "克");
-        String choQuantity = food.getCho();
-        compositions.put("碳水化合物", choQuantity + "克");
-        String naQuantity = food.getNa();
-        compositions.put("钠", naQuantity + "毫克");
-        String pQuantity = food.getP();
-        compositions.put("磷", pQuantity+"毫克");
-        String kQuantity = food.getK();
-        compositions.put("钾", kQuantity+"毫克");
-        String cholesterolQuantity = food.getCholesterol();
-        compositions.put("胆固醇", cholesterolQuantity + "毫克");
-        return compositions;
+		Map<String, String> compositions = new HashMap<>();
+		Optional.ofNullable(food.getWater()).ifPresent(item -> compositions.put("水", item + "克"));
+		Optional.of(food.getEnergy()).filter(item -> item > 0).ifPresent(item -> compositions.put("热量", item + "千卡"));
+		Optional.of(food.getProtein()).filter(item -> item > 0).ifPresent(item -> compositions.put("蛋白质", item + "克"));
+		Optional.ofNullable(food.getFat()).ifPresent(item -> compositions.put("脂肪", item + "克"));
+		Optional.ofNullable(food.getCho()).ifPresent(item -> compositions.put("碳水化合物", item + "克"));
+		Optional.ofNullable(food.getNa()).ifPresent(item -> compositions.put("钠", item + "毫克"));
+		Optional.ofNullable(food.getP()).ifPresent(item -> compositions.put("磷", item + "毫克"));
+		Optional.ofNullable(food.getK()).ifPresent(item -> compositions.put("钾", item + "毫克"));
+		Optional.ofNullable(food.getCholesterol()).ifPresent(item -> compositions.put("胆固醇", item + "毫克"));
+		return compositions;
     }
 
     private String deduceDieticianAdvice(FoodTbl food, FoodWeight foodWeight, User user) {
