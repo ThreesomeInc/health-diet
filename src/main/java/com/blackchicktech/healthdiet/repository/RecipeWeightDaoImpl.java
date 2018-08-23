@@ -37,7 +37,7 @@ public class RecipeWeightDaoImpl {
         }
         List<RecipeWeight> result;
         String sqlWithMaterial = "SELECT * from recipe_weight_tbl where protein_weight < 3 and " +
-                sqlSegment + " material like %" + material + "% order by rand() limit 3";
+                sqlSegment + " material like '%" + material + "%' order by rand() limit 3";
         LOGGER.debug("SQLWithFoodCodeAndSubCode: " + sqlWithMaterial);
         result = jdbcTemplate.query(sqlWithMaterial, rowMapper);
         return result;
@@ -46,8 +46,8 @@ public class RecipeWeightDaoImpl {
     public List<RecipeWeight> getRecipeWeightByProteinWeightAndMaterial(int proteinWeight, String material){
         List<RecipeWeight> result;
         result = jdbcTemplate.query("SELECT * from recipe_weight_tbl where " +
-                        " protein_weight < ? and material like %?% order by rand() limit 3" ,
-                rowMapper, proteinWeight, material);
+                        " protein_weight < ? and material like '%" + material +"%' order by rand() limit 3" ,
+                rowMapper, proteinWeight);
 
         return result;
     }
