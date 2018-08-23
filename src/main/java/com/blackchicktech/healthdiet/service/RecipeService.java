@@ -91,6 +91,10 @@ public class RecipeService {
 
 	public String deduceDieticianAdvice(Recipe recipe, String openId){
 		User user = userDao.getUserByOpenId(openId);
+		//TODO: user empty validation
+		if (user == null) {
+			return "";
+		}
 		RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipe.getRecipeId());
 
 		int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
