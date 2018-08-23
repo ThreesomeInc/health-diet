@@ -295,7 +295,7 @@ public class FoodService {
         }
         StringBuffer dieticianAdvice = new StringBuffer();
         for (int i = 0; i < foodList.size(); i++) {
-            dieticianAdvice.append(foodList.get(i));
+            dieticianAdvice.append(foodList.get(i).getFoodName());
             if (i != foodList.size() - 1) {
                 dieticianAdvice.append("、");
             } else {

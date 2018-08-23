@@ -91,12 +91,15 @@ public class RecipeController {
 	@ResponseBody
 	public RecipeDetailResponse getRecipeDetailById(@PathVariable String recipeId, @RequestParam String openId) {
 		Recipe recipe = recipeService.getRecipeById(recipeId);
+		String dieticianAdvice = recipeService.deduceDieticianAdvice(recipe, openId);
 		if (recipe == null) {
 			LOGGER.info("Can not find recipe by id={0}", recipeId);
-			return new RecipeDetailResponse(null, Collections.emptyList(), null);
+			return new RecipeDetailResponse(null, null, Collections.emptyList(), null);
 		}
 		PreferenceResponse preference = preferenceService.listPreference(openId, recipeId, "recipe");
-		return new RecipeDetailResponse(recipe, recipeService.getMappedMainIngredients(recipe.getMainIngredients()), preference);
+        RecipeDetailResponse recipeDetailResponse = new RecipeDetailResponse(recipe, dieticianAdvice,
+                                                        recipeService.getMappedMainIngredients(recipe.getMainIngredients()), preference);
+        return recipeDetailResponse;
 	}
 
 	@PostMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
