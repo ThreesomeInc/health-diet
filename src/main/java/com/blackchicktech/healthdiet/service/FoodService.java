@@ -285,7 +285,7 @@ public class FoodService {
     }
 
     private String deduceRecommendFood(String foodCode, String subCode){
-        return Optional.ofNullable(foodWeightDao.getFoodWeightByProteinWeightAndSubCode(2, foodCode, subCode))
+        return Optional.ofNullable(foodWeightDao.getFoodWeightByProteinWeightAndSubCode(3, foodCode, subCode))
                 .filter(CollectionUtils::isNotEmpty)
                 .map(foodWeights -> foodWeights.stream()
 						.map(foodWeight -> foodDao.getFoodById(foodWeight.getFoodId()))

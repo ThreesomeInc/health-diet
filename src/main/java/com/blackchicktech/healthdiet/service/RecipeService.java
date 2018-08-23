@@ -274,7 +274,7 @@ public class RecipeService {
 	}
 
 	private String deduceRecommendRecipe(String material){
-		List<RecipeWeight> recipeWeights = recipeWeightDao.getRecipeWeightByProteinWeightAndMaterial(2, material);
+		List<RecipeWeight> recipeWeights = recipeWeightDao.getRecipeWeightByProteinWeightAndMaterial(3, material);
 		if(recipeWeights == null && recipeWeights.size() == 0){
 			return null;
 		}
