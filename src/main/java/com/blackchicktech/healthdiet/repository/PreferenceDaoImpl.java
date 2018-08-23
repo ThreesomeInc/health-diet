@@ -31,7 +31,7 @@ public class PreferenceDaoImpl extends AbstractDao<Preference> {
 	}
 
 	public void savePreference(Preference preference) {
-		jdbcTemplate.update("INSERT INTO user_preference(user_open_id, item_id, frequency,type) VALUES (?,?,?) " +
+		jdbcTemplate.update("INSERT INTO user_preference(user_open_id, item_id, frequency,type) VALUES (?,?,?,?) " +
 						"ON DUPLICATE KEY UPDATE frequency = VALUES(frequency)",
 				preference.getUserOpenId(), preference.getItemId(), preference.getFrequency(), preference.getType());
 	}
