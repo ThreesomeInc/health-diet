@@ -165,9 +165,9 @@ public class RecipeService {
 				dieticianAdvice.append("可适量食用。");
 			} else {
 				dieticianAdvice.append("不适宜您食用。 \n");
-				String recommendFoods = deduceRecipeForMultiDisease(otherDiseaseFoodWeightFields, material);
-				if(recommendFoods != null){
-					dieticianAdvice.append("以下食谱更适合您: ").append(recommendFoods);
+				String recommendRecipes = deduceRecipeForMultiDisease(otherDiseaseFoodWeightFields, material);
+				if(recommendRecipes != null){
+					dieticianAdvice.append("以下食谱更适合您: ").append(recommendRecipes);
 				}
 			}
 

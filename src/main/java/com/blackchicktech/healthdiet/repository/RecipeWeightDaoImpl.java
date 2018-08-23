@@ -29,7 +29,7 @@ public class RecipeWeightDaoImpl {
         return recipeWeightList.stream().findFirst().orElse(null);
     }
 
-    public List<RecipeWeight> getRecipeWeightByMultiWeightFields(List<String> multiWeightFields, String material){
+    public List<RecipeWeight> getRecipeWeightByMultiWeightFieldsAndMaterial(List<String> multiWeightFields, String material){
         LOGGER.debug("Getting RecipeWeight by multi weight fields:" + multiWeightFields);
         StringBuffer sqlSegment = new StringBuffer();
         for(int i = 0; i < multiWeightFields.size(); i++){
