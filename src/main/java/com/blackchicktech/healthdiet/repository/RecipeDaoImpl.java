@@ -25,7 +25,7 @@ public class RecipeDaoImpl {
 	}
 
 	public List<String> getAllMealTime() {
-		return Arrays.asList("早餐","中餐","晚餐","加餐");
+		return Arrays.asList("早餐","午餐","晚餐","加餐");
 	}
 
 	public List<String> getAllCategory() {
