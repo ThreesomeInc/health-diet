@@ -25,7 +25,7 @@ public class RecipeWeightDaoImpl {
     private RowMapper rowMapper = new BeanPropertyRowMapper(RecipeWeight.class);
 
     public RecipeWeight getRecipeWeightByRecipeId(String recipeId){
-        List<RecipeWeight> recipeWeightList = jdbcTemplate.query("SELECT * FROM RECIPE_WEIGHT_TBL WHERE recipe_id = ?",rowMapper, recipeId);
+        List<RecipeWeight> recipeWeightList = jdbcTemplate.query("SELECT * FROM recipe_weight_tbl WHERE recipe_id = ?",rowMapper, recipeId);
         return recipeWeightList.stream().findFirst().orElse(null);
     }
 
