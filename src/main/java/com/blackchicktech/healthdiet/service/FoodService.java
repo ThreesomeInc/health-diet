@@ -8,6 +8,7 @@ import com.blackchicktech.healthdiet.entity.*;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.FoodWeightDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
@@ -284,14 +285,13 @@ public class FoodService {
     }
 
     private String deduceRecommendFood(String foodCode, String subCode){
-        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByProteinWeightAndSubCode(2, foodCode, subCode);
-        if(foodWeights == null && foodWeights.size() == 0){
-            return null;
-        }
-        return foodWeights.stream()
-                .map(foodWeight -> foodDao.getFoodById(foodWeight.getFoodId()))
-                .map(FoodTbl::getFoodName)
-                .collect(Collectors.joining("、")) + "。";
+        return Optional.ofNullable(foodWeightDao.getFoodWeightByProteinWeightAndSubCode(2, foodCode, subCode))
+                .filter(CollectionUtils::isNotEmpty)
+                .map(foodWeights -> foodWeights.stream()
+						.map(foodWeight -> foodDao.getFoodById(foodWeight.getFoodId()))
+						.map(FoodTbl::getFoodName)
+						.collect(Collectors.joining("、")) + "。")
+				.orElse(null);
     }
 
 
