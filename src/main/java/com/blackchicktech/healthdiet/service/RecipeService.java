@@ -2,6 +2,7 @@ package com.blackchicktech.healthdiet.service;
 
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.domain.MainIngredient;
+import com.blackchicktech.healthdiet.domain.PreferenceResponse;
 import com.blackchicktech.healthdiet.domain.RecipeListItem;
 import com.blackchicktech.healthdiet.entity.Recipe;
 import com.blackchicktech.healthdiet.repository.FoodDao;
@@ -26,6 +27,9 @@ public class RecipeService {
 
 	@Autowired
 	private FoodDaoImpl foodDao;
+
+	@Autowired
+	private PreferenceService preferenceService;
 
 	public List<String> getCategoryList() {
 		return recipeDao.getAllCategory();

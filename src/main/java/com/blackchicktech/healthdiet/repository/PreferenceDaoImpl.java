@@ -22,16 +22,17 @@ public class PreferenceDaoImpl extends AbstractDao<Preference> {
 		return jdbcTemplate.query("SELECT * FROM user_preference WHERE user_open_id = ? AND type=?", rowMapper, openId, type);
 	}
 
-	public Preference getPreference(String openId, String foodId, String type) {
-		return jdbcTemplate.query("SELECT p.*,f.food_name FROM user_preference p " +
-						"LEFT JOIN food_tbl f ON f.food_id=p.food_id " +
-						"WHERE p.user_open_id = ? AND p.food_id = ? AND p.type=?",
-				rowMapper, openId, foodId, type).stream().findFirst().orElse(null);
+	public Preference getPreference(String openId, String itemId, String type) {
+		return jdbcTemplate.query("SELECT p.*,f.food_name, r.recipe_name FROM user_preference p " +
+						"LEFT JOIN food_tbl f ON f.food_id=p.item_id " +
+						"LEFT JOIN recipe_tbl r ON r.recipe_id=p.item_id " +
+						"WHERE p.user_open_id = ? AND p.item_id = ? AND p.type=?",
+				rowMapper, openId, itemId, type).stream().findFirst().orElse(null);
 	}
 
 	public void savePreference(Preference preference) {
-		jdbcTemplate.update("INSERT INTO user_preference(user_open_id, food_id, frequency) VALUES (?,?,?) " +
+		jdbcTemplate.update("INSERT INTO user_preference(user_open_id, item_id, frequency,type) VALUES (?,?,?) " +
 						"ON DUPLICATE KEY UPDATE frequency = VALUES(frequency)",
-				preference.getUserOpenId(), preference.getFoodId(), preference.getFrequency());
+				preference.getUserOpenId(), preference.getItemId(), preference.getFrequency(), preference.getType());
 	}
 }

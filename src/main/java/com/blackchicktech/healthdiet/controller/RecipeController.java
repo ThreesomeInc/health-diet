@@ -89,27 +89,28 @@ public class RecipeController {
 
 	@RequestMapping(value = "/detail/{recipeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeDetailResponse getRecipeDetailById(@PathVariable String recipeId) {
+	public RecipeDetailResponse getRecipeDetailById(@PathVariable String recipeId, @RequestParam String openId) {
 		Recipe recipe = recipeService.getRecipeById(recipeId);
 		if (recipe == null) {
 			LOGGER.info("Can not find recipe by id={0}", recipeId);
-			return new RecipeDetailResponse(null, Collections.emptyList());
+			return new RecipeDetailResponse(null, Collections.emptyList(), null);
 		}
-		return new RecipeDetailResponse(recipe, recipeService.getMappedMainIngredients(recipe.getMainIngredients()));
+		PreferenceResponse preference = preferenceService.listPreference(openId, recipeId, "recipe");
+		return new RecipeDetailResponse(recipe, recipeService.getMappedMainIngredients(recipe.getMainIngredients()), preference);
 	}
 
 	@PostMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public PreferenceResponse pushPreference(@RequestParam String foodId,
+	public PreferenceResponse pushPreference(@RequestParam String recipeId,
 											 @RequestParam String userId,
 											 @RequestParam int preference) {
-		return preferenceService.save(new Preference(userId, foodId, preference, "recipe"));
+		return preferenceService.save(new Preference(userId, recipeId, preference, "recipe"));
 	}
 
 	@GetMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public PreferenceResponse getPreference(@RequestParam String foodId,
+	public PreferenceResponse getPreference(@RequestParam String recipeId,
 											@RequestParam String userId) {
-		return preferenceService.listPreference(userId, foodId, "recipe");
+		return preferenceService.listPreference(userId, recipeId, "recipe");
 	}
 }

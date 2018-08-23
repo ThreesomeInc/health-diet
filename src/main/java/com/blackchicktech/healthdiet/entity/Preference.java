@@ -5,16 +5,17 @@ import java.util.Map;
 
 public class Preference implements Entity {
 	private String userOpenId;
-	private String foodId;
+	private String itemId;
 	private int frequency;
 	private String foodName;
+	private String recipeName;
 	private String userName;
 
 	private String type;
 
-	public Preference(String userOpenId, String foodId, int frequency, String type) {
+	public Preference(String userOpenId, String itemId, int frequency, String type) {
 		this.userOpenId = userOpenId;
-		this.foodId = foodId;
+		this.itemId = itemId;
 		this.frequency = frequency;
 		this.type = type;
 	}
@@ -25,8 +26,9 @@ public class Preference implements Entity {
 	public Map<String, Object[]> getFieldInfo() {
 		Map<String, Object[]> map = new HashMap<>();
 		map.put("user_open_id", new Object[]{userOpenId, "setUserOpenId", String.class});
-		map.put("food_id", new Object[]{foodId, "setFoodId", String.class});
+		map.put("item_id", new Object[]{itemId, "setItemId", String.class});
 		map.put("food_name", new Object[]{foodName, "setFoodName", String.class});
+		map.put("recipe_name", new Object[]{recipeName, "setRecipeName", String.class});
 		map.put("type", new Object[]{type, "setType", String.class});
 		map.put("frequency", new Object[]{frequency, "setFrequency", int.class});
 		return map;
@@ -40,12 +42,12 @@ public class Preference implements Entity {
 		this.userOpenId = userOpenId;
 	}
 
-	public String getFoodId() {
-		return foodId;
+	public String getItemId() {
+		return itemId;
 	}
 
-	public void setFoodId(String foodId) {
-		this.foodId = foodId;
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
 	}
 
 	public int getFrequency() {
@@ -62,6 +64,14 @@ public class Preference implements Entity {
 
 	public void setFoodName(String foodName) {
 		this.foodName = foodName;
+	}
+
+	public String getRecipeName() {
+		return recipeName;
+	}
+
+	public void setRecipeName(String recipeName) {
+		this.recipeName = recipeName;
 	}
 
 	public String getUserName() {
