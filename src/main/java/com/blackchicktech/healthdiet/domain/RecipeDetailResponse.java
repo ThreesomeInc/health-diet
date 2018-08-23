@@ -42,7 +42,7 @@ public class RecipeDetailResponse extends BasicResponse {
 	@JsonProperty("ckdCategory")
 	private String ckdCategory;
 
-	@JsonProperty("ckdCategory")
+	@JsonProperty("preference")
 	private int preference;
 
 	public RecipeDetailResponse(Recipe recipe, List<MainIngredient> mainIngredients, PreferenceResponse preference) {
