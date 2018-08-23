@@ -63,6 +63,7 @@ public class RecipeImporter {
 
                 RecipeWeight recipeWeight = new RecipeWeight();
                 recipeWeight.setRecipeId(readCellAsIntString(row.getCell(0)));
+                recipeWeight.setMaterial(readCellAsString(row.getCell(11)));
                 recipeWeight.setProteinWeight(readAsInt(row.getCell(16)));
                 recipeWeight.setFatWeight(readAsInt(row.getCell(17)));
                 recipeWeight.setChoWeight(readAsInt(row.getCell(18)));
@@ -132,10 +133,11 @@ public class RecipeImporter {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./recipe_weight_tbl.csv"));
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("recipe_id", "protein_weight", "fat_weight", "cho_weight", "na_weight", "cholesterol_weight", "purine_weight", "k_weight"))
+                        .withHeader("recipe_id", "material", "protein_weight", "fat_weight", "cho_weight", "na_weight", "cholesterol_weight", "purine_weight", "k_weight"))
         ) {
             for (RecipeWeight recipeWeight : recipeWeightList) {
                 csvPrinter.printRecord(recipeWeight.getRecipeId(),
+                        recipeWeight.getMaterial(),
                         recipeWeight.getProteinWeight(),
                         recipeWeight.getFatWeight(),
                         recipeWeight.getChoWeight(),

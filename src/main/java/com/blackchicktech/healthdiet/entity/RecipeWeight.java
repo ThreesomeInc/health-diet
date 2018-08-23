@@ -8,6 +8,8 @@ public class RecipeWeight implements Entity {
 
 	private String recipeId;
 
+	private String material;
+
 	private int proteinWeight;
 
 	private int fatWeight;
@@ -21,6 +23,14 @@ public class RecipeWeight implements Entity {
 	private int purineWeight;
 
 	private int kWeight;
+
+	public String getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(String material) {
+		this.material = material;
+	}
 
 	public String getRecipeId() {
 		return recipeId;
@@ -90,6 +100,7 @@ public class RecipeWeight implements Entity {
 	public String toString() {
 		return "RecipeWeight{" +
 				"recipeId='" + recipeId + '\'' +
+				", material='" + material + '\'' +
 				", proteinWeight=" + proteinWeight +
 				", fatWeight=" + fatWeight +
 				", choWeight=" + choWeight +

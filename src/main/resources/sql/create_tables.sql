@@ -75,6 +75,7 @@ CREATE TABLE `recipe_tbl` (
 
 CREATE TABLE `recipe_weight_tbl` (
   `recipe_id` varchar(45) NOT NULL,
+  `material` varchar(45) DEFAULT NULL,
   `protein_weight` int DEFAULT NULL,
   `fat_weight` int DEFAULT NULL,
   `cho_weight` int DEFAULT NULL,
