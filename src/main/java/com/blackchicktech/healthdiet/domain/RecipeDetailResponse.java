@@ -45,11 +45,13 @@ public class RecipeDetailResponse extends BasicResponse {
 	@JsonProperty("preference")
 	private int preference;
 
-	@JsonProperty("dieticianAdvice")
+    @JsonProperty("dieticianAdvice")
     private String dieticianAdvice;
 
+    @JsonProperty("cookingNote")
+    private final String cookingNote;
 
-    public RecipeDetailResponse(Recipe recipe, String dieticianAdvice, List<MainIngredient> mainIngredients, PreferenceResponse preference) {
+	public RecipeDetailResponse(Recipe recipe,String dieticianAdvice, List<MainIngredient> mainIngredients, PreferenceResponse preference) {
 		if (recipe == null) {
 			//set parent value for error
 		}
@@ -65,7 +67,8 @@ public class RecipeDetailResponse extends BasicResponse {
 		this.protein = recipe.getProtein();
 		this.ckdCategory = recipe.getCkdCategory();
 		this.difficulty = recipe.getDifficulty();
-		this.dieticianAdvice = dieticianAdvice;
+        this.cookingNote = recipe.getCookingnote();
+        this.dieticianAdvice = dieticianAdvice;
 		if (preference != null) {
 			this.preference = preference.getPreference();
 		}

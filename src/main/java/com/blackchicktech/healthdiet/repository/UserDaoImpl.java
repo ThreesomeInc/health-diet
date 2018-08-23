@@ -3,6 +3,8 @@ package com.blackchicktech.healthdiet.repository;
 import com.blackchicktech.healthdiet.domain.UserDataInfo;
 import com.blackchicktech.healthdiet.domain.UserInfo;
 import com.blackchicktech.healthdiet.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +21,8 @@ import java.util.StringJoiner;
 @Repository
 public class UserDaoImpl {
 
+	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
+
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -33,6 +37,17 @@ public class UserDaoImpl {
 
 		StringJoiner irritabilityJoiner = new StringJoiner(",");
 		userDataInfo.getIrritability().forEach(irritabilityJoiner::add);
+		logger.info("Going to insert user data openId={}, gender={}, birthday={}, height={}, weight={}, sportRate={}, nephroticPeriod={}",
+				userInfo.getOpenId(),
+				userDataInfo.getGender(),
+				userDataInfo.getBirthDay(),
+				userDataInfo.getHeight(),
+				userDataInfo.getWeight(),
+				userDataInfo.getSportRate(),
+				userDataInfo.getNephroticPeriod());
+		logger.info("Going to insert user data treat={},", treatJoiner.toString());
+		logger.info("Going to insert user data disease={},", diseaseJoiner.toString());
+		logger.info("Going to insert user data irritability={},", irritabilityJoiner.toString());
 		jdbcTemplate.update(
 				"REPLACE INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)",
 				userInfo.getOpenId(),

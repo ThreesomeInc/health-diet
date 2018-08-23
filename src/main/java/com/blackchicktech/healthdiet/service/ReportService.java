@@ -25,6 +25,7 @@ public class ReportService {
 
 
     public ReportResponse report(ReportRequest reportRequest) {
+        LOGGER.info("Begin to generate report for user openId={}", reportRequest.getUserInfo().getOpenId());
         ReportResponse response = new ReportResponse();
         response.setStandardWeight(String.valueOf(calStandardWeight(reportRequest)) + "公斤");
         response.setCalorie(String.valueOf(calCalorie(reportRequest)) + "卡路里");
@@ -33,6 +34,8 @@ public class ReportService {
         response.setAdvice(deduceAdvice(reportRequest));
         response.setSuggestNutrition(calSuggestNutrition(reportRequest));
         response.setSlogan(deduceSlogan());
+        LOGGER.info("End to generate report for user openId={}", reportRequest.getUserInfo().getOpenId());
+        LOGGER.debug("Report info={}", response.toString());
         return response;
     }
 

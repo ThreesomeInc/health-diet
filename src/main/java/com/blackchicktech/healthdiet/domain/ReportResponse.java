@@ -92,4 +92,17 @@ public class ReportResponse extends BasicResponse{
     public void setAdvice(String advice) {
         this.advice = advice;
     }
+
+    @Override
+    public String toString() {
+        return "ReportResponse{" +
+                "bmi='" + bmi + '\'' +
+                ", standardWeight='" + standardWeight + '\'' +
+                ", calorie='" + calorie + '\'' +
+                ", protein='" + protein + '\'' +
+                ", suggestNutrition=" + suggestNutrition +
+                ", advice='" + advice + '\'' +
+                ", slogan='" + slogan + '\'' +
+                "} " + super.toString();
+    }
 }
