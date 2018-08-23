@@ -45,6 +45,9 @@ public class RecipeDetailResponse extends BasicResponse {
 	@JsonProperty("preference")
 	private int preference;
 
+	@JsonProperty("cookingNote")
+	private final String cookingNote;
+
 	public RecipeDetailResponse(Recipe recipe, List<MainIngredient> mainIngredients, PreferenceResponse preference) {
 		if (recipe == null) {
 			//set parent value for error
@@ -61,6 +64,7 @@ public class RecipeDetailResponse extends BasicResponse {
 		this.protein = recipe.getProtein();
 		this.ckdCategory = recipe.getCkdCategory();
 		this.difficulty = recipe.getDifficulty();
+		this.cookingNote = recipe.getCookingnote();
 		if (preference != null) {
 			this.preference = preference.getPreference();
 		}
