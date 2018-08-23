@@ -29,7 +29,7 @@ public class RecipeWeightDaoImpl {
         return recipeWeightList.stream().findFirst().orElse(null);
     }
 
-    public List<RecipeWeight> getRecipeWeightByMultiWeightFieldsAndMaterial(List<String> multiWeightFields, String material){
+    public List<RecipeWeight> getRecipeWeightByMultiWeightFields(List<String> multiWeightFields, String material){
         LOGGER.debug("Getting RecipeWeight by multi weight fields:" + multiWeightFields);
         StringBuffer sqlSegment = new StringBuffer();
         for(int i = 0; i < multiWeightFields.size(); i++){
@@ -37,7 +37,7 @@ public class RecipeWeightDaoImpl {
         }
         List<RecipeWeight> result;
         String sqlWithMaterial = "SELECT * from recipe_weight_tbl where protein_weight < 3 and " +
-                sqlSegment + " material likes %" + material + "% order by rand() limit 3";
+                sqlSegment + " material like %" + material + "% order by rand() limit 3";
         LOGGER.debug("SQLWithFoodCodeAndSubCode: " + sqlWithMaterial);
         result = jdbcTemplate.query(sqlWithMaterial, rowMapper);
         return result;
@@ -46,7 +46,7 @@ public class RecipeWeightDaoImpl {
     public List<RecipeWeight> getRecipeWeightByProteinWeightAndMaterial(int proteinWeight, String material){
         List<RecipeWeight> result;
         result = jdbcTemplate.query("SELECT * from recipe_weight_tbl where " +
-                        " protein_weight < ? and material likes %?% order by rand() limit 3" ,
+                        " protein_weight < ? and material like %?% order by rand() limit 3" ,
                 rowMapper, proteinWeight, material);
 
         return result;
