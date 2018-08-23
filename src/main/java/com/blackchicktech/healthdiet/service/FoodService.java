@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 //食材相关
 @Service
@@ -287,22 +288,10 @@ public class FoodService {
         if(foodWeights == null && foodWeights.size() == 0){
             return null;
         }
-
-        List<FoodTbl> foodList = new ArrayList<>();
-        for (FoodWeight foodWeight : foodWeights) {
-            FoodTbl food = foodDao.getFoodById(foodWeight.getFoodId());
-            foodList.add(food);
-        }
-        StringBuffer dieticianAdvice = new StringBuffer();
-        for (int i = 0; i < foodList.size(); i++) {
-            dieticianAdvice.append(foodList.get(i).getFoodName());
-            if (i != foodList.size() - 1) {
-                dieticianAdvice.append("、");
-            } else {
-                dieticianAdvice.append("。");
-            }
-        }
-        return dieticianAdvice.toString();
+        return foodWeights.stream()
+                .map(foodWeight -> foodDao.getFoodById(foodWeight.getFoodId()))
+                .map(FoodTbl::getFoodName)
+                .collect(Collectors.joining("、")) + "。";
     }
 
 
