@@ -8,9 +8,11 @@ import com.blackchicktech.healthdiet.entity.*;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.FoodWeightDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.jooq.lambda.tuple.Tuple2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //食材相关
 @Service
@@ -119,7 +124,7 @@ public class FoodService {
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFoodName());
         foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight, user));
-        foodDetailResponse.setComposition(deduceCompostions(food));
+        foodDetailResponse.setComposition(deduceCompositions(food));
         foodDetailResponse.setLabel(deduceLabel(foodWeight));
         foodDetailResponse.setRecipeList(recipeService.getRecommendRecipeList(food.getFoodAlias()));
         if (preference.getPreference() != 0) {
@@ -129,49 +134,23 @@ public class FoodService {
 
     }
 
-    private List<String> deduceLabel(FoodWeight foodWeight){
-        List<String> label = new ArrayList<>();
-        LOGGER.info("Deduce Food Label: " + foodWeight);
-        int proteinWeight = foodWeight.getProteinWeight();
-        int choWeight = foodWeight.getChoWeight();
-        int fatWeight = foodWeight.getFatWeight();
-        int naWeight = foodWeight.getNaWeight();
-        int purineWeight = foodWeight.getPurineWeight();
-        int cholesterolWeight = foodWeight.getCholesterolWeight();
-        if (proteinWeight == 1) {
-            label.add("低蛋白");
-        } else if (proteinWeight == 3) {
-            label.add("高蛋白");
-        }
-        if (choWeight == 1) {
-            label.add("低糖");
-        } else if (choWeight == 3) {
-            label.add("高糖");
-        }
-        if (fatWeight == 1) {
-            label.add("低脂肪");
-        } else if (fatWeight == 3) {
-            label.add("高脂肪");
-        }
-        if (naWeight == 1) {
-            label.add("低钠");
-        } else if (naWeight == 3) {
-            label.add("高钠");
-        }
-        if (purineWeight == 1) {
-            label.add("低嘌呤");
-        } else if (purineWeight == 3) {
-            label.add("高嘌呤");
-        }
-        if (cholesterolWeight == 1) {
-            label.add("低胆固醇");
-        } else if (cholesterolWeight == 3) {
-            label.add("高胆固醇");
-        }
-        return label;
-    }
+	private List<String> deduceLabel(FoodWeight foodWeight) {
+		LOGGER.info("Deduce Food Label: " + foodWeight);
+		Map<Integer, String> weightIndex = ImmutableMap.of(1, "低", 3, "高");
+		return Stream.of(
+				new Tuple2<String, Function<FoodWeight, Integer>>("蛋白", FoodWeight::getProteinWeight),
+				new Tuple2<String, Function<FoodWeight, Integer>>("糖", FoodWeight::getChoWeight),
+				new Tuple2<String, Function<FoodWeight, Integer>>("脂肪", FoodWeight::getFatWeight),
+				new Tuple2<String, Function<FoodWeight, Integer>>("钠", FoodWeight::getNaWeight),
+				new Tuple2<String, Function<FoodWeight, Integer>>("嘌呤", FoodWeight::getPurineWeight),
+				new Tuple2<String, Function<FoodWeight, Integer>>("胆固醇", FoodWeight::getCholesterolWeight))
+				.map(tuple -> Optional.ofNullable(weightIndex.get(tuple.v2().apply(foodWeight)))
+						.map(weight -> weight + tuple.v1()).orElse(null))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+	}
 
-    private Map<String, String> deduceCompostions(FoodTbl food){
+    private Map<String, String> deduceCompositions(FoodTbl food){
 		Map<String, String> compositions = new HashMap<>();
 		Optional.ofNullable(food.getWater()).ifPresent(item -> compositions.put("水", item + "克"));
 		Optional.of(food.getEnergy()).filter(item -> item > 0).ifPresent(item -> compositions.put("热量", item + "千卡"));

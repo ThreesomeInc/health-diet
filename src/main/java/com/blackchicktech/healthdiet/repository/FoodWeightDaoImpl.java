@@ -20,7 +20,7 @@ public class FoodWeightDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper rowMapper = new BeanPropertyRowMapper(FoodWeight.class);
+    private RowMapper<FoodWeight> rowMapper = new BeanPropertyRowMapper<>(FoodWeight.class);
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FoodWeightDaoImpl.class);
 

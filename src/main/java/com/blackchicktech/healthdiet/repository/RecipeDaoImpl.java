@@ -16,7 +16,7 @@ public class RecipeDaoImpl {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private RowMapper<Recipe> rowMapper = new BeanPropertyRowMapper(Recipe.class);
+	private RowMapper<Recipe> rowMapper = new BeanPropertyRowMapper<>(Recipe.class);
 
 	public Recipe getRecipeById(String recipeId) {
 		List<Recipe> foodList = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE recipe_id = ?",
@@ -25,12 +25,11 @@ public class RecipeDaoImpl {
 	}
 
 	public List<String> getAllMealTime() {
-		return Arrays.asList("早餐","午餐","晚餐","加餐");
+		return Arrays.asList("早餐", "午餐", "晚餐", "加餐");
 	}
 
 	public List<String> getAllCategory() {
-		List<String> list = jdbcTemplate.queryForList("SELECT DISTINCT category FROM recipe_tbl", String.class);
-		return list;
+		return jdbcTemplate.queryForList("SELECT DISTINCT category FROM recipe_tbl", String.class);
 	}
 
 	public List<Recipe> getRecipeByName(String recipeName) {
@@ -49,10 +48,9 @@ public class RecipeDaoImpl {
 	}
 
 	public List<Recipe> getRecommendRecipe(String foodName) {
-	    List<Recipe> recipeList = jdbcTemplate.query("SELECT * FROM recipe_tbl where material LIKE ? ORDER BY RAND() LIMIT 3;",
-                rowMapper, "%" + foodName + "%");
-	    return recipeList;
-    }
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE material LIKE ? ORDER BY RAND() LIMIT 3;",
+				rowMapper, "%" + foodName + "%");
+	}
 
 	public List<Recipe> getRecipeByCookMethod(String cookMethod) {
 		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE cook_method = ?",

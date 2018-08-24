@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.repository;
 import com.blackchicktech.healthdiet.domain.UserDataInfo;
 import com.blackchicktech.healthdiet.domain.UserInfo;
 import com.blackchicktech.healthdiet.entity.User;
+import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.StringJoiner;
 
 /**
  * Created by Eric Cen on 2018/8/12.
@@ -26,28 +25,22 @@ public class UserDaoImpl {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private RowMapper rowMapper = new BeanPropertyRowMapper(User.class);
+	private RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
 
 	public void createUser(UserInfo userInfo, UserDataInfo userDataInfo) {
-		StringJoiner treatJoiner = new StringJoiner(",");
-		userDataInfo.getTreatmentMethod().forEach(treatJoiner::add);
-
-		StringJoiner diseaseJoiner = new StringJoiner(",");
-		userDataInfo.getOtherDisease().forEach(diseaseJoiner::add);
-
-		StringJoiner irritabilityJoiner = new StringJoiner(",");
-		userDataInfo.getIrritability().forEach(irritabilityJoiner::add);
-		logger.info("Going to insert user data openId={}, gender={}, birthday={}, height={}, weight={}, sportRate={}, nephroticPeriod={}",
+		Joiner joiner = Joiner.on(",");
+		logger.info("Going to insert user data openId={}, gender={}, birthday={}, height={}," +
+						" weight={}, sportRate={}, nephroticPeriod={}, treat={}, disease={}, irritability={}",
 				userInfo.getOpenId(),
 				userDataInfo.getGender(),
 				userDataInfo.getBirthDay(),
 				userDataInfo.getHeight(),
 				userDataInfo.getWeight(),
 				userDataInfo.getSportRate(),
-				userDataInfo.getNephroticPeriod());
-		logger.info("Going to insert user data treat={},", treatJoiner.toString());
-		logger.info("Going to insert user data disease={},", diseaseJoiner.toString());
-		logger.info("Going to insert user data irritability={},", irritabilityJoiner.toString());
+				userDataInfo.getNephroticPeriod(),
+				userDataInfo.getTreatmentMethod(),
+				userDataInfo.getOtherDisease(),
+				userDataInfo.getIrritability());
 		jdbcTemplate.update(
 				"REPLACE INTO user_tbl VALUES (?, ?, ?, ?, ?, ? ,?, ?, ?, ?)",
 				userInfo.getOpenId(),
@@ -57,14 +50,14 @@ public class UserDaoImpl {
 				userDataInfo.getWeight(),
 				userDataInfo.getSportRate(),
 				userDataInfo.getNephroticPeriod(),
-				treatJoiner.toString(),
-				diseaseJoiner.toString(),
-				irritabilityJoiner.toString()
+				joiner.join(userDataInfo.getTreatmentMethod()),
+				joiner.join(userDataInfo.getOtherDisease()),
+				joiner.join(userDataInfo.getIrritability())
 		);
 	}
 
 	public User getUserByOpenId(String openId) {
-		List<User> users = jdbcTemplate.<User>query("SELECT * FROM user_tbl WHERE open_id = ?", rowMapper, openId);
+		List<User> users = jdbcTemplate.query("SELECT * FROM user_tbl WHERE open_id = ?", rowMapper, openId);
 		return users.stream().findFirst().orElse(null);
 	}
 }

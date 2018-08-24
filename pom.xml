@@ -46,6 +46,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jool-java-8</artifactId>
+			<version>0.9.13</version>
+		</dependency>
+		<dependency>
 			<groupId>com.googlecode.concurrent-trees</groupId>
 			<artifactId>concurrent-trees</artifactId>
 			<version>2.6.1</version>

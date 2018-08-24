@@ -23,7 +23,7 @@ public class FoodDaoImpl implements FoodDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private RowMapper rowMapper = new BeanPropertyRowMapper(FoodTbl.class);
+	private RowMapper<FoodTbl> rowMapper = new BeanPropertyRowMapper<>(FoodTbl.class);
 
 	@Override
 	public FoodTbl getFoodById(String foodId) {
@@ -40,14 +40,11 @@ public class FoodDaoImpl implements FoodDao {
 	public List<FoodListItem> getFoodByTypeId(String typeId) {
 		logger.info("Query food by food type foodCode={}", typeId);
 		List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * from food_tbl where food_code = " + typeId,
-				(resultSet, i) -> {
-					FoodListItem foodListItem = new FoodListItem(
-							resultSet.getString("food_id"),
-							resultSet.getString("food_name"),
-							"somePic.pic",
-							resultSet.getString("energy"));
-					return foodListItem;
-				}
+				(resultSet, i) -> new FoodListItem(
+						resultSet.getString("food_id"),
+						resultSet.getString("food_name"),
+						"somePic.pic",
+						resultSet.getString("energy"))
 		);
 		logger.info("Finished to query food by foodCode={}, totally {} counts", typeId, foodListItems.size());
 		return foodListItems;
@@ -56,14 +53,11 @@ public class FoodDaoImpl implements FoodDao {
 	public List<FoodListItem> getFoodByName(String foodName) {
 		logger.info("Query food by food name foodName={}", foodName);
 		List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * FROM food_tbl WHERE food_name LIKE  ?",
-				(resultSet, i) -> {
-					FoodListItem foodListItem = new FoodListItem(
-							resultSet.getString("food_id"),
-							resultSet.getString("food_name"),
-							"somePic.pic",
-							resultSet.getString("energy"));
-					return foodListItem;
-				}
+				(resultSet, i) -> new FoodListItem(
+						resultSet.getString("food_id"),
+						resultSet.getString("food_name"),
+						"somePic.pic",
+						resultSet.getString("energy"))
 				, "%" + foodName + "%");
 		logger.info("Finished to query food by foodName={}, totally {} counts", foodName, foodListItems.size());
 		return foodListItems;
@@ -72,14 +66,11 @@ public class FoodDaoImpl implements FoodDao {
 	public FoodListItem getFoodByAlias(String alias) {
 		logger.info("Query food by food alias foodAlias={}", alias);
 		List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * FROM food_tbl WHERE food_alias = ?",
-				(resultSet, i) -> {
-					FoodListItem foodListItem = new FoodListItem(
-							resultSet.getString("food_id"),
-							resultSet.getString("food_name"),
-							"somePic.pic",
-							resultSet.getString("energy"));
-					return foodListItem;
-				}
+				(resultSet, i) -> new FoodListItem(
+						resultSet.getString("food_id"),
+						resultSet.getString("food_name"),
+						"somePic.pic",
+						resultSet.getString("energy"))
 				, alias);
 		FoodListItem foodListItem = foodListItems.stream().findFirst().orElse(null);
 		if (foodListItem == null) {
