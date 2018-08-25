@@ -30,6 +30,7 @@ CREATE TABLE `food_tbl` (
   `k` varchar(45) DEFAULT NULL,
   `na` varchar(45) DEFAULT NULL,
   `unit` varchar(45) DEFAULT NULL,
+  `edible` int DEFAULT NULL,
   PRIMARY KEY (`food_id`),
   FULLTEXT KEY `NAME_INDEX` (`food_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

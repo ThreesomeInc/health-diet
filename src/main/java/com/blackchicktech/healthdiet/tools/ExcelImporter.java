@@ -51,6 +51,7 @@ public class ExcelImporter {
                 foodTbl.setK(readCellAsString(row.getCell(37)));
                 foodTbl.setNa(readCellAsString(row.getCell(39)));
                 foodTbl.setUnit(readCellAsString(row.getCell(60)));
+                foodTbl.setEdible(readAsInt(row.getCell(7), 0));
                 foodTbls.add(foodTbl);
 
                 FoodWeight foodWeight = new FoodWeight();
@@ -89,7 +90,7 @@ public class ExcelImporter {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./food_tbl.csv"));
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alias", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit"))
+                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alias", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit", "edible"))
         ) {
             for (FoodTbl foodTbl : foodTbls) {
                 csvPrinter.printRecord(foodTbl.getFoodCode(),
@@ -107,7 +108,8 @@ public class ExcelImporter {
                         foodTbl.getP(),
                         foodTbl.getK(),
                         foodTbl.getNa(),
-                        foodTbl.getUnit()
+                        foodTbl.getUnit(),
+                        foodTbl.getEdible()
                 );
             }
             csvPrinter.flush();
@@ -182,6 +184,17 @@ public class ExcelImporter {
             default:
                 System.out.println("Not supported cell type " + cell.getCellTypeEnum().name());
                 return 9999;
+        }
+    }
+
+    public static int readAsInt(XSSFCell cell, int defultValue) {
+        if (cell == null) {
+            throw new RuntimeException("Int could not be null");
+        }
+        try {
+            return readAsInt(cell);
+        } catch (Exception e) {
+            return defultValue;
         }
     }
 

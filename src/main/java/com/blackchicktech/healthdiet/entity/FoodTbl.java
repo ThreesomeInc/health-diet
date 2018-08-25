@@ -35,6 +35,8 @@ public class FoodTbl {
 
     private String foodAlias; //别名
 
+    private int edible; //食部
+
     public String getFoodCode() {
         return foodCode;
     }
@@ -163,6 +165,14 @@ public class FoodTbl {
         this.foodAlias = foodAlias;
     }
 
+    public int getEdible() {
+        return edible;
+    }
+
+    public void setEdible(int edible) {
+        this.edible = edible;
+    }
+
     @Override
     public String toString() {
         return "FoodTbl{" +
@@ -182,6 +192,7 @@ public class FoodTbl {
                 ", na='" + na + '\'' +
                 ", unit='" + unit + '\'' +
                 ", foodAlias='" + foodAlias + '\'' +
+                ", edible=" + edible +
                 '}';
     }
 }
