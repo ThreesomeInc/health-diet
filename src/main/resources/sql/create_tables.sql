@@ -84,4 +84,10 @@ CREATE TABLE `recipe_weight_tbl` (
   `purine_weight` int DEFAULT NULL,
   `k_weight` int DEFAULT NULL,
   PRIMARY KEY (`recipe_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `health_diet`.`food_log_tbl` (
+  `open_id` VARCHAR(255) NOT NULL,
+  `log_date` DATETIME NOT NULL,
+  `is_logged` TINYINT NULL DEFAULT 0,
+  PRIMARY KEY (`open_id`, `log_date`));
