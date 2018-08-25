@@ -33,8 +33,8 @@ public class FoodLogDao {
         return foodLogList;
     }
 
-    public void addFoodLog(FoodLogRequest request) {
-        logger.info("Going to insert food log for user openId={}", request.getOpenId());
+    public void addFoodLogDetail(FoodLogRequest request) {
+        logger.info("Going to insert food log detail for user openId={}", request.getOpenId());
         try {
             jdbcTemplate.update(
                     "REPLACE INTO food_log_detail_tbl VALUES (?, ?, ? ,?)",
@@ -43,7 +43,48 @@ public class FoodLogDao {
                     request.getMealTime(),
                     FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
         } catch (Exception e) {
+            logger.warn("Failed to insert food log detail for user openId={}, msg={}", request.getOpenId(),
+                    e.getMessage());
+        }
+    }
+
+    public void addFoodLog(FoodLogRequest request) {
+        logger.info("Going to insert food log for user openId={}", request.getOpenId());
+        try {
+            jdbcTemplate.update(
+                    "REPLACE INTO food_log_tbl VALUES (?, ?, ?)",
+                    request.getOpenId(),
+                    request.getDate(),
+                    1);
+        } catch (Exception e) {
             logger.warn("Failed to insert food log for user openId={}, msg={}", request.getOpenId(),
+                    e.getMessage());
+        }
+    }
+
+    public void deleteFoodLogDetail(FoodLogRequest request) {
+        logger.info("Going to delete food log detail for user openId={}", request.getOpenId());
+        try {
+            jdbcTemplate.update(
+                    "DELETE FROM food_log_detail_tbl WHERE open_id=? AND log_date=? AND mealtime=?",
+                    request.getOpenId(),
+                    request.getDate(),
+                    request.getMealTime());
+        } catch (Exception e) {
+            logger.warn("Failed to delete food log detail for user openId={}, msg={}", request.getOpenId(),
+                    e.getMessage());
+        }
+    }
+
+    public void deleteFoodLog(FoodLogRequest request) {
+        logger.info("Going to delete food log for user openId={}", request.getOpenId());
+        try {
+            jdbcTemplate.update(
+                    "DELETE FROM food_log_tbl WHERE open_id=? AND log_date=?",
+                    request.getOpenId(),
+                    request.getDate());
+        } catch (Exception e) {
+            logger.warn("Failed to delete food log for user openId={}, msg={}", request.getOpenId(),
                     e.getMessage());
         }
     }

@@ -25,8 +25,14 @@ public class FoodLogService {
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
-    public void addFoodLog(FoodLogRequest request) {
-        foodLogDao.addFoodLog(request);
+    public void updateFoodLog(FoodLogRequest request) {
+        if (request.getFoodLogItemList() != null && !request.getFoodLogItemList().isEmpty()) {
+            foodLogDao.addFoodLogDetail(request);
+            foodLogDao.addFoodLog(request); //transaction
+        } else {
+            foodLogDao.deleteFoodLogDetail(request);
+            //TODO 这里需要判断一天还有没有其余记录
+//            foodLogDao.deleteFoodLog(request);
+        }
     }
-
 }

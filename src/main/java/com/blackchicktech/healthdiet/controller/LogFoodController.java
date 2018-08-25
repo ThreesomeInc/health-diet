@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class LogFoodController {
                 request.getDate(),
                 request.getMealTime(),
                 FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
-        foodLogService.addFoodLog(request);
+        foodLogService.updateFoodLog(request);
         //TODO cal and return 算蛋白摄入
         return new DietRecordResponse();
     }
