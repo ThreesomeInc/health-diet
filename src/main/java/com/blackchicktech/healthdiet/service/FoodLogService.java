@@ -1,5 +1,6 @@
 package com.blackchicktech.healthdiet.service;
 
+import com.blackchicktech.healthdiet.domain.FoodLogRequest;
 import com.blackchicktech.healthdiet.domain.MonthFoodLog;
 import com.blackchicktech.healthdiet.repository.FoodLogDao;
 import org.slf4j.Logger;
@@ -22,6 +23,10 @@ public class FoodLogService {
     public List<MonthFoodLog> getCurrentMonthFoodLog(String openId, Date currentDate) {
         return foodLogDao.getCurrentMonthFoodLog(openId, currentDate).stream()
                 .map(MonthFoodLog::new).collect(Collectors.toList());
+    }
+
+    public void addFoodLog(FoodLogRequest request) {
+        foodLogDao.addFoodLog(request);
     }
 
 }

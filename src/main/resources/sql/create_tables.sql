@@ -90,4 +90,13 @@ CREATE TABLE `health_diet`.`food_log_tbl` (
   `open_id` VARCHAR(255) NOT NULL,
   `log_date` DATETIME NOT NULL,
   `is_logged` TINYINT NULL DEFAULT 0,
-  PRIMARY KEY (`open_id`, `log_date`));
+  PRIMARY KEY (`open_id`, `log_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `health_diet`.`food_log_detail_tbl` (
+  `open_id` VARCHAR(255) NOT NULL,
+  `log_date` DATETIME NOT NULL,
+  `mealtime` VARCHAR(45) NOT NULL,
+  `content` TEXT NULL,
+  PRIMARY KEY (`open_id`, `log_date`, `mealtime`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

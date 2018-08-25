@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.controller;
 import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.service.FoodLogService;
 import com.blackchicktech.healthdiet.service.UserService;
+import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/logFood")
+@RequestMapping("/foodLog")
 public class LogFoodController {
 
     private static final Logger logger = LoggerFactory.getLogger(LogFoodController.class);
@@ -32,30 +33,23 @@ public class LogFoodController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public MonthFoodLogResponse getCurrentMonthFoodLog(@RequestParam String openId) {
-        try {
-            Date date = new Date();
-            List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(openId, date);
-            return new MonthFoodLogResponse(monthFoodLogList);
-        } catch (Exception e) {
-            return new MonthFoodLogResponse(Collections.emptyList());
-        }
+        Date date = new Date();
+        List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(openId, date);
+        return new MonthFoodLogResponse(monthFoodLogList);
     }
 
 
-    //记录每日膳食
+    //记录每日膳食 有的话覆盖
     @PostMapping(MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public DietRecordResponse addDiet(@RequestBody DietRecordRequest request) {
-        UserMetadata userMetadata = userService.getUser(request.getUserInfo());
-        //verify
-
-        return new DietRecordResponse();
-    }
-
-    //修改每日膳食
-    @PutMapping(MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public DietRecordResponse updateDiet(@RequestBody DietRecordRequest request) {
+    public DietRecordResponse addFoodLog(@RequestBody FoodLogRequest request) {
+        logger.info("Begin to log food for user openId={}, date={}, mealTime={}, content",
+                request.getOpenId(),
+                request.getDate(),
+                request.getMealTime(),
+                FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
+        foodLogService.addFoodLog(request);
+        //TODO cal and return 算蛋白摄入
         return new DietRecordResponse();
     }
 

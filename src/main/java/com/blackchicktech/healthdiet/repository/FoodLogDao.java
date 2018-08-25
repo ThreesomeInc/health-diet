@@ -1,6 +1,8 @@
 package com.blackchicktech.healthdiet.repository;
 
+import com.blackchicktech.healthdiet.domain.FoodLogRequest;
 import com.blackchicktech.healthdiet.entity.FoodLog;
+import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +31,20 @@ public class FoodLogDao {
                 ), openId, date, date, date);
         logger.info("Finished query food log total {} records", foodLogList.size());
         return foodLogList;
+    }
+
+    public void addFoodLog(FoodLogRequest request) {
+        logger.info("Going to insert food log for user openId={}", request.getOpenId());
+        try {
+            jdbcTemplate.update(
+                    "REPLACE INTO food_log_detail_tbl VALUES (?, ?, ? ,?)",
+                    request.getOpenId(),
+                    request.getDate(),
+                    request.getMealTime(),
+                    FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
+        } catch (Exception e) {
+            logger.warn("Failed to insert food log for user openId={}, msg={}", request.getOpenId(),
+                    e.getMessage());
+        }
     }
 }
