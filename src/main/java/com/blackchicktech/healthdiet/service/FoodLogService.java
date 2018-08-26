@@ -4,6 +4,7 @@ import com.blackchicktech.healthdiet.domain.AccumulativeEnergy;
 import com.blackchicktech.healthdiet.domain.FoodLogItem;
 import com.blackchicktech.healthdiet.domain.FoodLogRequest;
 import com.blackchicktech.healthdiet.domain.MonthFoodLog;
+import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
@@ -57,10 +58,19 @@ public class FoodLogService {
             //计算每一个食材的能量
             for (FoodLogItem foodLogItem : FoodLogUtil.readFromJson(foodLogDetail.getContent())) {
                 calEnergy(accumulativeEnergy, foodLogItem);
+                accumulativeEnergy.setEmpty(false);
             }
         }
 
-        //foodLogDao.updateFoodLog 每日计算量更新每日表
+        if (!accumulativeEnergy.isEmpty()) {
+            //持久化每日能量
+            FoodLog foodLog = new FoodLog(request.getOpenId(), request.getDate(),
+                    totalMealtime >= 3,
+                    accumulativeEnergy);
+            foodLogDao.addFoodLog(foodLog);
+        } else {
+            foodLogDao.deleteFoodLog(request.getOpenId(), request.getDate());
+        }
         return accumulativeEnergy;
     }
 
@@ -71,7 +81,8 @@ public class FoodLogService {
             case "午餐":
             case "晚餐":
                 return 1;
-                default: return 0;
+            default:
+                return 0;
         }
     }
 

@@ -28,10 +28,71 @@ public class FoodLogDao {
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
-                        resultSet.getBoolean("is_logged")
+                        resultSet.getBoolean("is_logged"),
+                        resultSet.getDouble("totalEnergy"),
+                        resultSet.getDouble("totalProtein"),
+                        resultSet.getDouble("peRatio"),
+                        resultSet.getDouble("fat"),
+                        resultSet.getDouble("feRatio"),
+                        resultSet.getDouble("cho"),
+                        resultSet.getDouble("ceRatio"),
+                        resultSet.getDouble("na"),
+                        resultSet.getDouble("k"),
+                        resultSet.getDouble("p"),
+                        resultSet.getDouble("ca")
                 ), openId, date, date, date);
         logger.info("Finished query food log total {} records", foodLogList.size());
         return foodLogList;
+    }
+
+    public void addFoodLog(String openId, Date date, boolean isFullLog, FoodLog foodLog) {
+        logger.info("Going to insert food log for user openId={}", openId);
+        try {
+            jdbcTemplate.update(
+                    "REPLACE INTO food_log_tbl VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    openId,
+                    date,
+                    isFullLog,
+                    foodLog.getTotalEnergy(),
+                    foodLog.getTotalProtein(),
+                    foodLog.getPeRatio(),
+                    foodLog.getFat(),
+                    foodLog.getFeRatio(),
+                    foodLog.getCho(),
+                    foodLog.getCeRatio(),
+                    foodLog.getNa(),
+                    foodLog.getK(),
+                    foodLog.getP(),
+                    foodLog.getCa());
+        } catch (Exception e) {
+            logger.warn("Failed to insert food log detail for user openId={}, msg={}", openId,
+                    e.getMessage());
+        }
+    }
+
+    public void addFoodLog(FoodLog foodLog) {
+        logger.info("Going to insert food log for user openId={}", foodLog.getOpenId());
+        try {
+            jdbcTemplate.update(
+                    "REPLACE INTO food_log_tbl VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    foodLog.getOpenId(),
+                    foodLog.getDate(),
+                    foodLog.isRecorded(),
+                    foodLog.getTotalEnergy(),
+                    foodLog.getTotalProtein(),
+                    foodLog.getPeRatio(),
+                    foodLog.getFat(),
+                    foodLog.getFeRatio(),
+                    foodLog.getCho(),
+                    foodLog.getCeRatio(),
+                    foodLog.getNa(),
+                    foodLog.getK(),
+                    foodLog.getP(),
+                    foodLog.getCa());
+        } catch (Exception e) {
+            logger.warn("Failed to insert food log detail for user openId={}, msg={}", foodLog.getOpenId(),
+                    e.getMessage());
+        }
     }
 
     public List<FoodLogDetail> getFoodLogDetailByDate(String openId, Date date) {
@@ -59,20 +120,6 @@ public class FoodLogDao {
                     FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
         } catch (Exception e) {
             logger.warn("Failed to insert food log detail for user openId={}, msg={}", request.getOpenId(),
-                    e.getMessage());
-        }
-    }
-
-    public void addFoodLog(FoodLogRequest request) {
-        logger.info("Going to insert food log for user openId={}", request.getOpenId());
-        try {
-            jdbcTemplate.update(
-                    "REPLACE INTO food_log_tbl VALUES (?, ?, ?)",
-                    request.getOpenId(),
-                    request.getDate(),
-                    1);
-        } catch (Exception e) {
-            logger.warn("Failed to insert food log for user openId={}, msg={}", request.getOpenId(),
                     e.getMessage());
         }
     }

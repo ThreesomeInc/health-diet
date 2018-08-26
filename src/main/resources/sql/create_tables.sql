@@ -88,14 +88,25 @@ CREATE TABLE `recipe_weight_tbl` (
   PRIMARY KEY (`recipe_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `health_diet`.`food_log_tbl` (
+CREATE TABLE `food_log_tbl` (
   `open_id` VARCHAR(255) NOT NULL,
   `log_date` DATETIME NOT NULL,
   `is_logged` TINYINT NULL DEFAULT 0,
+  `totalEnergy` float(10,2) DEFAULT NULL,
+  `totalProtein` float(10,2) DEFAULT NULL,
+  `peRatio` float(10,2) DEFAULT NULL,
+  `fat` float(10,2) DEFAULT NULL,
+  `feRatio` float(10,2) DEFAULT NULL,
+  `cho` float(10,2) DEFAULT NULL,
+  `ceRatio` float(10,2) DEFAULT NULL,
+  `na` float(10,2) DEFAULT NULL,
+  `k` float(10,2) DEFAULT NULL,
+  `p` float(10,2) DEFAULT NULL,
+  `ca` float(10,2) DEFAULT NULL,
   PRIMARY KEY (`open_id`, `log_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `health_diet`.`food_log_detail_tbl` (
+CREATE TABLE `food_log_detail_tbl` (
   `open_id` VARCHAR(255) NOT NULL,
   `log_date` DATETIME NOT NULL,
   `mealtime` VARCHAR(45) NOT NULL,
