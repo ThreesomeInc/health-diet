@@ -242,11 +242,45 @@ public class FoodLogService {
         User user = userDao.getUserByOpenId(openId);
         double energy = elementAvgs.get("能量");
         double protein = elementAvgs.get("蛋白质");
+        double na = elementAvgs.get("钠");
+        double ca = elementAvgs.get("钙");
+        double p = elementAvgs.get("磷");
         double ceRatio = elementAvgs.get("碳水化合物供能比");
         double feRatio = elementAvgs.get("脂肪供能比");
 
-        StringBuilder diticianAdvice = new StringBuilder("");
+        float standardCalorie = calCalorie(user);
+        String[] standardProtein = calProtein(user).split("~");
 
+        StringBuilder diticianAdvice = new StringBuilder();
+        if(energy - standardCalorie >= 100 || standardCalorie - energy <= 100 ){
+            diticianAdvice.append("能量摄入基本接近推荐值,");
+        } else if (energy - standardCalorie > 100 && energy - standardCalorie <= 200){
+            diticianAdvice.append("能量摄入略高于推荐值,");
+        } else if(standardCalorie - energy > 100 && standardCalorie - energy <= 200){
+            diticianAdvice.append("能量摄入略低于推荐值,");
+        } else if (energy - standardCalorie > 200 ){
+            diticianAdvice.append("能量摄入高于推荐值,");
+        } else if(standardCalorie - energy > 200){
+            diticianAdvice.append("能量摄入低于推荐值,");
+        }
+
+        if(protein - Double.valueOf(standardProtein[1]) <= 2 && Double.valueOf(standardProtein[0]) - protein <= 2 ){
+            diticianAdvice.append("蛋白质摄入量基本接近推荐值，");
+        } else if(protein - Double.valueOf(standardProtein[1]) > 2){
+            diticianAdvice.append("蛋白质摄入量高于推荐值，");
+        } else if(Double.valueOf(standardProtein[0]) - protein > 2){
+            diticianAdvice.append("蛋白质摄入量低于推荐值，");
+        }
+
+        if(na > 2000){
+            diticianAdvice.append("钠摄入量高于推荐值,");
+        }
+        if(ca > 2000 ){
+            diticianAdvice.append("钙摄入量高于推荐值,");
+        }
+        if(p > 800){
+           diticianAdvice.append("磷摄入量高于推荐值，");
+        }
         return diticianAdvice.toString();
 
 
@@ -309,14 +343,14 @@ public class FoodLogService {
         StringBuilder protein = new StringBuilder();
         if (nephroticPeriod >= 1 && nephroticPeriod <= 2) {
             return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8)).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
-                    .append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
+                    .append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).toString();
         } else if (nephroticPeriod >= 3 && nephroticPeriod <= 5) {
             if (treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))) {
                 return protein.append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
-                        .append(standardWeight.multiply(BigDecimal.valueOf(1.2)).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
+                        .append(standardWeight.multiply(BigDecimal.valueOf(1.2)).setScale(1, BigDecimal.ROUND_FLOOR)).toString();
             } else {
                 return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6)).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
-                        .append(standardWeight.multiply(BigDecimal.valueOf(10.8)).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
+                        .append(standardWeight.multiply(BigDecimal.valueOf(10.8)).setScale(1, BigDecimal.ROUND_FLOOR)).toString();
             }
         }
         return "Protein is unclear.";
