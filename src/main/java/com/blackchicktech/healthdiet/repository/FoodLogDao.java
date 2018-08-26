@@ -23,7 +23,7 @@ public class FoodLogDao {
 
     public List<FoodLog> getCurrentMonthFoodLog(String openId, Date date) {
         logger.info("Query current month food log openId={}, date={}", openId, date);
-        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE openId =? AND " +
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? AND " +
                         "log_date BETWEEN DATE_ADD(?,interval -day(?)+1 DAY) AND last_day(?)",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
@@ -97,7 +97,7 @@ public class FoodLogDao {
 
     public List<FoodLogDetail> getFoodLogDetailByDate(String openId, Date date) {
         logger.info("Query current date food log detail openId={}, date={}", openId, date);
-        List<FoodLogDetail> foodLogDetailList = jdbcTemplate.query("SELECT * FROM fool_log_detail_tbl WHERE openId =? " +
+        List<FoodLogDetail> foodLogDetailList = jdbcTemplate.query("SELECT * FROM food_log_detail_tbl WHERE open_id =? " +
                         "AND log_date =?",
                 (resultSet, i) -> new FoodLogDetail(
                         resultSet.getString("open_id"),
@@ -153,7 +153,7 @@ public class FoodLogDao {
 
     public List<FoodLog> getLatestThreeDayFoodLog(String openId){
         logger.info("Going to get latest 3 three days food log for user openId = {}", openId);
-        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE openId =? order by log_date desc limit 3",
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? order by log_date desc limit 3",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
