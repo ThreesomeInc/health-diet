@@ -174,11 +174,14 @@ public class FoodLogService {
         boolean isStandardLogType = isStandardLogType(threeDayFoodLog);
         if(isStandardLogType){
             analysis.setLogTypeInfo("您使用的是标准三日膳食记录。");
-            analysis.setElementEvgs(deduceElementEvgs(threeDayFoodLog));
+
         } else {
             analysis.setLogTypeInfo("您使用的是折衷三日膳食记录，建议您使用标准三日膳食记录，推荐结果会更准确.标准三日膳食记录法: 连续三日，包括两个工作日，一个休息日，计算三日膳食营养物质平均值。");
-            analysis.setElementEvgs(deduceElementEvgs(threeDayFoodLog));
+
         }
+        Map<String, Double> elementEvgs = deduceElementEvgs(threeDayFoodLog);
+        analysis.setElementEvgs(elementEvgs);
+        analysis.setDieticianAdvice(deduceDieticianAdvice(threeDayFoodLog,elementEvgs,openId));
         return analysis;
     }
 
