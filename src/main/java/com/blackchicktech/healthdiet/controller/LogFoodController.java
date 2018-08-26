@@ -47,9 +47,8 @@ public class LogFoodController {
                 request.getDate(),
                 request.getMealTime(),
                 FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
-        foodLogService.updateFoodLog(request);
-        //TODO cal and return 算蛋白摄入
-        return new DietRecordResponse();
+        AccumulativeEnergy energy = foodLogService.updateFoodLog(request);
+        return new DietRecordResponse(energy);
     }
 
     //获取每日膳食

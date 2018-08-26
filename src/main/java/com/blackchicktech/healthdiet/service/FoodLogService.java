@@ -1,8 +1,14 @@
 package com.blackchicktech.healthdiet.service;
 
+import com.blackchicktech.healthdiet.domain.AccumulativeEnergy;
+import com.blackchicktech.healthdiet.domain.FoodLogItem;
 import com.blackchicktech.healthdiet.domain.FoodLogRequest;
 import com.blackchicktech.healthdiet.domain.MonthFoodLog;
+import com.blackchicktech.healthdiet.entity.FoodLogDetail;
+import com.blackchicktech.healthdiet.entity.FoodTbl;
+import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.FoodLogDao;
+import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +26,110 @@ public class FoodLogService {
     @Autowired
     private FoodLogDao foodLogDao;
 
+    @Autowired
+    private FoodDaoImpl foodDao;
+
     public List<MonthFoodLog> getCurrentMonthFoodLog(String openId, Date currentDate) {
         return foodLogDao.getCurrentMonthFoodLog(openId, currentDate).stream()
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
-    public void updateFoodLog(FoodLogRequest request) {
+    public AccumulativeEnergy updateFoodLog(FoodLogRequest request) {
         if (request.getFoodLogItemList() != null && !request.getFoodLogItemList().isEmpty()) {
             foodLogDao.addFoodLogDetail(request);
-            foodLogDao.addFoodLog(request); //transaction
         } else {
             foodLogDao.deleteFoodLogDetail(request);
-            //TODO 这里需要判断一天还有没有其余记录
-//            foodLogDao.deleteFoodLog(request);
         }
+
+        //获取全天记录的食物计算能量
+        List<FoodLogDetail> todayDetail = foodLogDao.getFoodLogDetailByDate(request.getOpenId(), request.getDate());
+        if (todayDetail.isEmpty()) {
+            //全天没有食物，删除当日食物记录
+            foodLogDao.deleteFoodLog(request.getOpenId(), request.getDate());
+            return AccumulativeEnergy.emptyEnergy();
+        }
+
+        AccumulativeEnergy accumulativeEnergy = new AccumulativeEnergy();
+        int totalMealtime = 0; //计算是否累计三餐
+        for (FoodLogDetail foodLogDetail : todayDetail) {
+            totalMealtime = calTotalMeal(foodLogDetail.getMealTime());
+
+            //计算每一个食材的能量
+            for (FoodLogItem foodLogItem : FoodLogUtil.readFromJson(foodLogDetail.getContent())) {
+                calEnergy(accumulativeEnergy, foodLogItem);
+            }
+        }
+
+        //foodLogDao.updateFoodLog 每日计算量更新每日表
+        return accumulativeEnergy;
+    }
+
+    //只有早午晚计入三餐
+    private int calTotalMeal(String mealtime) {
+        switch (mealtime) {
+            case "早餐":
+            case "午餐":
+            case "晚餐":
+                return 1;
+                default: return 0;
+        }
+    }
+
+    private void calEnergy(AccumulativeEnergy accumulativeEnergy, FoodLogItem foodLogItem) {
+        FoodTbl foodTbl = foodDao.getFoodById(foodLogItem.getFoodId());
+        double calPercent = getCalPercent(foodLogItem.getChannel(), foodTbl);
+        double totalEnergy = accumulativeEnergy.getTotalEnergy() + foodTbl.getEnergy() * calPercent;
+        double totalProtein = accumulativeEnergy.getTotalEnergy() + foodTbl.getProtein() * calPercent;
+        double peRatio = calPeRatio(totalEnergy, totalProtein);
+
+        double totalFat = accumulativeEnergy.getFat() + Double.valueOf(foodTbl.getFat()) * calPercent;
+        double feRatio = calFaRatio(totalEnergy, totalFat);
+
+        double totalCho = accumulativeEnergy.getCho() + Double.valueOf(foodTbl.getCho()) * calPercent;
+        double ceRatio = calChoRatio(totalEnergy, totalCho);
+
+        double na = Double.valueOf(foodTbl.getNa()) * calPercent;
+        double k = Double.valueOf(foodTbl.getK()) * calPercent;
+        double p = Double.valueOf(foodTbl.getP()) * calPercent;
+        //double ca?
+        //应该将计算重构到最后?
+
+        accumulativeEnergy.setTotalEnergy(totalEnergy);
+        accumulativeEnergy.setTotalProtein(totalProtein);
+        accumulativeEnergy.setPeRatio(peRatio);
+        accumulativeEnergy.setFat(totalFat);
+        accumulativeEnergy.setFeRatio(feRatio);
+        accumulativeEnergy.setCho(totalCho);
+        accumulativeEnergy.setCeRatio(ceRatio);
+        accumulativeEnergy.setNa(na);
+        accumulativeEnergy.setK(k);
+        accumulativeEnergy.setP(p);
+    }
+
+    //通过超市或者市场按照食补计算百分比
+    private double getCalPercent(String channel, FoodTbl foodTbl) {
+        if ("超市".equals(channel)) {
+            return 1;
+        } else if ("市场".equals(channel)) {
+            return foodTbl.getEdible() / 100;
+        }
+
+        logger.warn("Unknown channel ={} cal as 100 percent", channel);
+        return 1;
+    }
+
+    //蛋白质供能比
+    private double calPeRatio(double totalEnergy, double totalProtein) {
+        return totalProtein * 4 / totalEnergy;
+    }
+
+    //脂肪供能比
+    private double calFaRatio(double totalEnergy, double totalFat) {
+        return totalFat * 9 / totalEnergy;
+    }
+
+    //碳水化物供能bi
+    private double calChoRatio(double totalEnergy, double totalCho) {
+        return totalCho * 4 / totalEnergy;
     }
 }

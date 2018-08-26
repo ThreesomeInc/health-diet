@@ -12,6 +12,13 @@ public class FoodLogDetail {
 
     private String content;
 
+    public FoodLogDetail(String openId, Date logDate, String mealTime, String content) {
+        this.openId = openId;
+        this.logDate = logDate;
+        this.mealTime = mealTime;
+        this.content = content;
+    }
+
     public String getOpenId() {
         return openId;
     }

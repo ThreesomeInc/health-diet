@@ -2,6 +2,7 @@ package com.blackchicktech.healthdiet.repository;
 
 import com.blackchicktech.healthdiet.domain.FoodLogRequest;
 import com.blackchicktech.healthdiet.entity.FoodLog;
+import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +24,28 @@ public class FoodLogDao {
     public List<FoodLog> getCurrentMonthFoodLog(String openId, Date date) {
         logger.info("Query current month food log openId={}, date={}", openId, date);
         List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE openId =? AND " +
-                        "log_date BETWEEN DATE_ADD(?,interval -day(?)+1 day) and last_day(?)",
+                        "log_date BETWEEN DATE_ADD(?,interval -day(?)+1 DAY) AND last_day(?)",
                 (resultSet, i) -> new FoodLog(
-                      resultSet.getString("open_id"),
-                      resultSet.getDate("log_date"),
-                      resultSet.getBoolean("is_logged")
+                        resultSet.getString("open_id"),
+                        resultSet.getDate("log_date"),
+                        resultSet.getBoolean("is_logged")
                 ), openId, date, date, date);
         logger.info("Finished query food log total {} records", foodLogList.size());
         return foodLogList;
+    }
+
+    public List<FoodLogDetail> getFoodLogDetailByDate(String openId, Date date) {
+        logger.info("Query current date food log detail openId={}, date={}", openId, date);
+        List<FoodLogDetail> foodLogDetailList = jdbcTemplate.query("SELECT * FROM fool_log_detail_tbl WHERE openId =? " +
+                        "AND log_date =?",
+                (resultSet, i) -> new FoodLogDetail(
+                        resultSet.getString("open_id"),
+                        resultSet.getDate("log_date"),
+                        resultSet.getString("mealtime"),
+                        resultSet.getString("content")
+                ), openId, date);
+        logger.info("Finished query food log detail total {} records", foodLogDetailList.size());
+        return foodLogDetailList;
     }
 
     public void addFoodLogDetail(FoodLogRequest request) {
@@ -76,15 +91,15 @@ public class FoodLogDao {
         }
     }
 
-    public void deleteFoodLog(FoodLogRequest request) {
-        logger.info("Going to delete food log for user openId={}", request.getOpenId());
+    public void deleteFoodLog(String openId, Date date) {
+        logger.info("Going to delete food log for user openId={}", openId);
         try {
             jdbcTemplate.update(
                     "DELETE FROM food_log_tbl WHERE open_id=? AND log_date=?",
-                    request.getOpenId(),
-                    request.getDate());
+                    openId,
+                    date);
         } catch (Exception e) {
-            logger.warn("Failed to delete food log for user openId={}, msg={}", request.getOpenId(),
+            logger.warn("Failed to delete food log for user openId={}, msg={}", openId,
                     e.getMessage());
         }
     }
