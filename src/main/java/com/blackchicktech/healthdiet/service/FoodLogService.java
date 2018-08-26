@@ -7,6 +7,7 @@ import com.blackchicktech.healthdiet.entity.FoodTbl;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.FoodLogDao;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
+import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -161,11 +163,45 @@ public class FoodLogService {
         ThreeDayFoodLogAnalysis analysis = new ThreeDayFoodLogAnalysis();
         boolean isStandardLogType = isStandardLogType(threeDayFoodLog);
         if(isStandardLogType){
-
+            analysis.setLogTypeInfo("您使用的是标准三日膳食记录。");
+            analysis.setElementEvgs(deduceElementEvgs(threeDayFoodLog));
         } else {
-
+            analysis.setLogTypeInfo("您使用的是折衷三日膳食记录，建议您使用标准三日膳食记录，推荐结果会更准确.标准三日膳食记录法: 连续三日，包括两个工作日，一个休息日，计算三日膳食营养物质平均值。");
+            analysis.setElementEvgs(deduceElementEvgs(threeDayFoodLog));
         }
         return analysis;
+    }
+
+    public Map<String, String> deduceElementEvgs(List<FoodLog> foodLogList){
+        logger.info("Deducing elements average.");
+        double ca = 0.0d;
+        double cho = 0.0d;
+        double fat = 0.0d;
+        double k = 0.0d;
+        double p = 0.0d;
+        double na = 0.0d;
+        double protein = 0.0;
+
+        for(FoodLog foodLog : foodLogList){
+            ca += foodLog.getCa();
+            cho += foodLog.getCho();
+            fat += foodLog.getFat();
+            k += foodLog.getK();
+            p += foodLog.getP();
+            na += foodLog.getNa();
+            protein += foodLog.getTotalProtein();
+        }
+
+        Map<String, String> elementAvgs = ImmutableMap.<String, String>builder()
+                                            .put("钙", ca/3 + "毫克")
+                                            .put("碳水化合物", cho/3 + "克")
+                                            .put("脂肪", fat/3 + "克")
+                                            .put("钾", k/3 + "毫克")
+                                            .put("磷", p/3 + "毫克")
+                                            .put("钠", na/3 + "毫克")
+                                            .put("蛋白质", protein/3 + "克")
+                                            .build();
+        return elementAvgs;
     }
 
     public boolean isStandardLogType(List<FoodLog> foodLogList){
