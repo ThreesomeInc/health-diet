@@ -26,6 +26,7 @@ CREATE TABLE `food_tbl` (
   `protein` float(10,2) DEFAULT NULL,
   `fat` varchar(45) DEFAULT NULL,
   `cho` varchar(45) DEFAULT NULL,
+  `ca` varchar(45) DEFAULT NULL,
   `p` varchar(45) DEFAULT NULL,
   `k` varchar(45) DEFAULT NULL,
   `na` varchar(45) DEFAULT NULL,

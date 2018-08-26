@@ -25,6 +25,8 @@ public class FoodTbl {
 
     private String cholesterol; //固醇
 
+    private String ca; //钙
+
     private String p; //磷
 
     private String k; //钾
@@ -125,6 +127,14 @@ public class FoodTbl {
         this.cholesterol = cholesterol;
     }
 
+    public String getCa() {
+        return ca;
+    }
+
+    public void setCa(String ca) {
+        this.ca = ca;
+    }
+
     public String getP() {
         return p;
     }
@@ -187,6 +197,7 @@ public class FoodTbl {
                 ", fat='" + fat + '\'' +
                 ", cho='" + cho + '\'' +
                 ", cholesterol='" + cholesterol + '\'' +
+                ", ca='" + ca + '\'' +
                 ", p='" + p + '\'' +
                 ", k='" + k + '\'' +
                 ", na='" + na + '\'' +

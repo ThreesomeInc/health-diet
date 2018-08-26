@@ -47,6 +47,7 @@ public class ExcelImporter {
                 foodTbl.setProtein(readCellAsDouble(row.getCell(11)));
                 foodTbl.setFat(readCellAsString(row.getCell(13)));
                 foodTbl.setCho(readCellAsString(row.getCell(15)));
+                foodTbl.setCa(readCellAsString(row.getCell(35)));
                 foodTbl.setP(readCellAsString(row.getCell(36)));
                 foodTbl.setK(readCellAsString(row.getCell(37)));
                 foodTbl.setNa(readCellAsString(row.getCell(39)));
@@ -90,7 +91,7 @@ public class ExcelImporter {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get("./food_tbl.csv"));
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alias", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "p", "k", "na", "unit", "edible"))
+                        .withHeader("food_code", "sub_code", "sub_name", "food_id", "food_alias", "food_name", "water", "energy", "protein", "fat", "cho", "cholesterol", "ca", "p", "k", "na", "unit", "edible"))
         ) {
             for (FoodTbl foodTbl : foodTbls) {
                 csvPrinter.printRecord(foodTbl.getFoodCode(),
@@ -105,6 +106,7 @@ public class ExcelImporter {
                         foodTbl.getFat(),
                         foodTbl.getCho(),
                         foodTbl.getCholesterol(),
+                        foodTbl.getCa(),
                         foodTbl.getP(),
                         foodTbl.getK(),
                         foodTbl.getNa(),
