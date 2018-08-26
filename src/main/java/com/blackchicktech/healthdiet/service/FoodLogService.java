@@ -53,7 +53,7 @@ public class FoodLogService {
         AccumulativeEnergy accumulativeEnergy = new AccumulativeEnergy();
         int totalMealtime = 0; //计算是否累计三餐
         for (FoodLogDetail foodLogDetail : todayDetail) {
-            totalMealtime = calTotalMeal(foodLogDetail.getMealTime());
+            totalMealtime += calTotalMeal(foodLogDetail.getMealTime());
 
             //计算每一个食材的能量
             for (FoodLogItem foodLogItem : FoodLogUtil.readFromJson(foodLogDetail.getContent())) {
