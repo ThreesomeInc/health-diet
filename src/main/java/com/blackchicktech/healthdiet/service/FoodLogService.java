@@ -21,6 +21,8 @@ public class FoodLogService {
 
     private static final Logger logger = LoggerFactory.getLogger(FoodLogService.class);
 
+    private static final long ONE_DAY_MILI_SECONDS = 1000*3600*24;
+
     @Autowired
     private FoodLogDao foodLogDao;
 
@@ -154,9 +156,29 @@ public class FoodLogService {
         List<FoodLog> threeDayFoodLog = foodLogDao.getLatestThreeDayFoodLog(openId);
         if(threeDayFoodLog.size() < 3){
             logger.info("Food log is less than 3 days, fail to analytic.");
-            return new ThreeDayFoodLogAnalysis("膳食记录少于3天，无法分析。");
+            return new ThreeDayFoodLogAnalysis("膳食记录少于3天，无法准确分析。");
         }
-        return new ThreeDayFoodLogAnalysis();
+        ThreeDayFoodLogAnalysis analysis = new ThreeDayFoodLogAnalysis();
+        boolean isStandardLogType = isStandardLogType(threeDayFoodLog);
+        if(isStandardLogType){
+
+        } else {
+
+        }
+        return analysis;
+    }
+
+    public boolean isStandardLogType(List<FoodLog> foodLogList){
+        Date dateOne = foodLogList.get(0).getDate();
+        Date dateTwo = foodLogList.get(1).getDate();
+        Date dateThree = foodLogList.get(2).getDate();
+        if((int)((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (int)((dateTwo.getTime() - dateThree.getTime()) / ONE_DAY_MILI_SECONDS) == 1){
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }
