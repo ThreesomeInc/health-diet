@@ -36,7 +36,7 @@ public class FoodWeightDaoImpl {
         result = jdbcTemplate.query("SELECT * from food_weight_tbl where " +
                                                             " protein_weight < ? and food_code = ?  and sub_code = ? order by rand() limit 3" ,
                                                             rowMapper, proteinWeight, foodCode, subCode);
-        if(result == null || result.size() == 0){
+        if (result.isEmpty()) {
             result = jdbcTemplate.query("SELECT * from food_weight_tbl where " +
                             " protein_weight < ? and food_code = ? order by rand() limit 3" ,
                     rowMapper, proteinWeight, foodCode);
@@ -55,7 +55,7 @@ public class FoodWeightDaoImpl {
                 sqlSegment + " food_Code = " + foodCode + " and sub_code = " + subCode + " order by rand() limit 3";
         LOGGER.debug("SQLWithFoodCodeAndSubCode: " + sqlWithFoodCodeAndSubCode);
         result = jdbcTemplate.query(sqlWithFoodCodeAndSubCode, rowMapper);
-        if(result == null || result.size() == 0){
+        if (result.isEmpty()) {
             String sqlWithFoodCode = "SELECT * from food_weight_tbl where protein_weight < 3 and " +
                     sqlSegment + " food_Code = " + foodCode + " order by rand() limit 3";
             LOGGER.debug("SQLWithFoodCode: " + sqlWithFoodCode);
