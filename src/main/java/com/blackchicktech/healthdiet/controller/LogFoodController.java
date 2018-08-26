@@ -66,4 +66,12 @@ public class LogFoodController {
             throw new RuntimeException(e);
         }
     }
+
+
+    @RequestMapping(value="/analysis", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ThreeDayFoodLogAnalysis getFoodLogAnalysis(@RequestParam String openId){
+        return new ThreeDayFoodLogAnalysis();
+    }
+
 }
