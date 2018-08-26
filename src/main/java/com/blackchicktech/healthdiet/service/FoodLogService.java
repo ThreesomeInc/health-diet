@@ -1,9 +1,6 @@
 package com.blackchicktech.healthdiet.service;
 
-import com.blackchicktech.healthdiet.domain.AccumulativeEnergy;
-import com.blackchicktech.healthdiet.domain.FoodLogItem;
-import com.blackchicktech.healthdiet.domain.FoodLogRequest;
-import com.blackchicktech.healthdiet.domain.MonthFoodLog;
+import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
@@ -152,4 +149,14 @@ public class FoodLogService {
             return defaultValue;
         }
     }
+
+    public ThreeDayFoodLogAnalysis deduceThreeDayFoodLogAnalysis(String openId){
+        List<FoodLog> threeDayFoodLog = foodLogDao.getLatestThreeDayFoodLog(openId);
+        if(threeDayFoodLog.size() < 3){
+            logger.info("Food log is less than 3 days, fail to analytic.");
+            return new ThreeDayFoodLogAnalysis("膳食记录少于3天，无法分析。");
+        }
+        return new ThreeDayFoodLogAnalysis();
+    }
+
 }

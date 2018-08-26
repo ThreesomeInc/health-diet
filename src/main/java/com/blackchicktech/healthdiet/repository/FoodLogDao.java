@@ -150,4 +150,27 @@ public class FoodLogDao {
                     e.getMessage());
         }
     }
+
+    public List<FoodLog> getLatestThreeDayFoodLog(String openId){
+        logger.info("Going to get latest 3 three days food log for user openId = {}", openId);
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE openId =? order by log_date desc limit 3",
+                (resultSet, i) -> new FoodLog(
+                        resultSet.getString("open_id"),
+                        resultSet.getDate("log_date"),
+                        resultSet.getBoolean("is_logged"),
+                        resultSet.getDouble("totalEnergy"),
+                        resultSet.getDouble("totalProtein"),
+                        resultSet.getDouble("peRatio"),
+                        resultSet.getDouble("fat"),
+                        resultSet.getDouble("feRatio"),
+                        resultSet.getDouble("cho"),
+                        resultSet.getDouble("ceRatio"),
+                        resultSet.getDouble("na"),
+                        resultSet.getDouble("k"),
+                        resultSet.getDouble("p"),
+                        resultSet.getDouble("ca")
+                ), openId);
+        logger.info("Finished query food log total {} records", foodLogList.size());
+        return foodLogList;
+    }
 }

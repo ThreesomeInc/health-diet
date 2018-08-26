@@ -24,6 +24,13 @@ public class ThreeDayFoodLogAnalysis {
     @JsonProperty
     private final static String reminder = "以上建议是基于您上述输入的食物分量得出的结果。希望您能准确记录您的食物摄入量，以便获得更准确的数值";
 
+    public ThreeDayFoodLogAnalysis() {
+    }
+
+    public ThreeDayFoodLogAnalysis(String logTypeInfo) {
+        this.logTypeInfo = logTypeInfo;
+    }
+
     public String getLogTypeInfo() {
         return logTypeInfo;
     }
