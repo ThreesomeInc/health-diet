@@ -97,9 +97,8 @@ public class RecipeController {
 			return new RecipeDetailResponse(null, null, Collections.emptyList(), null);
 		}
 		PreferenceResponse preference = preferenceService.listPreference(openId, recipeId, "recipe");
-        RecipeDetailResponse recipeDetailResponse = new RecipeDetailResponse(recipe, dieticianAdvice,
-                                                        recipeService.getMappedMainIngredients(recipe.getMainIngredients()), preference);
-        return recipeDetailResponse;
+		return new RecipeDetailResponse(recipe, dieticianAdvice,
+				recipeService.getMappedMainIngredients(recipe.getMainIngredients()), preference);
 	}
 
 	@PostMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
