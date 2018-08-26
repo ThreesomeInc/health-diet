@@ -82,16 +82,16 @@ public class FoodLogService {
         double totalProtein = accumulativeEnergy.getTotalEnergy() + foodTbl.getProtein() * calPercent;
         double peRatio = calPeRatio(totalEnergy, totalProtein);
 
-        double totalFat = accumulativeEnergy.getFat() + Double.valueOf(foodTbl.getFat()) * calPercent;
+        double totalFat = accumulativeEnergy.getFat() + readDouble(foodTbl.getFat(), 0) * calPercent;
         double feRatio = calFaRatio(totalEnergy, totalFat);
 
-        double totalCho = accumulativeEnergy.getCho() + Double.valueOf(foodTbl.getCho()) * calPercent;
+        double totalCho = accumulativeEnergy.getCho() + readDouble(foodTbl.getCho(), 0) * calPercent;
         double ceRatio = calChoRatio(totalEnergy, totalCho);
 
-        double na = Double.valueOf(foodTbl.getNa()) * calPercent;
-        double k = Double.valueOf(foodTbl.getK()) * calPercent;
-        double p = Double.valueOf(foodTbl.getP()) * calPercent;
-        //double ca?
+        double na = readDouble(foodTbl.getNa(), 0) * calPercent;
+        double k = readDouble(foodTbl.getK(), 0) * calPercent;
+        double p = readDouble(foodTbl.getP(), 0) * calPercent;
+        double ca = readDouble(foodTbl.getCa(), 0) * calPercent;
         //应该将计算重构到最后?
 
         accumulativeEnergy.setTotalEnergy(totalEnergy);
@@ -104,6 +104,7 @@ public class FoodLogService {
         accumulativeEnergy.setNa(na);
         accumulativeEnergy.setK(k);
         accumulativeEnergy.setP(p);
+        accumulativeEnergy.setCa(ca);
     }
 
     //通过超市或者市场按照食补计算百分比
@@ -131,5 +132,13 @@ public class FoodLogService {
     //碳水化物供能bi
     private double calChoRatio(double totalEnergy, double totalCho) {
         return totalCho * 4 / totalEnergy;
+    }
+
+    private double readDouble(String dStr, double defaultValue) {
+        try {
+            return Double.valueOf(dStr);
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 }
