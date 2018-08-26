@@ -4,8 +4,10 @@ import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
+import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.FoodLogDao;
+import com.blackchicktech.healthdiet.repository.UserDaoImpl;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import com.google.common.collect.ImmutableMap;
 import org.slf4j.Logger;
@@ -30,6 +32,9 @@ public class FoodLogService {
 
     @Autowired
     private FoodDaoImpl foodDao;
+
+    @Autowired
+    private UserDaoImpl userDao;
 
     public List<MonthFoodLog> getCurrentMonthFoodLog(String openId, Date currentDate) {
         return foodLogDao.getCurrentMonthFoodLog(openId, currentDate).stream()
@@ -172,7 +177,7 @@ public class FoodLogService {
         return analysis;
     }
 
-    public Map<String, String> deduceElementEvgs(List<FoodLog> foodLogList){
+    public Map<String, Double> deduceElementEvgs(List<FoodLog> foodLogList){
         logger.info("Deducing elements average.");
         double ca = 0.0d;
         double cho = 0.0d;
@@ -181,7 +186,7 @@ public class FoodLogService {
         double p = 0.0d;
         double na = 0.0d;
         double protein = 0.0;
-
+        double energy = 0.0;
         for(FoodLog foodLog : foodLogList){
             ca += foodLog.getCa();
             cho += foodLog.getCho();
@@ -190,16 +195,18 @@ public class FoodLogService {
             p += foodLog.getP();
             na += foodLog.getNa();
             protein += foodLog.getTotalProtein();
+            energy += foodLog.getTotalEnergy();
         }
 
-        Map<String, String> elementAvgs = ImmutableMap.<String, String>builder()
-                                            .put("钙", ca/3 + "毫克")
-                                            .put("碳水化合物", cho/3 + "克")
-                                            .put("脂肪", fat/3 + "克")
-                                            .put("钾", k/3 + "毫克")
-                                            .put("磷", p/3 + "毫克")
-                                            .put("钠", na/3 + "毫克")
-                                            .put("蛋白质", protein/3 + "克")
+        Map<String, Double> elementAvgs = ImmutableMap.<String, Double>builder()
+                                            .put("钙", ca/3 )
+                                            .put("碳水化合物", cho/3)
+                                            .put("脂肪", fat/3 )
+                                            .put("钾", k/3)
+                                            .put("磷", p/3)
+                                            .put("钠", na/3)
+                                            .put("蛋白质", protein/3)
+                                            .put("能量", energy/3)
                                             .build();
         return elementAvgs;
     }
@@ -214,6 +221,18 @@ public class FoodLogService {
         } else {
             return false;
         }
+
+    }
+
+    public String deduceDieticianAdvice(List<FoodLog> foodLogList, Map<String, Double> elementAvgs, String openId){
+        User user = userDao.getUserByOpenId(openId);
+        double energy = elementAvgs.get("能量");
+        double protein = elementAvgs.get("蛋白质");
+
+        StringBuilder diticianAdvice = new StringBuilder();
+
+        return diticianAdvice.toString();
+
 
     }
 
