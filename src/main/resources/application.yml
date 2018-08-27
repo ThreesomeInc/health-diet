@@ -91,5 +91,5 @@ mybatis:
 #    map-underscore-to-camel-case: true
 #  type-aliases-package: com.blackchicktech.healthdiet.repository
 app:
-  appId: "wx3e7fd7ad370e49c3"
-  appSecret: "895b3db8ab32e38709070e52b0c636fb"
+  appId: "wxd7b407ad92867db4"
+  appSecret: "10ad93acba22a59ddec2a45e7d75786b"
