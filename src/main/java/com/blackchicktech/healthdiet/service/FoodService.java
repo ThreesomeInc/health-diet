@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -264,17 +265,24 @@ public class FoodService {
     }
 
     private String deduceRecommendFood(String foodCode, String subCode){
-        return Optional.ofNullable(foodWeightDao.getFoodWeightByProteinWeightAndSubCode(3, foodCode, subCode))
-                .filter(CollectionUtils::isNotEmpty)
-                .map(foodWeights -> foodWeights.stream()
+    	return deduceFood(() -> foodWeightDao.getFoodWeightByProteinWeightAndSubCode(3, foodCode, subCode));
+    }
+
+	private String deduceFoodForMultiDisease(List<String> multiWeightFields, String foodCode, String subCode) {
+		return deduceFood(() -> foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, foodCode, subCode));
+	}
+
+	private String deduceFood(Supplier<List<FoodWeight>> supplier) {
+		return Optional.ofNullable(supplier.get())
+				.filter(CollectionUtils::isNotEmpty)
+				.map(foodWeights -> foodWeights.stream()
 						.map(foodWeight -> foodDao.getFoodById(foodWeight.getFoodId()))
 						.map(FoodTbl::getFoodName)
 						.collect(Collectors.joining("、")) + "。")
 				.orElse(null);
-    }
+	}
 
-
-    private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
+	private void deduceWeight(List<String> lowWeight, List<String> mediumWeight,
                               List<String> highWeight, FoodWeight foodWeight, List<String> otherDiseaseList){
 
         int proteinWeight = foodWeight.getProteinWeight();
@@ -310,27 +318,6 @@ public class FoodService {
         } else {
             highWeight.add(element);
         }
-    }
-
-    private String deduceFoodForMultiDisease(List<String> multiWeightFields, String foodCode, String subCode){
-        List<FoodWeight> foodWeights = foodWeightDao.getFoodWeightByMultiWeightFieldsAndSubCode(multiWeightFields, foodCode, subCode);
-
-        if(foodWeights == null || foodWeights.size() == 0){
-            return null;
-        }
-
-        StringBuffer foods = new StringBuffer();
-
-        for(int i = 0; i < foodWeights.size(); i++){
-            String foodId = foodWeights.get(i).getFoodId();
-            FoodTbl food = foodDao.getFoodById(foodId);
-            if(i != foodWeights.size() - 1){
-                foods.append(food.getFoodName()).append("、");
-            } else {
-                foods.append(food.getFoodName()).append("。");
-            }
-        }
-        return foods.toString();
     }
 
     private int getMaxWeight(FoodWeight foodWeight, List<String> otherDiseases) {
