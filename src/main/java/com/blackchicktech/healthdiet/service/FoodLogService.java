@@ -231,7 +231,7 @@ public class FoodLogService {
     public boolean isStandardLogType(List<FoodLog> foodLogList){
         int size = 2;
         return Seq.seq(foodLogList).map(FoodLog::getDate).map(Date::getTime)// i.e. [1,2,3,5]
-                .window(0, size - 1).filter(w -> w.count() == size)// [[1,2],[2,3],[3,4]]
+                .window(0, size - 1).filter(w -> w.count() == size)// [[1,2],[2,3],[3,5]]
                 .map(w -> w.window().reduce((left, right) -> Math.abs(right - left)).orElse(0L))// [1,1,2]
                 .allMatch(item -> (item / ONE_DAY_MILI_SECONDS) == 1L);
     }
