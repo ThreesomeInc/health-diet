@@ -11,6 +11,7 @@ import com.blackchicktech.healthdiet.repository.UserDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import com.google.common.collect.ImmutableMap;
+import org.jooq.lambda.Seq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,33 +213,27 @@ public class FoodLogService {
             peRatio += foodLog.getPeRatio();
         }
 
-        Map<String, Double> elementAvgs = ImmutableMap.<String, Double>builder()
-                                            .put("钙", BigDecimal.valueOf(ca/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue() )
-                                            .put("碳水化合物", BigDecimal.valueOf(cho/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("脂肪", BigDecimal.valueOf(fat/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("钾", BigDecimal.valueOf(k/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("磷", BigDecimal.valueOf(p/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("钠", BigDecimal.valueOf(na/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("蛋白质", BigDecimal.valueOf(protein/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("能量", BigDecimal.valueOf(energy/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("碳水化合物供能比", BigDecimal.valueOf(ceRatio/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("脂肪供能比", BigDecimal.valueOf(feRatio/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .put("蛋白质供能比", BigDecimal.valueOf(peRatio/3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                                            .build();
-        return elementAvgs;
+        return ImmutableMap.<String, Double>builder()
+                .put("钙", BigDecimal.valueOf(ca / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("碳水化合物", BigDecimal.valueOf(cho / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("脂肪", BigDecimal.valueOf(fat / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("钾", BigDecimal.valueOf(k / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("磷", BigDecimal.valueOf(p / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("钠", BigDecimal.valueOf(na / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("蛋白质", BigDecimal.valueOf(protein / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("能量", BigDecimal.valueOf(energy / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("碳水化合物供能比", BigDecimal.valueOf(ceRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("脂肪供能比", BigDecimal.valueOf(feRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("蛋白质供能比", BigDecimal.valueOf(peRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .build();
     }
 
     public boolean isStandardLogType(List<FoodLog> foodLogList){
-        Date dateOne = foodLogList.get(0).getDate();
-        Date dateTwo = foodLogList.get(1).getDate();
-        Date dateThree = foodLogList.get(2).getDate();
-        if((int)((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
-                (int)((dateTwo.getTime() - dateThree.getTime()) / ONE_DAY_MILI_SECONDS) == 1){
-            return true;
-        } else {
-            return false;
-        }
-
+        int size = 2;
+        return Seq.seq(foodLogList).map(FoodLog::getDate).map(Date::getTime)
+                .window(0, size - 1).filter(w -> w.count() == size)
+                .map(w -> w.window().reduce((left, right) -> Math.abs(right - left)).orElse(0L))
+                .allMatch(item -> (item / ONE_DAY_MILI_SECONDS) == 1L);
     }
 
     public String deduceDieticianAdvice(List<FoodLog> foodLogList, Map<String, Double> elementAvgs, String openId){

@@ -35,15 +35,15 @@ public class FoodLogServiceTest {
     private FoodLogDao foodLogDao;
 
     private List<FoodLog> foodLogList = ImmutableList.<FoodLog>builder()
-                                        .add(new FoodLog("test",new Date(2018,8, 28),
-                                                    true, 2500, 3000,0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
-                                                               5.5, 3.6, 4.6))
-                                        .add(new FoodLog("test",new Date(2018,8, 25),
-                                                true, 2500, 3000,0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
-                                                5.5, 3.6, 4.6))
-                                        .add(new FoodLog("test",new Date(2018,8, 24),
-                                                true, 2500, 3000,0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
-                                                5.5, 3.6, 4.6)).build();
+            .add(new FoodLog("test", new Date(2018, 8, 28),
+                    true, 2500, 3000, 0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
+                    5.5, 3.6, 4.6))
+            .add(new FoodLog("test", new Date(2018, 8, 25),
+                    true, 2500, 3000, 0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
+                    5.5, 3.6, 4.6))
+            .add(new FoodLog("test", new Date(2018, 8, 24),
+                    true, 2500, 3000, 0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
+                    5.5, 3.6, 4.6)).build();
 
 
     @Before
@@ -58,9 +58,9 @@ public class FoodLogServiceTest {
     public void testDeduceElementEvgs(){
         when(foodLogService.deduceElementEvgs(foodLogList)).thenCallRealMethod();
         Map<String, Double> result = foodLogService.deduceElementEvgs(foodLogList);
-        Assert.assertEquals(result.get("钙").doubleValue(), 4.6, 0.0);
-        Assert.assertEquals(result.get("碳水化合物").doubleValue(), 56.2, 0.0);
-        Assert.assertEquals(result.get("碳水化合物供能比").doubleValue(), 0.5, 0.0);
+        Assert.assertEquals(result.get("钙"), 4.6, 0.0);
+        Assert.assertEquals(result.get("碳水化合物"), 56.2, 0.0);
+        Assert.assertEquals(result.get("碳水化合物供能比"), 0.5, 0.0);
     }
 
     @Test
