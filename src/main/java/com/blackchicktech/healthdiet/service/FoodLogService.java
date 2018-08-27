@@ -231,7 +231,8 @@ public class FoodLogService {
         int size = 2;
         return Seq.seq(foodLogList).map(FoodLog::getDate).map(Date::getTime)// i.e. [1,2,3,5]
                 .window(0, size - 1).filter(w -> w.count() == size)// [[1,2],[2,3],[3,5]]
-                .map(w -> w.window().reduce((left, right) -> TimeUnit.MILLISECONDS.toDays(right - left)).orElse(0L))// [1,1,2]
+                .map(w -> w.window().reduce((left, right) ->
+                        TimeUnit.MILLISECONDS.toDays(left - right)).map(Math::abs).orElse(0L))// [1,1,2]
                 .allMatch(item -> item  == 1L);
     }
 
