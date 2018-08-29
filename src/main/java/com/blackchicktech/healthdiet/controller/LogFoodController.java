@@ -62,9 +62,10 @@ public class LogFoodController {
     //获取每日膳食
     @RequestMapping(value = "/single", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public DietHistoryResponse getDietHistory(@RequestParam String openId, @RequestParam String date) {
-        Date d = parseDate(date);
-        List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, d);
+    public DietHistoryResponse getDietHistory(@RequestParam String openId,
+                                              @RequestParam(required = false) String mealtime,
+                                              @RequestParam String date) {
+        List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, parseDate(date), mealtime);
         if (foodLogDetails.isEmpty()) {
             return new DietHistoryResponse(Collections.emptyList(), null);
         }
