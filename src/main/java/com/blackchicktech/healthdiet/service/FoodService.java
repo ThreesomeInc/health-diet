@@ -89,6 +89,10 @@ public class FoodService {
         return null;
     }
 
+    public FoodUnit getFoodUnit(String foodId) {
+        return foodDao.getFoodUnit(foodId);
+    }
+
     private void reloadFoodRanking() {
         LOGGER.info("Begin to load food rank");
         Reader in = null;

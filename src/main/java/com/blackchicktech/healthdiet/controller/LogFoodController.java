@@ -2,7 +2,9 @@ package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
+import com.blackchicktech.healthdiet.entity.FoodUnit;
 import com.blackchicktech.healthdiet.service.FoodLogService;
+import com.blackchicktech.healthdiet.service.FoodService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import org.slf4j.Logger;
@@ -26,6 +28,9 @@ public class LogFoodController {
 
     @Autowired
     private FoodLogService foodLogService;
+
+    @Autowired
+    private FoodService foodService;
 
     @Autowired
     private UserService userService;
@@ -63,6 +68,18 @@ public class LogFoodController {
             return new DietHistoryResponse(Collections.emptyList());
         }
         return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()));
+    }
+
+    //获取食部信息
+    @RequestMapping(value = "/food/{foodId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public FoodUnitResponse getFoodUnit(@PathVariable String foodId) {
+        FoodUnit foodUnit = foodService.getFoodUnit(foodId);
+        if (foodUnit == null) {
+            return new FoodUnitResponse();
+        }
+
+        return new FoodUnitResponse(foodUnit);
     }
 
     private Date parseDate(String dateString) {

@@ -2,6 +2,7 @@ package com.blackchicktech.healthdiet.repository;
 
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
+import com.blackchicktech.healthdiet.entity.FoodUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,23 @@ public class FoodDaoImpl implements FoodDao {
 			logger.info("Can not find food by alias={}", alias);
 		}
 		return foodListItem;
+	}
+
+	public FoodUnit getFoodUnit(String foodId) {
+		logger.info("Query food unit by food id foodId={}", foodId);
+		List<FoodUnit> foodUnitList = jdbcTemplate.query("SELECT food_id, food_name, food_alias, unit, edible FROM food_tbl WHERE food_id = ?",
+				(resultSet, i) -> new FoodUnit(
+						resultSet.getString("food_id"),
+						resultSet.getString("food_name"),
+						resultSet.getString("unit"),
+						resultSet.getString("food_alias"),
+						resultSet.getInt("edible"))
+				, foodId);
+		FoodUnit foodUnit = foodUnitList.stream().findFirst().orElse(null);
+		if (foodUnit == null) {
+			logger.info("Can not find food unit by foodId={}", foodId);
+		}
+		return foodUnit;
 	}
 
 }
