@@ -10,4 +10,8 @@ public class DietHistoryResponse extends BasicResponse {
 
     @JsonProperty("dietRecordList")
     private List<DietRecord> dietRecordList;
+
+    public DietHistoryResponse(List<DietRecord> dietRecordList) {
+        this.dietRecordList = dietRecordList;
+    }
 }

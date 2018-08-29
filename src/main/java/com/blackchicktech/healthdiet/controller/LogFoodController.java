@@ -1,6 +1,7 @@
 package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.domain.*;
+import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.service.FoodLogService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
@@ -11,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/foodLog")
@@ -37,7 +40,6 @@ public class LogFoodController {
         return new MonthFoodLogResponse(monthFoodLogList);
     }
 
-
     //记录每日膳食 有的话覆盖
     @PostMapping(MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
@@ -52,10 +54,15 @@ public class LogFoodController {
     }
 
     //获取每日膳食
-    @GetMapping(MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/single", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public DietHistoryResponse getDietHistory(@RequestParam String period) { //period=month, period=day eg: period='2018-06', period='2018-06-01'
-        return new DietHistoryResponse();
+    public DietHistoryResponse getDietHistory(@RequestParam String openId, @RequestParam String date) {
+        Date d = parseDate(date);
+        List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, d);
+        if (foodLogDetails.isEmpty()) {
+            return new DietHistoryResponse(Collections.emptyList());
+        }
+        return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()));
     }
 
     private Date parseDate(String dateString) {

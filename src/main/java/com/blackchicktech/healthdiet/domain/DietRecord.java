@@ -1,5 +1,6 @@
 package com.blackchicktech.healthdiet.domain;
 
+import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,47 +8,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DietRecord {
 
-    @JsonProperty("time")
-    private String time;
+    @JsonProperty("mealtime")
+    private String mealtime;
 
-    @JsonProperty("date")
-    private String date;
+    @JsonProperty("foodLogItems")
+    private String foodLogItems;
 
-    @JsonProperty("location")
-    private String location; //home, outside
-
-    @JsonProperty("diet")
-    private Diet diet;
-
-    public String getTime() {
-        return time;
+    public DietRecord(FoodLogDetail foodLogDetail) {
+        this.mealtime = foodLogDetail.getMealTime();
+        this.foodLogItems = foodLogDetail.getContent();
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public String getMealtime() {
+        return mealtime;
     }
 
-    public String getDate() {
-        return date;
+    public void setMealtime(String mealtime) {
+        this.mealtime = mealtime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getFoodLogItems() {
+        return foodLogItems;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public Diet getDiet() {
-        return diet;
-    }
-
-    public void setDiet(Diet diet) {
-        this.diet = diet;
+    public void setFoodLogItems(String foodLogItems) {
+        this.foodLogItems = foodLogItems;
     }
 }

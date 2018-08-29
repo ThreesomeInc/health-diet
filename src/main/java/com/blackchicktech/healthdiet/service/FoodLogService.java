@@ -46,6 +46,10 @@ public class FoodLogService {
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
+    public List<FoodLogDetail> getFoodLogDetail(String openId, Date date) {
+        return foodLogDao.getFoodLogDetailByDate(openId, date);
+    }
+
     public AccumulativeEnergy updateFoodLog(FoodLogRequest request) {
         if (request.getFoodLogItemList() != null && !request.getFoodLogItemList().isEmpty()) {
             foodLogDao.addFoodLogDetail(request);
