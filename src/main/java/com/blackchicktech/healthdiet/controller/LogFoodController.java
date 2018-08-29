@@ -1,6 +1,7 @@
 package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.domain.*;
+import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodUnit;
 import com.blackchicktech.healthdiet.service.FoodLogService;
@@ -65,9 +66,15 @@ public class LogFoodController {
         Date d = parseDate(date);
         List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, d);
         if (foodLogDetails.isEmpty()) {
-            return new DietHistoryResponse(Collections.emptyList());
+            return new DietHistoryResponse(Collections.emptyList(), null);
         }
-        return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()));
+
+        FoodLog foodLog = foodLogService.getMonthFoodLog(openId, d);
+        if (foodLog == null) {
+            return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), null);
+        }
+
+        return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), new MonthFoodLog(foodLog));
     }
 
     //获取食部信息

@@ -46,6 +46,10 @@ public class FoodLogService {
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
+    public FoodLog getMonthFoodLog(String openId, Date date) {
+        return foodLogDao.getFoodLogByDate(openId, date).stream().findFirst().orElse(null);
+    }
+
     public List<FoodLogDetail> getFoodLogDetail(String openId, Date date) {
         return foodLogDao.getFoodLogDetailByDate(openId, date);
     }

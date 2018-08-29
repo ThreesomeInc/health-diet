@@ -45,6 +45,30 @@ public class FoodLogDao {
         return foodLogList;
     }
 
+    public List<FoodLog> getFoodLogByDate(String openId, Date date) {
+        logger.info("Query current month food log openId={}, date={}", openId, date);
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? AND " +
+                        "log_date =?",
+                (resultSet, i) -> new FoodLog(
+                        resultSet.getString("open_id"),
+                        resultSet.getDate("log_date"),
+                        resultSet.getBoolean("is_logged"),
+                        resultSet.getDouble("totalEnergy"),
+                        resultSet.getDouble("totalProtein"),
+                        resultSet.getDouble("peRatio"),
+                        resultSet.getDouble("fat"),
+                        resultSet.getDouble("feRatio"),
+                        resultSet.getDouble("cho"),
+                        resultSet.getDouble("ceRatio"),
+                        resultSet.getDouble("na"),
+                        resultSet.getDouble("k"),
+                        resultSet.getDouble("p"),
+                        resultSet.getDouble("ca")
+                ), openId, date);
+        logger.info("Finished query food log total {} records", foodLogList.size());
+        return foodLogList;
+    }
+
     public void addFoodLog(String openId, Date date, boolean isFullLog, FoodLog foodLog) {
         logger.info("Going to insert food log for user openId={}", openId);
         try {
