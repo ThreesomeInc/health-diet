@@ -15,6 +15,9 @@ public class FoodLogItem {
     @JsonProperty("channel") //市场，超市
     private String channel;
 
+    @JsonProperty("edible") //食部，入库作回显
+    private String edible;
+
     public FoodLogItem() {
     }
 
@@ -22,6 +25,13 @@ public class FoodLogItem {
         this.foodId = foodId;
         this.unit = unit;
         this.channel = channel;
+    }
+
+    public FoodLogItem(String foodId, double unit, String channel, String edible) {
+        this.foodId = foodId;
+        this.unit = unit;
+        this.channel = channel;
+        this.edible = edible;
     }
 
     public String getFoodId() {
@@ -48,12 +58,21 @@ public class FoodLogItem {
         this.channel = channel;
     }
 
+    public String getEdible() {
+        return edible;
+    }
+
+    public void setEdible(String edible) {
+        this.edible = edible;
+    }
+
     @Override
     public String toString() {
         return "FoodLogItem{" +
                 "foodId='" + foodId + '\'' +
                 ", unit=" + unit +
                 ", channel='" + channel + '\'' +
+                ", edible='" + edible + '\'' +
                 '}';
     }
 }
