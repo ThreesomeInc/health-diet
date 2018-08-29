@@ -1,6 +1,7 @@
 package com.blackchicktech.healthdiet.util;
 
 import com.blackchicktech.healthdiet.domain.FoodLogItem;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
@@ -21,7 +22,7 @@ public class FoodLogUtil {
 
     public static List<FoodLogItem> readFromJson(String json) {
         try {
-            return mapper.readValue(json, List.class);
+            return mapper.readValue(json, new TypeReference<List<FoodLogItem>>(){});
         } catch (Exception e) {
             //ignore
         }
