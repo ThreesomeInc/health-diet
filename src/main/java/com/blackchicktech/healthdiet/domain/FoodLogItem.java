@@ -18,6 +18,9 @@ public class FoodLogItem {
     @JsonProperty("edible") //食部，入库作回显
     private String edible;
 
+    @JsonProperty("foodName") //食材名，入库作回显
+    private String foodName;
+
     public FoodLogItem() {
     }
 
@@ -25,13 +28,6 @@ public class FoodLogItem {
         this.foodId = foodId;
         this.unit = unit;
         this.channel = channel;
-    }
-
-    public FoodLogItem(String foodId, double unit, String channel, String edible) {
-        this.foodId = foodId;
-        this.unit = unit;
-        this.channel = channel;
-        this.edible = edible;
     }
 
     public String getFoodId() {
@@ -66,13 +62,20 @@ public class FoodLogItem {
         this.edible = edible;
     }
 
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
+
     @Override
     public String toString() {
         return "FoodLogItem{" +
                 "foodId='" + foodId + '\'' +
                 ", unit=" + unit +
                 ", channel='" + channel + '\'' +
-                ", edible='" + edible + '\'' +
                 '}';
     }
 }
