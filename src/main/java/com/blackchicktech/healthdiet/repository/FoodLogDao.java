@@ -4,6 +4,8 @@ import com.blackchicktech.healthdiet.domain.FoodLogRequest;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,16 +97,21 @@ public class FoodLogDao {
         }
     }
 
-    public List<FoodLogDetail> getFoodLogDetailByDate(String openId, Date date) {
-        logger.info("Query current date food log detail openId={}, date={}", openId, date);
-        List<FoodLogDetail> foodLogDetailList = jdbcTemplate.query("SELECT * FROM food_log_detail_tbl WHERE open_id =? " +
-                        "AND log_date =?",
+    public List<FoodLogDetail> getFoodLogDetailByDate(String openId, Date date, String mealtime) {
+        logger.info("Query current date food log detail openId={}, date={}, mealtime={}", openId, date, mealtime);
+        List<Object> param = Lists.newArrayList(openId, date);
+        String sql = "SELECT * FROM food_log_detail_tbl WHERE open_id =? AND log_date =?";
+        if (StringUtils.isNotBlank(mealtime)) {
+            sql += " and mealtime=? ";
+            param.add(mealtime);
+        }
+        List<FoodLogDetail> foodLogDetailList = jdbcTemplate.query(sql,
                 (resultSet, i) -> new FoodLogDetail(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
                         resultSet.getString("mealtime"),
                         resultSet.getString("content")
-                ), openId, date);
+                ), param.toArray());
         logger.info("Finished query food log detail total {} records", foodLogDetailList.size());
         return foodLogDetailList;
     }
