@@ -62,7 +62,7 @@ public class FoodLogService {
         }
 
         //获取全天记录的食物计算能量
-        List<FoodLogDetail> todayDetail = foodLogDao.getFoodLogDetailByDate(request.getOpenId(), request.getDate());
+        List<FoodLogDetail> todayDetail = foodLogDao.getFoodLogDetailByDate(request.getOpenId(), request.getDate(), null);
         if (todayDetail.isEmpty()) {
             //全天没有食物，删除当日食物记录
             foodLogDao.deleteFoodLog(request.getOpenId(), request.getDate());

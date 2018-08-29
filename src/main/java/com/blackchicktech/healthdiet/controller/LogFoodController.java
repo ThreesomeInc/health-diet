@@ -70,7 +70,7 @@ public class LogFoodController {
             return new DietHistoryResponse(Collections.emptyList(), null);
         }
 
-        FoodLog foodLog = foodLogService.getMonthFoodLog(openId, d);
+        FoodLog foodLog = foodLogService.getMonthFoodLog(openId, parseDate(date));
         if (foodLog == null) {
             return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), null);
         }
