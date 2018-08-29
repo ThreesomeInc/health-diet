@@ -15,6 +15,15 @@ public class FoodLogItem {
     @JsonProperty("channel") //市场，超市
     private String channel;
 
+    public FoodLogItem() {
+    }
+
+    public FoodLogItem(String foodId, double unit, String channel) {
+        this.foodId = foodId;
+        this.unit = unit;
+        this.channel = channel;
+    }
+
     public String getFoodId() {
         return foodId;
     }
