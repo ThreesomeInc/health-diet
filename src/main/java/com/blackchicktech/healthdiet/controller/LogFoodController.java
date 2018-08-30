@@ -97,10 +97,10 @@ public class LogFoodController {
 		return new FoodUnitResponse(foodUnit);
 	}
 
-	@RequestMapping(value = "/isCompletedLog", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/isCompletedLog", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public BasicResponse updateIsCompletedLog(@RequestParam("openId") String openId, @RequestParam("date") String date, @RequestParam("checked") boolean checked) {
-		foodLogService.updateIsCompletedLog(openId, parseDate(date), checked);
+	public BasicResponse updateIsCompletedLog(@RequestBody CompletedLogInfo completedLogInfo) {
+		foodLogService.updateIsCompletedLog(completedLogInfo.getOpenId(), parseDate(completedLogInfo.getDate()), completedLogInfo.isChecked());
 		return new BasicResponse();
 	}
 
