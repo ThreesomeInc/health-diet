@@ -54,6 +54,10 @@ public class FoodLogService {
         return foodLogDao.getFoodLogByDate(openId, date).stream().findFirst().orElse(null);
     }
 
+    public void updateIsCompletedLog(String openId, Date date, boolean checked) {
+        foodLogDao.updateCompletedLog(openId, date, checked);
+    }
+
     public AccumulativeEnergy updateFoodLog(FoodLogRequest request) {
         if (request.getFoodLogItemList() != null && !request.getFoodLogItemList().isEmpty()) {
             foodLogDao.addFoodLogDetail(request);
@@ -70,9 +74,7 @@ public class FoodLogService {
         }
 
         AccumulativeEnergy accumulativeEnergy = new AccumulativeEnergy();
-        int totalMealtime = 0; //计算是否累计三餐
         for (FoodLogDetail foodLogDetail : todayDetail) {
-            totalMealtime += calTotalMeal(foodLogDetail.getMealTime());
 
             //计算每一个食材的能量
             for (FoodLogItem foodLogItem : FoodLogUtil.readFromJson(foodLogDetail.getContent())) {
@@ -84,25 +86,13 @@ public class FoodLogService {
         if (!accumulativeEnergy.isEmpty()) {
             //持久化每日能量
             FoodLog foodLog = new FoodLog(request.getOpenId(), request.getDate(),
-                    totalMealtime >= 3,
+                    false,
                     accumulativeEnergy);
             foodLogDao.addFoodLog(foodLog);
         } else {
             foodLogDao.deleteFoodLog(request.getOpenId(), request.getDate());
         }
         return accumulativeEnergy;
-    }
-
-    //只有早午晚计入三餐
-    private int calTotalMeal(String mealtime) {
-        switch (mealtime) {
-            case "早餐":
-            case "午餐":
-            case "晚餐":
-                return 1;
-            default:
-                return 0;
-        }
     }
 
     private void calEnergy(AccumulativeEnergy accumulativeEnergy, FoodLogItem foodLogItem) {

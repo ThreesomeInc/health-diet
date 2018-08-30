@@ -1,14 +1,6 @@
 package com.blackchicktech.healthdiet.controller;
 
-import com.blackchicktech.healthdiet.domain.AccumulativeEnergy;
-import com.blackchicktech.healthdiet.domain.DietHistoryResponse;
-import com.blackchicktech.healthdiet.domain.DietRecord;
-import com.blackchicktech.healthdiet.domain.DietRecordResponse;
-import com.blackchicktech.healthdiet.domain.FoodLogRequest;
-import com.blackchicktech.healthdiet.domain.FoodUnitResponse;
-import com.blackchicktech.healthdiet.domain.MonthFoodLog;
-import com.blackchicktech.healthdiet.domain.MonthFoodLogResponse;
-import com.blackchicktech.healthdiet.domain.ThreeDayFoodLogAnalysis;
+import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodUnit;
@@ -103,6 +95,13 @@ public class LogFoodController {
 		}
 
 		return new FoodUnitResponse(foodUnit);
+	}
+
+	@RequestMapping(value = "/isCompletedLog", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public BasicResponse updateIsCompletedLog(@RequestParam String openId, @RequestParam String date, @RequestParam boolean checked) {
+		foodLogService.updateIsCompletedLog(openId, parseDate(date), checked);
+		return new BasicResponse();
 	}
 
 	private Date parseDate(String dateString) {

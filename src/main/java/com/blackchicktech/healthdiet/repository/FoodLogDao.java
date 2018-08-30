@@ -96,6 +96,20 @@ public class FoodLogDao {
         }
     }
 
+    public void updateCompletedLog(String openId, Date date, boolean checked) {
+        logger.info("Going to update if food log for user openId={}, date={}, isCompletedLog={}", openId, date, checked);
+        try {
+            jdbcTemplate.update(
+                "UPDATE food_log_tbl SET is_completed_log=? WHERE open_id=? AND log_date=?",
+                    checked,
+                    openId,
+                    date
+            );
+        } catch (Exception e) {
+            logger.warn("Failed to update food log for user openId={}, date={}, isCompletedLog={}", openId, date, checked);
+        }
+    }
+
     public void addFoodLog(FoodLog foodLog) {
         logger.info("Going to insert food log for user openId={}", foodLog.getOpenId());
         try {
