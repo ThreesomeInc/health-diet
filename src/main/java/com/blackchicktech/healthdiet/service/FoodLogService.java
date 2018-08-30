@@ -99,7 +99,7 @@ public class FoodLogService {
         FoodTbl foodTbl = foodDao.getFoodById(foodLogItem.getFoodId());
         double calPercent = getCalPercent(foodLogItem.getChannel(), foodTbl);
         double totalEnergy = accumulativeEnergy.getTotalEnergy() + foodTbl.getEnergy() * calPercent;
-        double totalProtein = accumulativeEnergy.getTotalEnergy() + foodTbl.getProtein() * calPercent;
+        double totalProtein = accumulativeEnergy.getTotalProtein() + foodTbl.getProtein() * calPercent;
         double peRatio = calPeRatio(totalEnergy, totalProtein);
 
         double totalFat = accumulativeEnergy.getFat() + readDouble(foodTbl.getFat(), 0) * calPercent;
