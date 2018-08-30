@@ -13,9 +13,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by Eric Cen on 2018/8/3.
- */
 @Service
 public class ReportService {
 

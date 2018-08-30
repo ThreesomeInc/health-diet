@@ -11,9 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by Eric Cen on 2018/8/12.
- */
 @Repository
 public class FoodWeightDaoImpl {
 
