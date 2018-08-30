@@ -20,17 +20,19 @@ import java.util.List;
 
 public class ExcelImporter {
 
+    private static String filePath = "/Users/quan/Documents/Apps/diet.xlsx";
+    private static int totalRows = 2054;  //后面是有格式的脏数据
+
     public static void main(String[] args) throws Exception {
         List<FoodTbl> foodTbls = new ArrayList<>();
         List<FoodWeight> foodWeights = new ArrayList<>();
 
-        File file = new File("/Users/quan/Documents/Apps/diet.xlsx");
+        File file = new File(filePath);
         XSSFWorkbook workbook = null;
         try {
             System.out.println("Begin to load workbook " + file.getName());
             workbook = new XSSFWorkbook(new FileInputStream(file));
             XSSFSheet sheet1 = workbook.getSheetAt(0);
-            int totalRows = 2054;  //后面是有格式的脏数据
             System.out.println("Read sheet " + sheet1.getSheetName() + " total " + totalRows + " rows");
             //row 0 是header
             for (int i = 3; i < totalRows; i++) {
@@ -83,7 +85,7 @@ public class ExcelImporter {
         }
 
         saveFoodTblToCsv(foodTbls);
-//        saveFoodWeightToCsv(foodWeights);
+        saveFoodWeightToCsv(foodWeights);
     }
 
     private static void saveFoodTblToCsv(List<FoodTbl> foodTbls) throws IOException {

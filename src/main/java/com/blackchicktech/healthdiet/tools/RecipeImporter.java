@@ -19,6 +19,9 @@ import static com.blackchicktech.healthdiet.tools.ExcelImporter.*;
 
 public class RecipeImporter {
 
+    private static String filePath = "/Users/quan/Documents/Apps/recipe.xlsx";
+    private static int totalRows = 57; //后面是有格式的脏数据
+
     public static void main(String[] args) throws Exception {
         excelImporter();
     }
@@ -29,13 +32,12 @@ public class RecipeImporter {
 
         List<RecipeWeight> recipeWeightList = new ArrayList<>();
 
-        File file = new File("/Users/quan/Documents/Apps/recipe.xlsx");
+        File file = new File(filePath);
         XSSFWorkbook workbook = null;
         try {
             System.out.println("Begin to load workbook " + file.getName());
             workbook = new XSSFWorkbook(new FileInputStream(file));
             XSSFSheet sheet1 = workbook.getSheetAt(0);
-            int totalRows = 57;  //后面是有格式的脏数据
             System.out.println("Read sheet " + sheet1.getSheetName() + " total " + totalRows + " rows");
             //row 0 是header
             for (int i = 3; i < totalRows; i++) {
