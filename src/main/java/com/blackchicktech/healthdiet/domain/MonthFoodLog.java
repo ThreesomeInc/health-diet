@@ -52,7 +52,7 @@ public class MonthFoodLog {
 
     public MonthFoodLog(FoodLog foodLog) {
         this.date = foodLog.getDate();
-        this.logged = foodLog.isRecorded();
+        this.logged = foodLog.isCompletedLog();
         this.totalEnergy = formatDouble(foodLog.getTotalEnergy());
         this.totalProtein = formatDouble(foodLog.getTotalProtein());
         this.peRatio = formatDouble(foodLog.getPeRatio());

@@ -30,7 +30,7 @@ public class FoodLogDao {
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
-                        resultSet.getBoolean("is_logged"),
+                        resultSet.getBoolean("is_completed_log"),
                         resultSet.getDouble("totalEnergy"),
                         resultSet.getDouble("totalProtein"),
                         resultSet.getDouble("peRatio"),
@@ -54,7 +54,7 @@ public class FoodLogDao {
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
-                        resultSet.getBoolean("is_logged"),
+                        resultSet.getBoolean("is_completed_log"),
                         resultSet.getDouble("totalEnergy"),
                         resultSet.getDouble("totalProtein"),
                         resultSet.getDouble("peRatio"),
@@ -103,7 +103,7 @@ public class FoodLogDao {
                     "REPLACE INTO food_log_tbl VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     foodLog.getOpenId(),
                     foodLog.getDate(),
-                    foodLog.isRecorded(),
+                    foodLog.isCompletedLog(),
                     foodLog.getTotalEnergy(),
                     foodLog.getTotalProtein(),
                     foodLog.getPeRatio(),
@@ -184,11 +184,11 @@ public class FoodLogDao {
 
     public List<FoodLog> getLatestThreeDayFoodLog(String openId){
         logger.info("Going to get latest 3 three days food log for user openId = {}", openId);
-        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? and is_logged = 1 order by log_date desc limit 3",
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? and is_completed_log = 1 order by log_date desc limit 3",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
-                        resultSet.getBoolean("is_logged"),
+                        resultSet.getBoolean("is_completed_log"),
                         resultSet.getDouble("totalEnergy"),
                         resultSet.getDouble("totalProtein"),
                         resultSet.getDouble("peRatio"),

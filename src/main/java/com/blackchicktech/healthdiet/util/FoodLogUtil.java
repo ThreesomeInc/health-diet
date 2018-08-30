@@ -30,4 +30,13 @@ public class FoodLogUtil {
 
         return Collections.emptyList();
     }
+
+
+    public static void main(String[] args) {
+        FoodLogItem foodLogItem1 = new FoodLogItem("01-1-101", 100, "超市");
+        FoodLogItem foodLogItem2 = new FoodLogItem("01-1-102", 50, "超市");
+        FoodLogItem foodLogItem3 = new FoodLogItem("01-1-201", 100, "超市");
+
+        System.out.println(toJsonStr(Arrays.asList(foodLogItem1, foodLogItem2, foodLogItem3)));
+    }
 }

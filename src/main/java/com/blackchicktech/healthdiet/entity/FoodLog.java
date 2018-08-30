@@ -10,7 +10,7 @@ public class FoodLog {
 
     private Date date;
 
-    private boolean isRecorded;
+    private boolean isCompletedLog;
 
     private double totalEnergy;
 
@@ -34,10 +34,10 @@ public class FoodLog {
 
     private double ca;
 
-    public FoodLog(String openId, Date d, boolean isRecorded, AccumulativeEnergy energy) {
+    public FoodLog(String openId, Date d, boolean isCompletedLog, AccumulativeEnergy energy) {
         this.openId = openId;
         this.date = d;
-        this.isRecorded = isRecorded;
+        this.isCompletedLog = isCompletedLog;
         this.totalEnergy = energy.getTotalEnergy();
         this.totalProtein = energy.getTotalProtein();
         this.peRatio = energy.getPeRatio();
@@ -51,10 +51,10 @@ public class FoodLog {
         this.ca = energy.getCa();
     }
 
-    public FoodLog(String openId, Date date, boolean isRecorded, double totalEnergy, double totalProtein, double peRatio, double fat, double feRatio, double cho, double ceRatio, double na, double k, double p, double ca) {
+    public FoodLog(String openId, Date date, boolean isCompletedLog, double totalEnergy, double totalProtein, double peRatio, double fat, double feRatio, double cho, double ceRatio, double na, double k, double p, double ca) {
         this.openId = openId;
         this.date = date;
-        this.isRecorded = isRecorded;
+        this.isCompletedLog = isCompletedLog;
         this.totalEnergy = totalEnergy;
         this.totalProtein = totalProtein;
         this.peRatio = peRatio;
@@ -84,12 +84,12 @@ public class FoodLog {
         this.date = date;
     }
 
-    public boolean isRecorded() {
-        return isRecorded;
+    public boolean isCompletedLog() {
+        return isCompletedLog;
     }
 
-    public void setRecorded(boolean recorded) {
-        isRecorded = recorded;
+    public void setCompletedLog(boolean completedLog) {
+        isCompletedLog = completedLog;
     }
 
     public double getTotalEnergy() {
@@ -185,7 +185,7 @@ public class FoodLog {
         return "FoodLog{" +
                 "openId='" + openId + '\'' +
                 ", date=" + date +
-                ", isRecorded=" + isRecorded +
+                ", isCompletedLog=" + isCompletedLog +
                 ", totalEnergy=" + totalEnergy +
                 ", totalProtein=" + totalProtein +
                 ", peRatio=" + peRatio +

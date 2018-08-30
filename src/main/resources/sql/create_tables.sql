@@ -91,7 +91,7 @@ CREATE TABLE `recipe_weight_tbl` (
 CREATE TABLE `food_log_tbl` (
   `open_id` VARCHAR(255) NOT NULL,
   `log_date` DATETIME NOT NULL,
-  `is_logged` TINYINT NULL DEFAULT 0,
+  `is_completed_log` TINYINT NULL DEFAULT 0,
   `totalEnergy` float(10,2) DEFAULT NULL,
   `totalProtein` float(10,2) DEFAULT NULL,
   `peRatio` float(10,2) DEFAULT NULL,
