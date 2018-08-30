@@ -99,7 +99,7 @@ public class LogFoodController {
 
 	@RequestMapping(value = "/isCompletedLog", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public BasicResponse updateIsCompletedLog(@RequestParam String openId, @RequestParam String date, @RequestParam boolean checked) {
+	public BasicResponse updateIsCompletedLog(@RequestParam("openId") String openId, @RequestParam("date") String date, @RequestParam("checked") boolean checked) {
 		foodLogService.updateIsCompletedLog(openId, parseDate(date), checked);
 		return new BasicResponse();
 	}
