@@ -38,10 +38,10 @@ public class FoodLogServiceTest {
             .add(new FoodLog("test", new Date(2018, 8, 28),
                     true, 2500, 3000, 0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
                     5.5, 3.6, 4.6))
-            .add(new FoodLog("test", new Date(2018, 8, 25),
+            .add(new FoodLog("test", new Date(2018, 8, 27),
                     true, 2500, 3000, 0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
                     5.5, 3.6, 4.6))
-            .add(new FoodLog("test", new Date(2018, 8, 24),
+            .add(new FoodLog("test", new Date(2018, 8, 26),
                     true, 2500, 3000, 0.6, 30.5, 0.5, 56.2, 0.5, 4.5,
                     5.5, 3.6, 4.6)).build();
 
@@ -67,7 +67,7 @@ public class FoodLogServiceTest {
     public void testIsStandardLogType(){
         when(foodLogService.isStandardLogType(foodLogList)).thenCallRealMethod();
         boolean isStandardLogType = foodLogService.isStandardLogType(foodLogList);
-        Assert.assertFalse(isStandardLogType);
+        Assert.assertTrue(isStandardLogType);
     }
 
 

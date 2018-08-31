@@ -116,9 +116,9 @@ public class LogFoodController {
 
 	@RequestMapping(value = "/analysis", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ThreeDayFoodLogAnalysis getFoodLogAnalysis(@RequestParam String openId) {
+	public ThreeDayFoodLogAnalysis getFoodLogAnalysis(@RequestParam String openId, @RequestParam String date) {
 		logger.info("Begin to analytics three days' food log for user opend id = {}", openId);
-		return foodLogService.deduceThreeDayFoodLogAnalysis(openId);
+		return foodLogService.deduceThreeDayFoodLogAnalysis(openId, date);
 	}
 
 }

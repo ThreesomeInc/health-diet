@@ -11,19 +11,13 @@ import com.blackchicktech.healthdiet.repository.UserDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import com.google.common.collect.ImmutableMap;
-import org.jooq.lambda.Seq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -32,6 +26,8 @@ import java.util.stream.Collectors;
 public class FoodLogService {
 
     private static final Logger logger = LoggerFactory.getLogger(FoodLogService.class);
+
+    private static final long ONE_DAY_MILI_SECONDS = 1000*3600*24;
 
     @Autowired
     private FoodLogDao foodLogDao;
@@ -163,8 +159,8 @@ public class FoodLogService {
         }
     }
 
-    public ThreeDayFoodLogAnalysis deduceThreeDayFoodLogAnalysis(String openId){
-        List<FoodLog> threeDayFoodLog = foodLogDao.getLatestThreeDayFoodLog(openId);
+    public ThreeDayFoodLogAnalysis deduceThreeDayFoodLogAnalysis(String openId, String date){
+        List<FoodLog> threeDayFoodLog = foodLogDao.getLatestThreeDayFoodLog(openId, date);
         if(threeDayFoodLog.size() < 3){
             logger.info("Food log is less than 3 days, fail to analytic.");
             return new ThreeDayFoodLogAnalysis();
@@ -226,14 +222,23 @@ public class FoodLogService {
                 .build();
     }
 
+    //Standard Log Type: continuous 3 days, including 1 weekend(Saturday or Sunday)
     public boolean isStandardLogType(List<FoodLog> foodLogList){
-        int size = 2;
-        return Seq.seq(foodLogList).map(FoodLog::getDate).map(Date::getTime)// i.e. [1,2,3,5]
-                .window(0, size - 1).filter(w -> w.count() == size)// [[1,2],[2,3],[3,5]]
-                .map(w -> w.window().reduce((left, right) ->
-                        TimeUnit.MILLISECONDS.toDays(left - right)).map(Math::abs).orElse(0L))// [1,1,2]
-                .allMatch(item -> item  == 1L);
+        Date dateOne = foodLogList.get(0).getDate();
+        Date dateTwo = foodLogList.get(1).getDate();
+        Date dateThree = foodLogList.get(2).getDate();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateOne);
+        if((int)((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (int)((dateTwo.getTime() - dateThree.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (cal.get(Calendar.DAY_OF_WEEK) == 2 || cal.get(Calendar.DAY_OF_WEEK) == 7)){
+            return true;
+        }
+        return false;
     }
+
+
 
     public List<String> deduceDieticianAdvice(List<FoodLog> foodLogList, Map<String, Double> elementAvgs, String openId){
         User user = userDao.getUserByOpenId(openId);
