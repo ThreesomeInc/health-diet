@@ -3,6 +3,7 @@ package com.blackchicktech.healthdiet.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,10 +20,7 @@ public class ThreeDayFoodLogAnalysis {
     private Map<String, Double> elementEvgs;
 
     @JsonProperty
-    private String dieticianAdvice;
-
-    @JsonProperty
-    private final static String reminder = "以上建议是基于您上述输入的食物分量得出的结果。希望您能准确记录您的食物摄入量，以便获得更准确的数值";
+    private List<String> dieticianAdvice;
 
     public ThreeDayFoodLogAnalysis() {
     }
@@ -47,16 +45,12 @@ public class ThreeDayFoodLogAnalysis {
         this.elementEvgs = elementEvgs;
     }
 
-    public String getDieticianAdvice() {
+    public List<String> getDieticianAdvice() {
         return dieticianAdvice;
     }
 
-    public void setDieticianAdvice(String dieticianAdvice) {
+    public void setDieticianAdvice(List<String> dieticianAdvice) {
         this.dieticianAdvice = dieticianAdvice;
-    }
-
-    public static String getReminder() {
-        return reminder;
     }
 
     @Override
@@ -64,7 +58,7 @@ public class ThreeDayFoodLogAnalysis {
         return "ThreeDayFoodLogAnalysis{" +
                 "logTypeInfo='" + logTypeInfo + '\'' +
                 ", elementEvgs=" + elementEvgs +
-                ", dieticianAdvice='" + dieticianAdvice + '\'' +
+                ", dieticianAdvice=" + dieticianAdvice +
                 '}';
     }
 }

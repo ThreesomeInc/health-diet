@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -234,7 +235,7 @@ public class FoodLogService {
                 .allMatch(item -> item  == 1L);
     }
 
-    public String deduceDieticianAdvice(List<FoodLog> foodLogList, Map<String, Double> elementAvgs, String openId){
+    public List<String> deduceDieticianAdvice(List<FoodLog> foodLogList, Map<String, Double> elementAvgs, String openId){
         User user = userDao.getUserByOpenId(openId);
         double energy = elementAvgs.get("能量");
         double protein = elementAvgs.get("蛋白质");
@@ -247,58 +248,59 @@ public class FoodLogService {
         float standardCalorie = calCalorie(user);
         String[] standardProtein = calProtein(user).split("~");
 
-        StringBuilder dieticianAdvice = new StringBuilder("您的三日膳食分析结果如下：");
+        List<String> dieticianAdvice = new ArrayList<String>();
+
         if(energy - standardCalorie >= 100 || standardCalorie - energy <= 100 ){
-            dieticianAdvice.append("您的能量摄入基本接近推荐值,");
+            dieticianAdvice.add("您的能量摄入基本接近推荐值,");
         } else if (energy - standardCalorie > 100 && energy - standardCalorie <= 200){
-            dieticianAdvice.append("您的能量摄入略高于推荐值,");
+            dieticianAdvice.add("您的能量摄入略高于推荐值,");
         } else if(standardCalorie - energy > 100 && standardCalorie - energy <= 200){
-            dieticianAdvice.append("您的能量摄入略低于推荐值,");
+            dieticianAdvice.add("您的能量摄入略低于推荐值,");
         } else if (energy - standardCalorie > 200 ){
-            dieticianAdvice.append("您的能量摄入高于推荐值,");
+            dieticianAdvice.add("您的能量摄入高于推荐值,");
         } else if(standardCalorie - energy > 200){
-            dieticianAdvice.append("您的能量摄入低于推荐值,");
+            dieticianAdvice.add("您的能量摄入低于推荐值,");
         }
 
         if(protein - Double.valueOf(standardProtein[1]) <= 2 && Double.valueOf(standardProtein[0]) - protein <= 2 ){
-            dieticianAdvice.append("蛋白质摄入量基本接近推荐值，");
+            dieticianAdvice.add("蛋白质摄入量基本接近推荐值，");
         } else if(protein - Double.valueOf(standardProtein[1]) > 2){
-            dieticianAdvice.append("蛋白质摄入量高于推荐值，");
+            dieticianAdvice.add("蛋白质摄入量高于推荐值，");
         } else if(Double.valueOf(standardProtein[0]) - protein > 2){
-            dieticianAdvice.append("蛋白质摄入量低于推荐值，");
+            dieticianAdvice.add("蛋白质摄入量低于推荐值，");
         }
 
         if(feRatio < 0.25){
-            dieticianAdvice.append("脂肪摄入量比推荐值少，可以适量增加烹调用油。");
+            dieticianAdvice.add("脂肪摄入量比推荐值少，可以适量增加烹调用油。");
         } else if(feRatio >= 0.25 && feRatio <= 0.35){
-            dieticianAdvice.append("脂肪摄入的比例较合理。");
+            dieticianAdvice.add("脂肪摄入的比例较合理。");
         } else {
-            dieticianAdvice.append("脂肪摄入量比推荐值多，可以适当减少烹调用油。");
+            dieticianAdvice.add("脂肪摄入量比推荐值多，可以适当减少烹调用油。");
         }
 
         if(ceRatio < 0.55){
-            dieticianAdvice.append("碳水化合物摄入量比推荐值少，可以适量增加淀粉类食物。");
+            dieticianAdvice.add("碳水化合物摄入量比推荐值少，可以适量增加淀粉类食物。");
         } else if(ceRatio >= 0.55 && ceRatio <= 0.65){
-            dieticianAdvice.append("碳水化合物摄入的比例较合理。");
+            dieticianAdvice.add("碳水化合物摄入的比例较合理。");
         } else {
-            dieticianAdvice.append("碳水化合物摄入量比推荐值多，可以适当减少淀粉类食物。");
+            dieticianAdvice.add("碳水化合物摄入量比推荐值多，可以适当减少淀粉类食物。");
         }
 
         if(na > 2000){
-            dieticianAdvice.append("慢性肾脏病患者钠摄入量应低于2000 mg/d。盐、腌制的食物、酱油及各种酱料的钠含量很高，尽量减少摄入量。");
+            dieticianAdvice.add("慢性肾脏病患者钠摄入量应低于2000 mg/d。盐、腌制的食物、酱油及各种酱料的钠含量很高，尽量减少摄入量。");
         }
-        dieticianAdvice.append("若您血钾高，尽量减少含钾高的绿叶蔬菜、土豆等食物。");
+        dieticianAdvice.add("若您血钾高，尽量减少含钾高的绿叶蔬菜、土豆等食物。");
         if(ca >= 2000 ){
-            dieticianAdvice.append("钙摄入量偏多，适当减少含钙高的奶类、大豆制品等。");
+            dieticianAdvice.add("钙摄入量偏多，适当减少含钙高的奶类、大豆制品等。");
         } else {
-            dieticianAdvice.append("慢性肾脏病，钙摄入量应低于2000 mg/d。");
+            dieticianAdvice.add("慢性肾脏病，钙摄入量应低于2000 mg/d。");
         }
         if(p >= 800){
-           dieticianAdvice.append("慢性肾脏病，磷摄入量应低于800mg/d。尽量选择低磷食物。");
+           dieticianAdvice.add("慢性肾脏病，磷摄入量应低于800mg/d。尽量选择低磷食物。");
         } else {
-           dieticianAdvice.append("慢性肾脏病，磷摄入量应低于800mg/d，若血磷高，应尽可能减低磷的摄入。");
+           dieticianAdvice.add("慢性肾脏病，磷摄入量应低于800mg/d，若血磷高，应尽可能减低磷的摄入。");
         }
-        return dieticianAdvice.toString();
+        return dieticianAdvice;
 
 
     }
