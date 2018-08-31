@@ -14,7 +14,7 @@ import java.util.Map;
 public class ThreeDayFoodLogAnalysis {
 
     @JsonProperty
-    private String logTypeInfo;
+    private Boolean standardLog;
 
     @JsonProperty
     private Map<String, Double> elementEvgs;
@@ -25,16 +25,16 @@ public class ThreeDayFoodLogAnalysis {
     public ThreeDayFoodLogAnalysis() {
     }
 
-    public ThreeDayFoodLogAnalysis(String logTypeInfo) {
-        this.logTypeInfo = logTypeInfo;
+    public ThreeDayFoodLogAnalysis(Boolean standardLog) {
+        this.standardLog = standardLog;
     }
 
-    public String getLogTypeInfo() {
-        return logTypeInfo;
+    public Boolean getStandardLog() {
+        return standardLog;
     }
 
-    public void setLogTypeInfo(String logTypeInfo) {
-        this.logTypeInfo = logTypeInfo;
+    public void setStandardLog(Boolean standardLog) {
+        this.standardLog = standardLog;
     }
 
     public Map<String, Double> getElementEvgs() {
@@ -56,7 +56,7 @@ public class ThreeDayFoodLogAnalysis {
     @Override
     public String toString() {
         return "ThreeDayFoodLogAnalysis{" +
-                "logTypeInfo='" + logTypeInfo + '\'' +
+                "standardLog='" + standardLog + '\'' +
                 ", elementEvgs=" + elementEvgs +
                 ", dieticianAdvice=" + dieticianAdvice +
                 '}';

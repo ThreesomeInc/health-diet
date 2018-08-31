@@ -167,15 +167,15 @@ public class FoodLogService {
         List<FoodLog> threeDayFoodLog = foodLogDao.getLatestThreeDayFoodLog(openId);
         if(threeDayFoodLog.size() < 3){
             logger.info("Food log is less than 3 days, fail to analytic.");
-            return new ThreeDayFoodLogAnalysis("膳食记录少于3天，无法准确分析。");
+            return new ThreeDayFoodLogAnalysis();
         }
         ThreeDayFoodLogAnalysis analysis = new ThreeDayFoodLogAnalysis();
         boolean isStandardLogType = isStandardLogType(threeDayFoodLog);
         if(isStandardLogType){
-            analysis.setLogTypeInfo("您使用的是标准三日膳食记录。");
+            analysis.setStandardLog(Boolean.TRUE);
 
         } else {
-            analysis.setLogTypeInfo("您使用的是折衷三日膳食记录，建议您使用标准三日膳食记录，推荐结果会更准确.标准三日膳食记录法: 连续三日，包括两个工作日，一个休息日，计算三日膳食营养物质平均值。");
+            analysis.setStandardLog(Boolean.FALSE);
 
         }
         Map<String, Double> elementEvgs = deduceElementEvgs(threeDayFoodLog);
@@ -251,23 +251,23 @@ public class FoodLogService {
         List<String> dieticianAdvice = new ArrayList<String>();
 
         if(energy - standardCalorie >= 100 || standardCalorie - energy <= 100 ){
-            dieticianAdvice.add("您的能量摄入基本接近推荐值,");
+            dieticianAdvice.add("您的能量摄入基本接近推荐值。");
         } else if (energy - standardCalorie > 100 && energy - standardCalorie <= 200){
-            dieticianAdvice.add("您的能量摄入略高于推荐值,");
+            dieticianAdvice.add("您的能量摄入略高于推荐值。");
         } else if(standardCalorie - energy > 100 && standardCalorie - energy <= 200){
-            dieticianAdvice.add("您的能量摄入略低于推荐值,");
+            dieticianAdvice.add("您的能量摄入略低于推荐值。");
         } else if (energy - standardCalorie > 200 ){
-            dieticianAdvice.add("您的能量摄入高于推荐值,");
+            dieticianAdvice.add("您的能量摄入高于推荐值。");
         } else if(standardCalorie - energy > 200){
-            dieticianAdvice.add("您的能量摄入低于推荐值,");
+            dieticianAdvice.add("您的能量摄入低于推荐值。");
         }
 
         if(protein - Double.valueOf(standardProtein[1]) <= 2 && Double.valueOf(standardProtein[0]) - protein <= 2 ){
-            dieticianAdvice.add("蛋白质摄入量基本接近推荐值，");
+            dieticianAdvice.add("蛋白质摄入量基本接近推荐值。");
         } else if(protein - Double.valueOf(standardProtein[1]) > 2){
-            dieticianAdvice.add("蛋白质摄入量高于推荐值，");
+            dieticianAdvice.add("蛋白质摄入量高于推荐值。");
         } else if(Double.valueOf(standardProtein[0]) - protein > 2){
-            dieticianAdvice.add("蛋白质摄入量低于推荐值，");
+            dieticianAdvice.add("蛋白质摄入量低于推荐值。");
         }
 
         if(feRatio < 0.25){
