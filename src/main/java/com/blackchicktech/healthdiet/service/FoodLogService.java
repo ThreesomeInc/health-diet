@@ -244,13 +244,13 @@ public class FoodLogService {
 
     public List<String> deduceDieticianAdvice(List<FoodLog> foodLogList, Map<String, Double> elementAvgs, String openId){
         User user = userDao.getUserByOpenId(openId);
-        double energy = elementAvgs.get("能量");
-        double protein = elementAvgs.get("蛋白质");
-        double na = elementAvgs.get("钠");
-        double ca = elementAvgs.get("钙");
-        double p = elementAvgs.get("磷");
-        double ceRatio = elementAvgs.get("碳水化合物供能比");
-        double feRatio = elementAvgs.get("脂肪供能比");
+        double energy = elementAvgs.get("totalEnergy");
+        double protein = elementAvgs.get("totalProtein");
+        double na = elementAvgs.get("na");
+        double ca = elementAvgs.get("ca");
+        double p = elementAvgs.get("p");
+        double ceRatio = elementAvgs.get("ceRatio");
+        double feRatio = elementAvgs.get("feRatio");
 
         float standardCalorie = calCalorie(user);
         String[] standardProtein = calProtein(user).split("~");
