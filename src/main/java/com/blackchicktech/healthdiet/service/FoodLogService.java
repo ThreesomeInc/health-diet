@@ -232,7 +232,7 @@ public class FoodLogService {
         cal.setTime(dateOne);
         if((int)((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
                 (int)((dateTwo.getTime() - dateThree.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
-                (cal.get(Calendar.DAY_OF_WEEK) == 2 || cal.get(Calendar.DAY_OF_WEEK) == 7)){
+                (cal.get(Calendar.DAY_OF_WEEK) == 3 || cal.get(Calendar.DAY_OF_WEEK) == 7)){
             return true;
         }
         return false;
