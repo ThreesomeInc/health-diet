@@ -210,17 +210,17 @@ public class FoodLogService {
         }
 
         return ImmutableMap.<String, Double>builder()
-                .put("钙", BigDecimal.valueOf(ca / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("碳水化合物", BigDecimal.valueOf(cho / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("脂肪", BigDecimal.valueOf(fat / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("钾", BigDecimal.valueOf(k / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("磷", BigDecimal.valueOf(p / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("钠", BigDecimal.valueOf(na / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("蛋白质", BigDecimal.valueOf(protein / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("能量", BigDecimal.valueOf(energy / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("碳水化合物供能比", BigDecimal.valueOf(ceRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("脂肪供能比", BigDecimal.valueOf(feRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("蛋白质供能比", BigDecimal.valueOf(peRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("ca", BigDecimal.valueOf(ca / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("cho", BigDecimal.valueOf(cho / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("fat", BigDecimal.valueOf(fat / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("k", BigDecimal.valueOf(k / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("p", BigDecimal.valueOf(p / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("na", BigDecimal.valueOf(na / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("totalProtein", BigDecimal.valueOf(protein / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("totalEnergy", BigDecimal.valueOf(energy / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("ceRatio", BigDecimal.valueOf(ceRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("feRatio", BigDecimal.valueOf(feRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("peRatio", BigDecimal.valueOf(peRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
                 .build();
     }
 
