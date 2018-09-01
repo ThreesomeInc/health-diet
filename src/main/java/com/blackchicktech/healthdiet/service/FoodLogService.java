@@ -176,7 +176,9 @@ public class FoodLogService {
         }
         Map<String, Double> elementEvgs = deduceElementEvgs(threeDayFoodLog);
         analysis.setElementEvgs(elementEvgs);
-        analysis.setDieticianAdvice(deduceDieticianAdvice(threeDayFoodLog,elementEvgs,openId));
+        if(userDao.getUserByOpenId(openId) != null){
+            analysis.setDieticianAdvice(deduceDieticianAdvice(threeDayFoodLog,elementEvgs,openId));
+        }
         return analysis;
     }
 
