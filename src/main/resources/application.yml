@@ -4,7 +4,7 @@ server:
         uri-encoding: UTF-8
         max-threads: 1000
         min-spare-threads: 30
-    address: 127.0.0.1
+    address: ${server.addr:127.0.0.1}
     port: 8080
     servlet:
       context-path: /
