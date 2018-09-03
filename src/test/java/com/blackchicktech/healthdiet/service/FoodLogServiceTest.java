@@ -58,9 +58,9 @@ public class FoodLogServiceTest {
     public void testDeduceElementEvgs(){
         when(foodLogService.deduceElementEvgs(foodLogList)).thenCallRealMethod();
         Map<String, Double> result = foodLogService.deduceElementEvgs(foodLogList);
-        Assert.assertEquals(result.get("钙"), 4.6, 0.0);
-        Assert.assertEquals(result.get("碳水化合物"), 56.2, 0.0);
-        Assert.assertEquals(result.get("碳水化合物供能比"), 0.5, 0.0);
+        Assert.assertEquals(result.get("ca"), 4.6, 0.0);
+        Assert.assertEquals(result.get("cho"), 56.2, 0.0);
+        Assert.assertEquals(result.get("ceRatio"), 0.5, 0.0);
     }
 
     @Test
