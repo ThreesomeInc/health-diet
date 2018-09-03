@@ -113,3 +113,63 @@ CREATE TABLE `food_log_detail_tbl` (
   `content` TEXT NULL,
   PRIMARY KEY (`open_id`, `log_date`, `mealtime`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `food_recommended_tbl` (
+  `cdk_period` VARCHAR(128) NOT NULL,
+  `weight` int NOT NULL,
+  `energy` float(10,2) DEFAULT NULL,
+  `protein` float(10,2) DEFAULT NULL,
+  `grains_b_r` float(10,2) DEFAULT NULL,
+  `grains_b_p` float(10,2) DEFAULT NULL,
+  `grains_l_r` float(10,2) DEFAULT NULL,
+  `grains_l_p` float(10,2) DEFAULT NULL,
+  `grains_d_r` float(10,2) DEFAULT NULL,
+  `grains_d_p` float(10,2) DEFAULT NULL,
+
+  `starch_b_r` float(10,2) DEFAULT NULL,
+  `starch_b_p` float(10,2) DEFAULT NULL,
+  `starch_l_r` float(10,2) DEFAULT NULL,
+  `starch_l_p` float(10,2) DEFAULT NULL,
+  `starch_d_r` float(10,2) DEFAULT NULL,
+  `starch_d_p` float(10,2) DEFAULT NULL,
+
+  `wege_b_r` float(10,2) DEFAULT NULL,
+  `wege_b_p` float(10,2) DEFAULT NULL,
+  `wege_l_r` float(10,2) DEFAULT NULL,
+  `wege_l_p` float(10,2) DEFAULT NULL,
+  `wege_d_r` float(10,2) DEFAULT NULL,
+  `wege_d_p` float(10,2) DEFAULT NULL,
+
+  `wege_fruit_b_r` float(10,2) DEFAULT NULL,
+  `wege_fruit_b_p` float(10,2) DEFAULT NULL,
+  `wege_fruit_l_r` float(10,2) DEFAULT NULL,
+  `wege_fruit_l_p` float(10,2) DEFAULT NULL,
+  `wege_fruit_d_r` float(10,2) DEFAULT NULL,
+  `wege_fruit_d_p` float(10,2) DEFAULT NULL,
+
+  `milk_b_r` float(10,2) DEFAULT NULL,
+  `milk_b_p` float(10,2) DEFAULT NULL,
+  `milk_l_r` float(10,2) DEFAULT NULL,
+  `milk_l_p` float(10,2) DEFAULT NULL,
+  `milk_d_r` float(10,2) DEFAULT NULL,
+  `milk_d_p` float(10,2) DEFAULT NUll,
+
+  `eggs_b_r` float(10,2) DEFAULT NULL,
+  `eggs_b_p` float(10,2) DEFAULT NULL,
+  `eggs_l_r` float(10,2) DEFAULT NULL,
+  `eggs_l_p` float(10,2) DEFAULT NULL,
+  `eggs_d_r` float(10,2) DEFAULT NULL,
+  `eggs_d_p` float(10,2) DEFAULT NUll,
+
+
+  `fat_b_r` float(10,2) DEFAULT NULL,
+  `fat_b_p` float(10,2) DEFAULT NULL,
+  `fat_l_r` float(10,2) DEFAULT NULL,
+  `fat_l_p` float(10,2) DEFAULT NULL,
+  `fat_d_r` float(10,2) DEFAULT NULL,
+  `fat_d_p` float(10,2) DEFAULT NUll,
+
+  `fruit_a_r` float(10,2) DEFAULT NULL,
+  `fruit_a_p` float(10,2) DEFAULT NULL,
+  PRIMARY KEY (`cdk_period`, `weight`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
