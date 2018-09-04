@@ -29,32 +29,32 @@ public class MealsService {
         float standardWeight = calStandardWeight(user);
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         MealsRecommendationResponse recommendedMeals = new MealsRecommendationResponse();
-        recommendedMeals.setBreakfast(deduceRecommendedBreakfast());
-        recommendedMeals.setLunch(deduceRecommendedLunch());
-        recommendedMeals.setDinner(deduceRecommendedDinner());
-        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal());
+        recommendedMeals.setBreakfast(deduceRecommendedBreakfast(standardWeight, nephroticPeriod));
+        recommendedMeals.setLunch(deduceRecommendedLunch(standardWeight, nephroticPeriod));
+        recommendedMeals.setDinner(deduceRecommendedDinner(standardWeight, nephroticPeriod));
+        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal(standardWeight, nephroticPeriod));
         return recommendedMeals;
     }
 
-    private List<Map<String, Float>> deduceRecommendedBreakfast(){
+    private List<Map<String, Float>> deduceRecommendedBreakfast(float standardWeight, int nephroticPeriod){
         List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
         return recommendedBreakfast;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedLunch(){
+    private List<Map<String, Float>> deduceRecommendedLunch(float standardWeight, int nephroticPeriod){
         List<Map<String, Float>> recommendedLunch = new ArrayList<>();
         return recommendedLunch;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedDinner(){
+    private List<Map<String, Float>> deduceRecommendedDinner(float standardWeight, int nephroticPeriod){
         List<Map<String, Float>> recommendedDinner = new ArrayList<>();
         return recommendedDinner;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedAdditionalMeal(){
+    private List<Map<String, Float>> deduceRecommendedAdditionalMeal(float standardWeight, int nephroticPeriod){
         List<Map<String, Float>> recommendedAdditionalMeal = new ArrayList<>();
         return recommendedAdditionalMeal;
     }
