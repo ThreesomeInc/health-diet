@@ -21,7 +21,7 @@ public class MealsRecommendationResponse {
     private List<Map<Recipe, Float>> dinner;
 
     @JsonProperty
-    private List<Map<Recipe, Float>> addition;
+    private List<Map<Recipe, Float>> additionMeal;
 
     public List<Map<Recipe, Float>> getBreakfast() {
         return breakfast;
@@ -47,12 +47,12 @@ public class MealsRecommendationResponse {
         this.dinner = dinner;
     }
 
-    public List<Map<Recipe, Float>> getAddition() {
-        return addition;
+    public List<Map<Recipe, Float>> getAdditionMeal() {
+        return additionMeal;
     }
 
-    public void setAddition(List<Map<Recipe, Float>> addition) {
-        this.addition = addition;
+    public void setAdditionMeal(List<Map<Recipe, Float>> additionMeal) {
+        this.additionMeal = additionMeal;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MealsRecommendationResponse {
                 "breakfast=" + breakfast +
                 ", lunch=" + lunch +
                 ", dinner=" + dinner +
-                ", addition=" + addition +
+                ", additionMeal=" + additionMeal +
                 '}';
     }
 }
