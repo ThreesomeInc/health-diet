@@ -29,7 +29,10 @@ public class MealsService {
         float standardWeight = calStandardWeight(user);
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         MealsRecommendationResponse recommendedMeals = new MealsRecommendationResponse();
-
+        recommendedMeals.setBreakfast(deduceRecommendedBreakfast());
+        recommendedMeals.setLunch(deduceRecommendedLunch());
+        recommendedMeals.setDinner(deduceRecommendedDinner());
+        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal());
         return recommendedMeals;
     }
 
