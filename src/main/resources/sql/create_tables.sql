@@ -2,6 +2,7 @@ USE health_diet;
 
 CREATE TABLE `user_tbl` (
   `open_id` varchar(255) NOT NULL,
+  `union_id` varchar(255) NOT NULL,
   `gender` varchar(45) DEFAULT NULL,
   `birthday` varchar(45) DEFAULT NULL,
   `height` varchar(45) DEFAULT NULL,
@@ -11,6 +12,7 @@ CREATE TABLE `user_tbl` (
   `treatment_method` varchar(255) DEFAULT NULL,
   `other_diseases` varchar(255) DEFAULT NULL,
   `irritability` varchar(255) DEFAULT NULL,
+  `user_info` TEXT,
   PRIMARY KEY (`open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

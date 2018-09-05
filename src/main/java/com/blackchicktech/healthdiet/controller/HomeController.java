@@ -25,7 +25,10 @@ public class HomeController {
     @RequestMapping(value = "/report", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReportResponse getReport(@RequestBody ReportRequest reportRequest) {
-        logger.info("Handle generate report request for new user openId={}", reportRequest.getUserInfo().getOpenId());
+        logger.info("Handle generate report request for new user openId={} unionId={} userInfo={}",
+                reportRequest.getUserInfo().getOpenId(),
+                reportRequest.getUserInfo().getUnionId(),
+                reportRequest.getUserInfo().getInfo());
         userService.createUser(reportRequest.getUserInfo(), reportRequest.getUserDataInfo());
         return reportService.report(reportRequest);
     }

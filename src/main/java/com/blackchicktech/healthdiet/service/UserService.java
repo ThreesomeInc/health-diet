@@ -18,33 +18,15 @@ public class UserService {
     @Autowired
     private UserDaoImpl userDao;
 
-    private Map<String, UserMetadata> cache = new ConcurrentHashMap<>();
-
-    public UserMetadata getUser(UserInfo userInfo) {
-        UserMetadata metadata = cache.get(userInfo.getOpenId());
-        if (metadata != null) {
-            return metadata;
-        }
-        return createMeta(userInfo);
-    }
-
-    private UserMetadata createMeta(UserInfo userInfo) {
-        if (userInfo == null) {
-            return new UserMetadata();
-        }
-
-        UserMetadata metadata = new UserMetadata();
-        metadata.setOpenId(userInfo.getOpenId());
-        //做一些计算之后缓存
-        cache.put(userInfo.getOpenId(), metadata);
-        return metadata;
-    }
-
     public void createUser(UserInfo userInfo, UserDataInfo userDataInfo) {
         userDao.createUser(userInfo, userDataInfo);
     }
 
     public User getUserByOpenId(String openId){
         return userDao.getUserByOpenId(openId);
+    }
+
+    public User getUserByUnionId(String unionId) {
+        return userDao.getUserByUnionId(unionId);
     }
 }
