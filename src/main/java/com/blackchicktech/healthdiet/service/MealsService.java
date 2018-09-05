@@ -2,6 +2,7 @@ package com.blackchicktech.healthdiet.service;
 
 
 import com.blackchicktech.healthdiet.domain.MealsRecommendationResponse;
+import com.blackchicktech.healthdiet.entity.FoodRecommended;
 import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.repository.MealsDaoImpl;
 import com.blackchicktech.healthdiet.repository.UserDaoImpl;
@@ -38,6 +39,9 @@ public class MealsService {
 
     private List<Map<String, Float>> deduceRecommendedBreakfast(float standardWeight, int nephroticPeriod){
         List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
+        int standardWeightRange = deduceStandardWeightRange(standardWeight);
+        String ckd = nephroticPeriod == 1 || nephroticPeriod == 2? "CKD 1-2期":"CKD 3-5期";
+        FoodRecommended foodRecommended = mealsDao.getFoodRecommendedByStdWgtAndCkd(standardWeightRange, ckd);
         return recommendedBreakfast;
 
     }
@@ -76,5 +80,25 @@ public class MealsService {
     private String getHeightOrWeight(String value) {
         Matcher result = Pattern.compile("(\\d+(.\\d))?").matcher(value);
         return result.find() ? result.group() : "0";
+    }
+
+    public int deduceStandardWeightRange(float standardWeight){
+        if(standardWeight <= 40 || standardWeight > 40 && standardWeight < 45){
+            return 40;
+        } else if(standardWeight >=45 && standardWeight < 50){
+            return 45;
+        } else if(standardWeight >= 50 && standardWeight < 55){
+            return 50;
+        } else if(standardWeight >= 55 && standardWeight < 60){
+            return 55;
+        } else if(standardWeight >= 60 && standardWeight < 65){
+            return 60;
+        } else if(standardWeight >= 65 && standardWeight < 70){
+            return 65;
+        } else if(standardWeight >= 70 && standardWeight < 75){
+            return 70;
+        }
+        return 75;
+
     }
 }

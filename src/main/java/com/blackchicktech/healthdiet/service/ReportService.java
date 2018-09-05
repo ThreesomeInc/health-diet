@@ -143,7 +143,7 @@ public class ReportService {
     private List<SuggestNutrition> deduceSuggestNutritionsForLowPeriod(float standardWeight, boolean irritableToMilk) {
         List<SuggestNutrition> suggestNutritions = new ArrayList<>();
 
-        if (standardWeight >= 40 && standardWeight < 45) {
+        if (standardWeight >= 40 && standardWeight < 45 || standardWeight <= 40) {
             if (irritableToMilk) {
 
                 for (int i = 0; i < Constants.CKD_FOOD_WITHOUT_MILK.length; i++) {
@@ -307,7 +307,7 @@ public class ReportService {
         List<SuggestNutrition> suggestNutritions = new ArrayList<>();
 
 
-        if (standardWeight >= 40 && standardWeight < 45) {
+        if (standardWeight >= 40 && standardWeight < 45 || standardWeight < 40) {
             if (irritableToMilk) {
 
                 for (int i = 0; i < Constants.CKD_FOOD_WITHOUT_MILK.length; i++) {
