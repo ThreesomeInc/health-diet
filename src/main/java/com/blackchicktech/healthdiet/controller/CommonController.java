@@ -1,6 +1,7 @@
 package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.util.HttpClientUtil;
+import com.blackchicktech.healthdiet.util.WXBizDataCrypt;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,11 +25,20 @@ public class CommonController {
 	@ResponseBody
 	public String login(HttpServletRequest request) {
 		String code = request.getHeader("X-WX-Code");
-		String result = HttpClientUtil.instance().getData(
+		return HttpClientUtil.instance().getData(
 				"https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
 						"&secret=" + appSecret +
 						"&grant_type=authorization_code" +
 						"&js_code=" + code);
-		return result;
+	}
+
+	@GetMapping(value = "/decrypt", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public String decrypt(HttpServletRequest request) {
+		String skey = request.getHeader("skey");
+		String encryptedData = request.getHeader("encryptedData");
+		String iv = request.getHeader("iv");
+		WXBizDataCrypt biz = new WXBizDataCrypt(appId, skey);
+		return biz.decryptData(encryptedData, iv);
 	}
 }
