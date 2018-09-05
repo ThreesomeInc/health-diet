@@ -7,6 +7,8 @@ public class User {
 
     private String openId;
 
+    private String unionId;
+
     private String gender;
 
     private String birthDay;
@@ -24,6 +26,8 @@ public class User {
     private String otherDiseases;
 
     private String irritability;
+
+    private String userInfo;
 
     public String getIrritability() {
         return irritability;
@@ -103,5 +107,21 @@ public class User {
 
     public void setOtherDiseases(String otherDiseases) {
         this.otherDiseases = otherDiseases;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
+
+    public String getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(String userInfo) {
+        this.userInfo = userInfo;
     }
 }
