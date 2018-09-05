@@ -30,35 +30,36 @@ public class MealsService {
         float standardWeight = calStandardWeight(user);
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
         MealsRecommendationResponse recommendedMeals = new MealsRecommendationResponse();
-        recommendedMeals.setBreakfast(deduceRecommendedBreakfast(standardWeight, nephroticPeriod));
-        recommendedMeals.setLunch(deduceRecommendedLunch(standardWeight, nephroticPeriod));
-        recommendedMeals.setDinner(deduceRecommendedDinner(standardWeight, nephroticPeriod));
-        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal(standardWeight, nephroticPeriod));
-        return recommendedMeals;
-    }
-
-    private List<Map<String, Float>> deduceRecommendedBreakfast(float standardWeight, int nephroticPeriod){
-        List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
         int standardWeightRange = deduceStandardWeightRange(standardWeight);
         String ckd = nephroticPeriod == 1 || nephroticPeriod == 2? "CKD 1-2期":"CKD 3-5期";
         FoodRecommended foodRecommended = mealsDao.getFoodRecommendedByStdWgtAndCkd(standardWeightRange, ckd);
+        recommendedMeals.setBreakfast(deduceRecommendedBreakfast(foodRecommended));
+        recommendedMeals.setLunch(deduceRecommendedLunch(foodRecommended));
+        recommendedMeals.setDinner(deduceRecommendedDinner(foodRecommended));
+        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal(foodRecommended));
+        return recommendedMeals;
+    }
+
+    private List<Map<String, Float>> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
+        List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
+
         return recommendedBreakfast;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedLunch(float standardWeight, int nephroticPeriod){
+    private List<Map<String, Float>> deduceRecommendedLunch(FoodRecommended foodRecommended){
         List<Map<String, Float>> recommendedLunch = new ArrayList<>();
         return recommendedLunch;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedDinner(float standardWeight, int nephroticPeriod){
+    private List<Map<String, Float>> deduceRecommendedDinner(FoodRecommended foodRecommended){
         List<Map<String, Float>> recommendedDinner = new ArrayList<>();
         return recommendedDinner;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedAdditionalMeal(float standardWeight, int nephroticPeriod){
+    private List<Map<String, Float>> deduceRecommendedAdditionalMeal(FoodRecommended foodRecommended){
         List<Map<String, Float>> recommendedAdditionalMeal = new ArrayList<>();
         return recommendedAdditionalMeal;
     }
