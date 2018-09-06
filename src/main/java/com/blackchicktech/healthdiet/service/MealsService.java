@@ -106,12 +106,12 @@ public class MealsService {
 
     }
 
-    public List<String> candidateFoodElements(FoodRecommended foodRecommended){
+    public List<String> candidateFoodElements(FoodRecommended foodRecommended, String suffix){
         List<String> candidateFoodElements = new ArrayList<>();
         Method[] methods = FoodRecommended.class.getDeclaredMethods();
         for(Method method : methods){
             String methodName = method.getName();
-            if(methodName.startsWith("get") && methodName.endsWith("R")){
+            if(methodName.startsWith("get") && methodName.endsWith(suffix)){
                 try {
                     double quantity = (Double)method.invoke(foodRecommended);
                     if(quantity > 0){

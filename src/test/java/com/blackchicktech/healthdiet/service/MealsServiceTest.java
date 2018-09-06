@@ -30,8 +30,8 @@ public class MealsServiceTest {
         foodRecommended.setGrainsBR(20);
         foodRecommended.setEggsBR(30);
         foodRecommended.setFatBR(10);
-        when(mealsService.candidateFoodElements(foodRecommended)).thenCallRealMethod();
-        List<String> candidateFoodElements = mealsService.candidateFoodElements(foodRecommended);
+        when(mealsService.candidateFoodElements(foodRecommended,"BR")).thenCallRealMethod();
+        List<String> candidateFoodElements = mealsService.candidateFoodElements(foodRecommended, "BR");
         Assert.assertEquals(candidateFoodElements.size(), 3);
     }
 }
