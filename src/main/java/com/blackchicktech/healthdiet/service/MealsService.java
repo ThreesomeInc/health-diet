@@ -44,7 +44,7 @@ public class MealsService {
 
     private List<Map<String, Float>> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
         List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
-
+        List<String> breakfastElements = candidateFoodElements(foodRecommended, "BR");
 
         return recommendedBreakfast;
 
