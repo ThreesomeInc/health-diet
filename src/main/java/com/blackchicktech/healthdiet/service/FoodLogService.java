@@ -243,7 +243,7 @@ public class FoodLogService {
 		return TimeUnit.MILLISECONDS.toDays(dateOne.getTime() - dateTwo.getTime()) == 1L &&
 				TimeUnit.MILLISECONDS.toDays(dateTwo.getTime() - dateThree.getTime()) == 1L &&
 				Seq.of(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY).map(DayOfWeek::getValue).contains(
-						dateOne.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().get(ChronoField.DAY_OF_WEEK));
+						new Date(dateOne.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().get(ChronoField.DAY_OF_WEEK));
 	}
 
 
