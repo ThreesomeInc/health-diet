@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +46,9 @@ public class MealsService {
     private List<Map<String, Float>> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
         List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "BR");
-
+        for(String element : breakfastElements){
+            Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+        }
         return recommendedBreakfast;
 
     }
