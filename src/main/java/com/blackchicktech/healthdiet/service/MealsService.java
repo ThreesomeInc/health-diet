@@ -10,6 +10,8 @@ import com.blackchicktech.healthdiet.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class MealsService {
 
     private List<Map<String, Float>> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
         List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
+
 
         return recommendedBreakfast;
 
@@ -101,5 +104,27 @@ public class MealsService {
         }
         return 75;
 
+    }
+
+    public List<String> candidateFoodElements(FoodRecommended foodRecommended){
+        List<String> candidateFoodElements = new ArrayList<>();
+        Method[] methods = FoodRecommended.class.getDeclaredMethods();
+        for(Method method : methods){
+            String methodName = method.getName();
+            if(methodName.startsWith("get") && methodName.endsWith("R")){
+                try {
+                    double quantity = (Double)method.invoke(foodRecommended);
+                    if(quantity > 0){
+                        String candidateFoodElement = methodName.substring(3, methodName.length()-2);
+                        candidateFoodElements.add(candidateFoodElement);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return candidateFoodElements;
     }
 }
