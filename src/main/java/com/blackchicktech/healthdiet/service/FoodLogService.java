@@ -15,22 +15,18 @@ import com.blackchicktech.healthdiet.repository.UserDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import com.google.common.collect.ImmutableMap;
-import org.jooq.lambda.Seq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
-import java.time.ZoneId;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -39,6 +35,8 @@ import java.util.stream.Collectors;
 public class FoodLogService {
 
     private static final Logger logger = LoggerFactory.getLogger(FoodLogService.class);
+
+    private static final long ONE_DAY_MILI_SECONDS = 1000*3600*24;
 
     @Autowired
     private FoodLogDao foodLogDao;
@@ -240,11 +238,12 @@ public class FoodLogService {
         Date dateOne = foodLogList.get(0).getDate();
         Date dateTwo = foodLogList.get(1).getDate();
         Date dateThree = foodLogList.get(2).getDate();
-		return TimeUnit.MILLISECONDS.toDays(dateOne.getTime() - dateTwo.getTime()) == 1L &&
-				TimeUnit.MILLISECONDS.toDays(dateTwo.getTime() - dateThree.getTime()) == 1L &&
-				Seq.of(DayOfWeek.TUESDAY, DayOfWeek.SATURDAY).map(DayOfWeek::getValue).contains(
-						new Date(dateOne.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().get(ChronoField.DAY_OF_WEEK));
-	}
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateOne);
+        return (int) ((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (int) ((dateTwo.getTime() - dateThree.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (cal.get(Calendar.DAY_OF_WEEK) == 3 || cal.get(Calendar.DAY_OF_WEEK) == 7);
+    }
 
 
 
