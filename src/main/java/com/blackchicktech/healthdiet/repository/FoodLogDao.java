@@ -111,7 +111,7 @@ public class FoodLogDao {
     }
 
     public void addFoodLog(FoodLog foodLog) {
-        logger.info("Going to insert food log for user openId={}", foodLog.getOpenId());
+        logger.info("Going to insert food log for user openId={} foodLog={}", foodLog.getOpenId(), foodLog.toString());
         try {
             jdbcTemplate.update(
                     "REPLACE INTO food_log_tbl VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?, ?)",
