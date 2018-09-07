@@ -57,7 +57,7 @@ public class LogFoodController {
 	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public DietRecordResponse addFoodLog(@RequestBody FoodLogRequest request) {
-		logger.info("Begin to log food for user openId={}, date={}, mealTime={}, content",
+		logger.info("Begin to log food for user openId={}, date={}, mealTime={}, content={}",
 				request.getOpenId(),
 				request.getDate(),
 				request.getMealTime(),
