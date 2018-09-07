@@ -138,7 +138,7 @@ public class FoodLogService {
         if ("超市".equals(channel)) {
             return 1;
         } else if ("市场".equals(channel)) {
-            return foodTbl.getEdible() / 100;
+            return ((double)foodTbl.getEdible()) / 100;
         }
 
         logger.warn("Unknown channel ={} cal as 100 percent", channel);
