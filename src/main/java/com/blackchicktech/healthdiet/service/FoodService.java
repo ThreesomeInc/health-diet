@@ -128,6 +128,7 @@ public class FoodService {
 
         FoodDetailResponse foodDetailResponse = new FoodDetailResponse();
         foodDetailResponse.setName(food.getFoodName());
+        foodDetailResponse.setAlias(food.getFoodAlias());
         foodDetailResponse.setDieticianAdvice(deduceDieticianAdvice(food, foodWeight, user));
         foodDetailResponse.setComposition(deduceCompositions(food));
         foodDetailResponse.setLabel(deduceLabel(foodWeight));

@@ -16,6 +16,9 @@ public class FoodDetailResponse extends BasicResponse{
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("alias")
+    private String alias;
+
     @JsonProperty("label")
     private List<String> label;
 
@@ -45,6 +48,14 @@ public class FoodDetailResponse extends BasicResponse{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public List<String> getLabel() {
