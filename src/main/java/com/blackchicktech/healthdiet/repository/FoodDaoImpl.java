@@ -94,4 +94,21 @@ public class FoodDaoImpl implements FoodDao {
 		return foodUnit;
 	}
 
+	public FoodUnit getFoodUnitByAlias(String foodAlias) {
+		logger.info("Query food unit by foodAlias food_alias={}", foodAlias);
+		List<FoodUnit> foodUnitList = jdbcTemplate.query("SELECT food_id, food_name, food_alias, unit, edible FROM food_tbl WHERE food_alias = ?",
+				(resultSet, i) -> new FoodUnit(
+						resultSet.getString("food_id"),
+						resultSet.getString("food_name"),
+						resultSet.getString("unit"),
+						resultSet.getString("food_alias"),
+						resultSet.getInt("edible"))
+				, foodAlias);
+		FoodUnit foodUnit = foodUnitList.stream().findFirst().orElse(null);
+		if (foodUnit == null) {
+			logger.info("Can not find food unit by foodAlias={}", foodAlias);
+		}
+		return foodUnit;
+	}
+
 }

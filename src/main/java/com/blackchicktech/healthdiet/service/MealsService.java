@@ -2,20 +2,20 @@ package com.blackchicktech.healthdiet.service;
 
 
 import com.blackchicktech.healthdiet.domain.MealsRecommendationResponse;
-import com.blackchicktech.healthdiet.entity.FoodRecommended;
-import com.blackchicktech.healthdiet.entity.User;
+import com.blackchicktech.healthdiet.entity.*;
+import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.MealsDaoImpl;
+import com.blackchicktech.healthdiet.repository.RecipeDaoImpl;
 import com.blackchicktech.healthdiet.repository.UserDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +27,12 @@ public class MealsService {
 
     @Autowired
     private UserDaoImpl userDao;
+
+    @Autowired
+    private RecipeDaoImpl recipeDao;
+
+    @Autowired
+    private FoodDaoImpl foodDao;
 
     public MealsRecommendationResponse getRecommendedMeals(String openId){
         User user = userDao.getUserByOpenId(openId);
@@ -43,30 +49,65 @@ public class MealsService {
         return recommendedMeals;
     }
 
-    private List<Map<String, Float>> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
-        List<Map<String, Float>> recommendedBreakfast = new ArrayList<>();
+    private Map<String, Float> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
+        Map<String, Float> breakfastMap = new HashMap<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "BR");
         for(String element : breakfastElements){
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+            for(String ckd : ckds){
+                Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
+                String material = recipe.getMaterial();
+                FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                int foodEdible = food.getEdible();
+                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
+                double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "BR");
+                breakfastMap.put(food.getFoodName(), BigDecimal.valueOf(amount*foodEdible*ratio).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+            }
         }
-        return recommendedBreakfast;
+        return breakfastMap;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedLunch(FoodRecommended foodRecommended){
-        List<Map<String, Float>> recommendedLunch = new ArrayList<>();
+    private Map<String, Float> deduceRecommendedLunch(FoodRecommended foodRecommended){
+        Map<String, Float> recommendedLunch = new HashMap<>();
+        List<String> breakfastElements = candidateFoodElements(foodRecommended, "LR");
+        for(String element : breakfastElements){
+            Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+            for(String ckd : ckds){
+                Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
+                String material = recipe.getMaterial();
+                FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                int foodEdible = food.getEdible();
+                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
+                double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "LR");
+                recommendedLunch.put(food.getFoodName(), BigDecimal.valueOf(amount*foodEdible*ratio).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+            }
+        }
         return recommendedLunch;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedDinner(FoodRecommended foodRecommended){
-        List<Map<String, Float>> recommendedDinner = new ArrayList<>();
+    private Map<String, Float> deduceRecommendedDinner(FoodRecommended foodRecommended){
+        Map<String, Float> recommendedDinner = new HashMap<>();
+        List<String> breakfastElements = candidateFoodElements(foodRecommended, "DR");
+        for(String element : breakfastElements){
+            Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+            for(String ckd : ckds){
+                Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
+                String material = recipe.getMaterial();
+                FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                int foodEdible = food.getEdible();
+                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
+                double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "DR");
+                recommendedDinner.put(food.getFoodName(), BigDecimal.valueOf(amount*foodEdible*ratio).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+            }
+        }
         return recommendedDinner;
 
     }
 
-    private List<Map<String, Float>> deduceRecommendedAdditionalMeal(FoodRecommended foodRecommended){
-        List<Map<String, Float>> recommendedAdditionalMeal = new ArrayList<>();
+    private Map<String, Float> deduceRecommendedAdditionalMeal(FoodRecommended foodRecommended){
+        Map<String, Float> recommendedAdditionalMeal = new HashMap<>();
         return recommendedAdditionalMeal;
     }
 
@@ -130,4 +171,24 @@ public class MealsService {
         }
         return candidateFoodElements;
     }
+
+    public double deduceCandidateFoodFieldValue(FoodRecommended foodRecommended, String element, String suffix){
+
+        Method[] methods = FoodRecommended.class.getDeclaredMethods();
+        for(Method method : methods){
+            String methodName = method.getName();
+            if(methodName.startsWith("get") && methodName.endsWith(suffix) && StringUtils.containsIgnoreCase(methodName,element)){
+                try {
+                    return (Double)method.invoke(foodRecommended);
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return 0;
+    }
+
 }

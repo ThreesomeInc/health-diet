@@ -11,46 +11,46 @@ import java.util.Map;
 public class MealsRecommendationResponse {
 
     @JsonProperty
-    private List<Map<String, Float>> breakfast;
+    private Map<String, Float> breakfast;
 
     @JsonProperty
-    private List<Map<String, Float>> lunch;
+    private Map<String, Float> lunch;
 
     @JsonProperty
-    private List<Map<String, Float>> dinner;
+    private Map<String, Float> dinner;
 
     @JsonProperty
-    private List<Map<String, Float>> additionMeal;
+    private Map<String, Float> additionMeal;
 
-    public List<Map<String, Float>> getBreakfast() {
+    public Map<String, Float> getBreakfast() {
         return breakfast;
     }
 
-    public void setBreakfast(List<Map<String, Float>> breakfast) {
+    public void setBreakfast(Map<String, Float> breakfast) {
         this.breakfast = breakfast;
     }
 
-    public List<Map<String, Float>> getLunch() {
+    public Map<String, Float> getLunch() {
         return lunch;
     }
 
-    public void setLunch(List<Map<String, Float>> lunch) {
+    public void setLunch(Map<String, Float> lunch) {
         this.lunch = lunch;
     }
 
-    public List<Map<String, Float>> getDinner() {
+    public Map<String, Float> getDinner() {
         return dinner;
     }
 
-    public void setDinner(List<Map<String, Float>> dinner) {
+    public void setDinner(Map<String, Float> dinner) {
         this.dinner = dinner;
     }
 
-    public List<Map<String, Float>> getAdditionMeal() {
+    public Map<String, Float> getAdditionMeal() {
         return additionMeal;
     }
 
-    public void setAdditionMeal(List<Map<String, Float>> additionMeal) {
+    public void setAdditionMeal(Map<String, Float> additionMeal) {
         this.additionMeal = additionMeal;
     }
 
