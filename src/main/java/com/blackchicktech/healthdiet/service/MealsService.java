@@ -58,10 +58,11 @@ public class MealsService {
                 Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
                 String material = recipe.getMaterial();
                 FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                float protein = food.getProtein();
                 int foodEdible = food.getEdible();
                 double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
                 double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "BR");
-                breakfastMap.put(food.getFoodName(), BigDecimal.valueOf(amount*foodEdible*ratio).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                breakfastMap.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
             }
         }
         return breakfastMap;
