@@ -42,7 +42,8 @@ public class FoodDaoImpl implements FoodDao {
 						resultSet.getString("food_id"),
 						resultSet.getString("food_name"),
 						"somePic.pic",
-						resultSet.getString("energy"))
+						resultSet.getString("energy"),
+						resultSet.getString("food_alias"))
 		);
 		logger.info("Finished to query food by foodCode={}, totally {} counts", typeId, foodListItems.size());
 		return foodListItems;
@@ -55,9 +56,24 @@ public class FoodDaoImpl implements FoodDao {
 						resultSet.getString("food_id"),
 						resultSet.getString("food_name"),
 						"somePic.pic",
-						resultSet.getString("energy"))
+						resultSet.getString("energy"),
+						resultSet.getString("food_alias"))
 				, "%" + foodName + "%");
 		logger.info("Finished to query food by foodName={}, totally {} counts", foodName, foodListItems.size());
+		return foodListItems;
+	}
+
+	public List<FoodListItem> listFoodByAlias(String alias) {
+		logger.info("Query food list by food alias alias={}", alias);
+		List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * FROM food_tbl WHERE food_alias LIKE  ?",
+				(resultSet, i) -> new FoodListItem(
+						resultSet.getString("food_id"),
+						resultSet.getString("food_name"),
+						"somePic.pic",
+						resultSet.getString("energy"),
+						resultSet.getString("food_alias"))
+				, "%" + alias + "%");
+		logger.info("Finished to query food list by alias={}, totally {} counts", alias, foodListItems.size());
 		return foodListItems;
 	}
 
@@ -68,7 +84,8 @@ public class FoodDaoImpl implements FoodDao {
 						resultSet.getString("food_id"),
 						resultSet.getString("food_name"),
 						"somePic.pic",
-						resultSet.getString("energy"))
+						resultSet.getString("energy"),
+						resultSet.getString("food_alias"))
 				, alias);
 		FoodListItem foodListItem = foodListItems.stream().findFirst().orElse(null);
 		if (foodListItem == null) {

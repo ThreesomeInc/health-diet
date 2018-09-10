@@ -81,12 +81,12 @@ public class FoodService {
         return foodDao.getFoodByName(foodName);
     }
 
-    public List<FoodType> listFoodType() {
-        return new ArrayList<>(typeCache);
+    public List<FoodListItem> listFoodByAlias(String foodAlias) {
+        return foodDao.listFoodByAlias(foodAlias);
     }
 
-    public FoodType getFoodType(String typeCode, String subTypeCode) {
-        return null;
+    public List<FoodType> listFoodType() {
+        return new ArrayList<>(typeCache);
     }
 
     public FoodUnit getFoodUnit(String foodId) {

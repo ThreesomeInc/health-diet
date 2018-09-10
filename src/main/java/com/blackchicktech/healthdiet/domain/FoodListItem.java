@@ -19,11 +19,15 @@ public class FoodListItem {
     @JsonProperty("nutrition") //400k/100g 具体显示待定
     private String nutrition;
 
-    public FoodListItem(String foodId, String foodName, String picUrl, String nutrition) {
+    @JsonProperty("foodAlias")
+    private String foodAlias;
+
+    public FoodListItem(String foodId, String foodName, String picUrl, String nutrition, String foodAlias) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.picUrl = picUrl;
         this.nutrition = nutrition;
+        this.foodAlias = foodAlias;
     }
 
     public String getFoodId() {
@@ -56,5 +60,24 @@ public class FoodListItem {
 
     public void setNutrition(String nutrition) {
         this.nutrition = nutrition;
+    }
+
+    public String getFoodAlias() {
+        return foodAlias;
+    }
+
+    public void setFoodAlias(String foodAlias) {
+        this.foodAlias = foodAlias;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodListItem{" +
+                "foodId='" + foodId + '\'' +
+                ", foodName='" + foodName + '\'' +
+                ", picUrl='" + picUrl + '\'' +
+                ", nutrition='" + nutrition + '\'' +
+                ", foodAlias='" + foodAlias + '\'' +
+                '}';
     }
 }
