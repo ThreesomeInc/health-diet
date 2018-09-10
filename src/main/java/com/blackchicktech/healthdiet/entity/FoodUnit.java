@@ -12,12 +12,15 @@ public class FoodUnit {
 
     private int edible; //食部
 
-    public FoodUnit(String foodId, String foodName, String unit, String foodAlias, int edible) {
+    private float protein;
+
+    public FoodUnit(String foodId, String foodName, String unit, String foodAlias, int edible, float protein) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.unit = unit;
         this.foodAlias = foodAlias;
         this.edible = edible;
+        this.protein = protein;
     }
 
     public String getFoodId() {
@@ -58,6 +61,14 @@ public class FoodUnit {
 
     public void setEdible(int edible) {
         this.edible = edible;
+    }
+
+    public float getProtein() {
+        return protein;
+    }
+
+    public void setProtein(float protein) {
+        this.protein = protein;
     }
 
     @Override

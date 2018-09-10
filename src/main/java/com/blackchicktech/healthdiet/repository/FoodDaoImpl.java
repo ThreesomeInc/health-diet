@@ -79,13 +79,14 @@ public class FoodDaoImpl implements FoodDao {
 
 	public FoodUnit getFoodUnit(String foodId) {
 		logger.info("Query food unit by food id foodId={}", foodId);
-		List<FoodUnit> foodUnitList = jdbcTemplate.query("SELECT food_id, food_name, food_alias, unit, edible FROM food_tbl WHERE food_id = ?",
+		List<FoodUnit> foodUnitList = jdbcTemplate.query("SELECT food_id, food_name, food_alias, unit, edible, protein FROM food_tbl WHERE food_id = ?",
 				(resultSet, i) -> new FoodUnit(
 						resultSet.getString("food_id"),
 						resultSet.getString("food_name"),
 						resultSet.getString("unit"),
 						resultSet.getString("food_alias"),
-						resultSet.getInt("edible"))
+						resultSet.getInt("edible"),
+						resultSet.getFloat("protein"))
 				, foodId);
 		FoodUnit foodUnit = foodUnitList.stream().findFirst().orElse(null);
 		if (foodUnit == null) {
@@ -96,13 +97,14 @@ public class FoodDaoImpl implements FoodDao {
 
 	public FoodUnit getFoodUnitByAlias(String foodAlias) {
 		logger.info("Query food unit by foodAlias food_alias={}", foodAlias);
-		List<FoodUnit> foodUnitList = jdbcTemplate.query("SELECT food_id, food_name, food_alias, unit, edible FROM food_tbl WHERE food_alias = ?",
+		List<FoodUnit> foodUnitList = jdbcTemplate.query("SELECT food_id, food_name, food_alias, unit, edible, protein FROM food_tbl WHERE food_alias = ?",
 				(resultSet, i) -> new FoodUnit(
 						resultSet.getString("food_id"),
 						resultSet.getString("food_name"),
 						resultSet.getString("unit"),
 						resultSet.getString("food_alias"),
-						resultSet.getInt("edible"))
+						resultSet.getInt("edible"),
+						resultSet.getFloat("protein"))
 				, foodAlias);
 		FoodUnit foodUnit = foodUnitList.stream().findFirst().orElse(null);
 		if (foodUnit == null) {
