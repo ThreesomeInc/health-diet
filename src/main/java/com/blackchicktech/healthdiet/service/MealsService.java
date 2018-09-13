@@ -78,10 +78,11 @@ public class MealsService {
                 Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
                 String material = recipe.getMaterial();
                 FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                float protein = food.getProtein();
                 int foodEdible = food.getEdible();
                 double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
                 double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "LR");
-                recommendedLunch.put(food.getFoodName(), BigDecimal.valueOf(amount*foodEdible*ratio).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                recommendedLunch.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
             }
         }
         return recommendedLunch;
@@ -97,10 +98,11 @@ public class MealsService {
                 Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
                 String material = recipe.getMaterial();
                 FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                float protein = food.getProtein();
                 int foodEdible = food.getEdible();
                 double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
                 double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "DR");
-                recommendedDinner.put(food.getFoodName(), BigDecimal.valueOf(amount*foodEdible*ratio).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                recommendedDinner.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
             }
         }
         return recommendedDinner;
