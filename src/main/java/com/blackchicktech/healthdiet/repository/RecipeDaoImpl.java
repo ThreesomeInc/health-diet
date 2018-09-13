@@ -57,8 +57,8 @@ public class RecipeDaoImpl {
 				rowMapper, cookMethod);
 	}
 
-	public Recipe getRecipeByCkdCatagory(String ckdCatagory) {
-		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE ckd_catagory = ? order by rand() limit 1",
+	public Recipe getRecipeByCkdCategory(String ckdCatagory) {
+		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE ckd_category = ? order by rand() limit 1",
 				rowMapper, ckdCatagory).get(0);
 	}
 }

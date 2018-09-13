@@ -55,7 +55,7 @@ public class MealsService {
         for(String element : breakfastElements){
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
-                Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
+                Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 String material = recipe.getMaterial();
                 FoodUnit food = foodDao.getFoodUnitByAlias(material);
                 float protein = food.getProtein();
@@ -75,7 +75,7 @@ public class MealsService {
         for(String element : breakfastElements){
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
-                Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
+                Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 String material = recipe.getMaterial();
                 FoodUnit food = foodDao.getFoodUnitByAlias(material);
                 float protein = food.getProtein();
@@ -95,7 +95,7 @@ public class MealsService {
         for(String element : breakfastElements){
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
-                Recipe recipe = recipeDao.getRecipeByCkdCatagory(ckd);
+                Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 String material = recipe.getMaterial();
                 FoodUnit food = foodDao.getFoodUnitByAlias(material);
                 float protein = food.getProtein();
