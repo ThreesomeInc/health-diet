@@ -64,13 +64,18 @@ public class MealsService {
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
                 Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
-                String material = recipe.getMaterial();
-                FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                float protein = food.getProtein();
-                int foodEdible = food.getEdible();
-                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
-                double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "BR");
-                breakfastMap.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                if(recipe != null){
+                    String material = recipe.getMaterial();
+                    FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                    if(food != null){
+                        float protein = food.getProtein();
+                        int foodEdible = food.getEdible();
+                        double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
+                        breakfastMap.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                    }
+
+                }
+
             }
         }
         return breakfastMap;
@@ -81,16 +86,22 @@ public class MealsService {
         Map<String, Float> recommendedLunch = new HashMap<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "LR");
         for(String element : breakfastElements){
+            LOGGER.info("Trying to get lunch food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
                 Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
-                String material = recipe.getMaterial();
-                FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                float protein = food.getProtein();
-                int foodEdible = food.getEdible();
-                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
-                double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "LR");
-                recommendedLunch.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                if(recipe != null){
+                    String material = recipe.getMaterial();
+                    FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                    if(food != null){
+                        float protein = food.getProtein();
+                        int foodEdible = food.getEdible();
+                        double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
+                        recommendedLunch.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                    }
+
+                }
+
             }
         }
         return recommendedLunch;
@@ -101,16 +112,22 @@ public class MealsService {
         Map<String, Float> recommendedDinner = new HashMap<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "DR");
         for(String element : breakfastElements){
+            LOGGER.info("Trying to get dinner food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
                 Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
-                String material = recipe.getMaterial();
-                FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                float protein = food.getProtein();
-                int foodEdible = food.getEdible();
-                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
-                double amount = deduceCandidateFoodFieldValue(foodRecommended, element, "DR");
-                recommendedDinner.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                if(recipe != null){
+                    String material = recipe.getMaterial();
+                    FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                    if(food != null){
+                        float protein = food.getProtein();
+                        int foodEdible = food.getEdible();
+                        double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
+                        recommendedDinner.put(food.getFoodName(), BigDecimal.valueOf(ratio/protein/foodEdible*10000).setScale(BigDecimal.ROUND_FLOOR, 2).floatValue());
+                    }
+
+                }
+
             }
         }
         return recommendedDinner;
