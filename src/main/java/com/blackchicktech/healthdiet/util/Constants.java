@@ -172,14 +172,14 @@ public class Constants {
 	public final static double[] CKD_FOOD_WITHOUTMILK_75_8 = {5.0,0.75,1.0,2.0,4.64,6};
 
 	public final static Map<String, Set<String>> CKD_FOOD_CATAGARIES = ImmutableMap.<String, Set<String>>builder()
-																	   .put("grains", ImmutableSet.<String>builder().add("A1").add("A2").build())
-																	   .put("starch", ImmutableSet.<String>builder().add("A3").build())
-			                                                           .put("wege", ImmutableSet.<String>builder().add("B").build())
-																	   .put("wegeFruit", ImmutableSet.<String>builder().add("C1").build())
-			                                                           .put("milk", ImmutableSet.<String>builder().add("D").build())
-                                                                       .put("eggs", ImmutableSet.<String>builder().add("E1").add("E2").add("E3").add("E4").build())
-																	   .put("fat", ImmutableSet.<String>builder().add("F").build())
-			                                                           .put("fruit", ImmutableSet.<String>builder().add("C2").build())
+																	   .put("Grains", ImmutableSet.<String>builder().add("A1").add("A2").build())
+																	   .put("Starch", ImmutableSet.<String>builder().add("A3").build())
+			                                                           .put("Wege", ImmutableSet.<String>builder().add("B").build())
+																	   .put("WegeFruit", ImmutableSet.<String>builder().add("C1").build())
+			                                                           .put("Milk", ImmutableSet.<String>builder().add("D").build())
+                                                                       .put("Eggs", ImmutableSet.<String>builder().add("E1").add("E2").add("E3").add("E4").build())
+																	   .put("Fat", ImmutableSet.<String>builder().add("F").build())
+			                                                           .put("Fruit", ImmutableSet.<String>builder().add("C2").build())
 			                                                           .build();
 
 
