@@ -2,13 +2,18 @@ package com.blackchicktech.healthdiet.service;
 
 
 import com.blackchicktech.healthdiet.domain.MealsRecommendationResponse;
-import com.blackchicktech.healthdiet.entity.*;
+import com.blackchicktech.healthdiet.entity.FoodRecommended;
+import com.blackchicktech.healthdiet.entity.FoodUnit;
+import com.blackchicktech.healthdiet.entity.Recipe;
+import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
 import com.blackchicktech.healthdiet.repository.MealsDaoImpl;
 import com.blackchicktech.healthdiet.repository.RecipeDaoImpl;
 import com.blackchicktech.healthdiet.repository.UserDaoImpl;
 import com.blackchicktech.healthdiet.util.Constants;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class MealsService {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(MealsService.class);
 
     @Autowired
     private MealsDaoImpl mealsDao;
@@ -53,6 +60,7 @@ public class MealsService {
         Map<String, Float> breakfastMap = new HashMap<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "BR");
         for(String element : breakfastElements){
+            LOGGER.info("Trying to get breakfast food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for(String ckd : ckds){
                 Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
