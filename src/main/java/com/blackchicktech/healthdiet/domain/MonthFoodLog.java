@@ -50,6 +50,12 @@ public class MonthFoodLog {
     @JsonProperty("ca")
     private String ca;
 
+    @JsonProperty("expectEnergy")
+    private String expectEnergy;
+
+    @JsonProperty("expectProtein")
+    private String expectProtein;
+
     public MonthFoodLog(FoodLog foodLog) {
         this.date = foodLog.getDate();
         this.logged = foodLog.isCompletedLog();
@@ -170,6 +176,22 @@ public class MonthFoodLog {
         this.ca = ca;
     }
 
+    public void setExpectEnergy(String expectEnergy) {
+        this.expectEnergy = expectEnergy;
+    }
+
+    public void setExpectProtein(String expectProtein) {
+        this.expectProtein = expectProtein;
+    }
+
+    public String getExpectEnergy() {
+        return expectEnergy;
+    }
+
+    public String getExpectProtein() {
+        return expectProtein;
+    }
+
     @Override
     public String toString() {
         return "MonthFoodLog{" +
@@ -186,6 +208,8 @@ public class MonthFoodLog {
                 ", k='" + k + '\'' +
                 ", p='" + p + '\'' +
                 ", ca='" + ca + '\'' +
+                ", expectEnergy='" + expectEnergy + '\'' +
+                ", expectProtein='" + expectProtein + '\'' +
                 '}';
     }
 

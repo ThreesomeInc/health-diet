@@ -4,10 +4,13 @@ import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodUnit;
+import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.service.FoodLogService;
 import com.blackchicktech.healthdiet.service.FoodService;
+import com.blackchicktech.healthdiet.service.ReportService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
+import com.blackchicktech.healthdiet.util.UserUtil;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
@@ -43,6 +48,9 @@ public class LogFoodController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private ReportService reportService;
+
 	//logFood?openId=xxxx
 	//获取当月食物
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -50,6 +58,12 @@ public class LogFoodController {
 	public MonthFoodLogResponse getCurrentMonthFoodLog(@RequestParam String openId) {
 		Date date = new Date();
 		List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(openId, date);
+		User user = userService.getUserByOpenId(openId);
+		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
+		monthFoodLogList.forEach(item -> {
+			item.setExpectEnergy(response.getCalorie());
+			item.setExpectProtein(response.getProtein());
+		});
 		return new MonthFoodLogResponse(monthFoodLogList);
 	}
 
@@ -82,7 +96,12 @@ public class LogFoodController {
 			return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), null);
 		}
 
-		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), new MonthFoodLog(foodLog));
+		MonthFoodLog monthFoodLog = new MonthFoodLog(foodLog);
+		User user = userService.getUserByOpenId(openId);
+		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
+		monthFoodLog.setExpectProtein(getExpectedValue(response.getProtein()));
+		monthFoodLog.setExpectEnergy(getExpectedValue(response.getCalorie()));
+		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
 	}
 
 	//获取食部信息
@@ -121,4 +140,8 @@ public class LogFoodController {
 		return foodLogService.deduceThreeDayFoodLogAnalysis(openId, date);
 	}
 
+	private String getExpectedValue(String value) {
+		Matcher result = Pattern.compile("(\\d+(.\\d))?").matcher(value);
+		return result.find() ? result.group() : "0";
+	}
 }
