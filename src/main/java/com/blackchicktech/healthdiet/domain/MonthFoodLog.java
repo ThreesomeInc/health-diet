@@ -72,6 +72,11 @@ public class MonthFoodLog {
         this.ca = formatDouble(foodLog.getCa());
     }
 
+	public MonthFoodLog(String expectProtein, String expectEnergy) {
+		this.expectEnergy = expectEnergy;
+        this.expectProtein = expectProtein;
+    }
+
     public Date getDate() {
         return date;
     }
