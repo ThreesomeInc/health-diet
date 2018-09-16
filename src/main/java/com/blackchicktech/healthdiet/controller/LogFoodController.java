@@ -90,7 +90,7 @@ public class LogFoodController {
 
 		User user = userService.getUserByOpenId(openId);
 		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
-		MonthFoodLog monthFoodLog = new MonthFoodLog(response.getProtein(), response.getCalorie());
+		MonthFoodLog monthFoodLog = new MonthFoodLog(getExpectedValue(response.getProtein()), getExpectedValue(response.getCalorie()));
 		if (foodLogDetails.isEmpty()) {
 			return new DietHistoryResponse(Collections.emptyList(), monthFoodLog);
 		}
