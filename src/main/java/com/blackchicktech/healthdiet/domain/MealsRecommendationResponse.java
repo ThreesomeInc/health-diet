@@ -5,52 +5,51 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MealsRecommendationResponse {
 
     @JsonProperty
-    private Map<String, Float> breakfast;
+    private List<RecommendRecipeInfo> breakfast;
 
     @JsonProperty
-    private Map<String, Float> lunch;
+    private List<RecommendRecipeInfo> lunch;
 
     @JsonProperty
-    private Map<String, Float> dinner;
+    private List<RecommendRecipeInfo> dinner;
 
     @JsonProperty
-    private Map<String, Float> additionMeal;
+    private List<RecommendRecipeInfo> additionMeal;
 
-    public Map<String, Float> getBreakfast() {
+    public List<RecommendRecipeInfo> getBreakfast() {
         return breakfast;
     }
 
-    public void setBreakfast(Map<String, Float> breakfast) {
+    public void setBreakfast(List<RecommendRecipeInfo> breakfast) {
         this.breakfast = breakfast;
     }
 
-    public Map<String, Float> getLunch() {
+    public List<RecommendRecipeInfo> getLunch() {
         return lunch;
     }
 
-    public void setLunch(Map<String, Float> lunch) {
+    public void setLunch(List<RecommendRecipeInfo> lunch) {
         this.lunch = lunch;
     }
 
-    public Map<String, Float> getDinner() {
+    public List<RecommendRecipeInfo> getDinner() {
         return dinner;
     }
 
-    public void setDinner(Map<String, Float> dinner) {
+    public void setDinner(List<RecommendRecipeInfo> dinner) {
         this.dinner = dinner;
     }
 
-    public Map<String, Float> getAdditionMeal() {
+    public List<RecommendRecipeInfo> getAdditionMeal() {
         return additionMeal;
     }
 
-    public void setAdditionMeal(Map<String, Float> additionMeal) {
+    public void setAdditionMeal(List<RecommendRecipeInfo> additionMeal) {
         this.additionMeal = additionMeal;
     }
 
