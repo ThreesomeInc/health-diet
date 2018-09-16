@@ -87,18 +87,19 @@ public class LogFoodController {
 											  @RequestParam(required = false) String mealtime,
 											  @RequestParam String date) {
 		List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, parseDate(date), mealtime);
+
+		User user = userService.getUserByOpenId(openId);
+		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
+		MonthFoodLog monthFoodLog = new MonthFoodLog(response.getProtein(), response.getCalorie());
 		if (foodLogDetails.isEmpty()) {
-			return new DietHistoryResponse(Collections.emptyList(), null);
+			return new DietHistoryResponse(Collections.emptyList(), monthFoodLog);
 		}
 
 		FoodLog foodLog = foodLogService.getMonthFoodLog(openId, parseDate(date));
 		if (foodLog == null) {
-			return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), null);
+			return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
 		}
-
-		MonthFoodLog monthFoodLog = new MonthFoodLog(foodLog);
-		User user = userService.getUserByOpenId(openId);
-		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
+		monthFoodLog = new MonthFoodLog(foodLog);
 		monthFoodLog.setExpectProtein(getExpectedValue(response.getProtein()));
 		monthFoodLog.setExpectEnergy(getExpectedValue(response.getCalorie()));
 		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
