@@ -11,24 +11,14 @@ public class MonthFoodLogResponse extends BasicResponse {
     @JsonProperty("logFoodList")
     private List<MonthFoodLog> monthFoodLogs;
 
-    @JsonProperty("expectEnergy")
-    private String totalEnergy;
-
-    @JsonProperty("expectProtein")
-    private String totalProtein;
-
-    public MonthFoodLogResponse(List<MonthFoodLog> monthFoodLogs, String totalEnergy, String totalProtein) {
+    public MonthFoodLogResponse(List<MonthFoodLog> monthFoodLogs) {
         this.monthFoodLogs = monthFoodLogs;
-        this.totalEnergy = totalEnergy;
-        this.totalProtein = totalProtein;
     }
 
     @Override
     public String toString() {
         return "MonthFoodLogResponse{" +
                 "monthFoodLogs=" + monthFoodLogs +
-                ", totalEnergy='" + totalEnergy + '\'' +
-                ", totalProtein='" + totalProtein + '\'' +
                 "} " + super.toString();
     }
 }

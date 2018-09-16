@@ -58,7 +58,11 @@ public class LogFoodController {
 		List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(openId, date);
 		User user = userService.getUserByOpenId(openId);
 		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
-		return new MonthFoodLogResponse(monthFoodLogList, response.getCalorie(), response.getProtein());
+		monthFoodLogList.forEach(item -> {
+			item.setExpectEnergy(response.getCalorie());
+			item.setExpectProtein(response.getProtein());
+		});
+		return new MonthFoodLogResponse(monthFoodLogList);
 	}
 
 	//记录每日膳食 有的话覆盖
@@ -90,7 +94,12 @@ public class LogFoodController {
 			return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), null);
 		}
 
-		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), new MonthFoodLog(foodLog));
+		MonthFoodLog monthFoodLog = new MonthFoodLog(foodLog);
+		User user = userService.getUserByOpenId(openId);
+		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
+		monthFoodLog.setExpectProtein(response.getProtein());
+		monthFoodLog.setExpectEnergy(response.getCalorie());
+		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
 	}
 
 	//获取食部信息
