@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
@@ -97,8 +99,8 @@ public class LogFoodController {
 		MonthFoodLog monthFoodLog = new MonthFoodLog(foodLog);
 		User user = userService.getUserByOpenId(openId);
 		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
-		monthFoodLog.setExpectProtein(response.getProtein());
-		monthFoodLog.setExpectEnergy(response.getCalorie());
+		monthFoodLog.setExpectProtein(getExpectedValue(response.getProtein()));
+		monthFoodLog.setExpectEnergy(getExpectedValue(response.getCalorie()));
 		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
 	}
 
@@ -138,4 +140,8 @@ public class LogFoodController {
 		return foodLogService.deduceThreeDayFoodLogAnalysis(openId, date);
 	}
 
+	private String getExpectedValue(String value) {
+		Matcher result = Pattern.compile("(\\d+(.\\d))?").matcher(value);
+		return result.find() ? result.group() : "0";
+	}
 }
