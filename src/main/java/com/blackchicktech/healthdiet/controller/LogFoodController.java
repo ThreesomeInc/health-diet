@@ -4,10 +4,13 @@ import com.blackchicktech.healthdiet.domain.*;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodUnit;
+import com.blackchicktech.healthdiet.entity.User;
 import com.blackchicktech.healthdiet.service.FoodLogService;
 import com.blackchicktech.healthdiet.service.FoodService;
+import com.blackchicktech.healthdiet.service.ReportService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
+import com.blackchicktech.healthdiet.util.UserUtil;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +46,9 @@ public class LogFoodController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private ReportService reportService;
+
 	//logFood?openId=xxxx
 	//获取当月食物
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -50,7 +56,9 @@ public class LogFoodController {
 	public MonthFoodLogResponse getCurrentMonthFoodLog(@RequestParam String openId) {
 		Date date = new Date();
 		List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(openId, date);
-		return new MonthFoodLogResponse(monthFoodLogList);
+		User user = userService.getUserByOpenId(openId);
+		ReportResponse response = reportService.report(UserUtil.createReportRequest(user));
+		return new MonthFoodLogResponse(monthFoodLogList, response.getCalorie(), response.getProtein());
 	}
 
 	//记录每日膳食 有的话覆盖
