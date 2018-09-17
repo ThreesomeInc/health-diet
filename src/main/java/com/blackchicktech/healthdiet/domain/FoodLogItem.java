@@ -21,6 +21,9 @@ public class FoodLogItem {
     @JsonProperty("foodName") //食材名，入库作回显
     private String foodName;
 
+    @JsonProperty("foodAlias") //食材别名，入库作回显
+    private String foodAlias;
+
     public FoodLogItem() {
     }
 
@@ -68,6 +71,14 @@ public class FoodLogItem {
 
     public void setFoodName(String foodName) {
         this.foodName = foodName;
+    }
+
+    public String getFoodAlias() {
+        return foodAlias;
+    }
+
+    public void setFoodAlias(String foodAlias) {
+        this.foodAlias = foodAlias;
     }
 
     @Override
