@@ -3,6 +3,8 @@ package com.blackchicktech.healthdiet.repository;
 import com.blackchicktech.healthdiet.domain.FoodListItem;
 import com.blackchicktech.healthdiet.entity.FoodTbl;
 import com.blackchicktech.healthdiet.entity.FoodUnit;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class FoodDaoImpl implements FoodDao {
 
 	public List<FoodListItem> getFoodByName(String foodName) {
 		logger.info("Query food by food name foodName={}", foodName);
+		if (StringUtils.isBlank(foodName)) return Lists.newArrayList();
 		List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * FROM food_tbl WHERE food_name LIKE  ?",
 				(resultSet, i) -> new FoodListItem(
 						resultSet.getString("food_id"),
