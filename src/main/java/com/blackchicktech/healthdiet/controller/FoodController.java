@@ -54,7 +54,7 @@ public class FoodController {
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public FoodListResponse getFoodListByName(@RequestParam("name") String name,
+	public FoodListResponse getFoodListByName(@RequestParam(value = "name", required = false) String name,
 											  @RequestParam(value = "alias", required = false) String alias) {
 		if (alias != null) {
 			return new FoodListResponse(foodService.listFoodByAlias(alias));
