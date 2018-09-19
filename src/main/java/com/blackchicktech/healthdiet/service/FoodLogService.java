@@ -52,6 +52,11 @@ public class FoodLogService {
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
+    public List<MonthFoodLog> getThreeDaysMonthFoodLog(String openId, Date currentDate) {
+        return foodLogDao.getThreeDaysFoodLogForMonth(openId, currentDate).stream()
+                .map(MonthFoodLog::new).collect(Collectors.toList());
+    }
+
     public List<FoodLogDetail> getFoodLogDetail(String openId, Date date, String mealtime) {
         return foodLogDao.getFoodLogDetailByDate(openId, date, mealtime);
     }
@@ -238,6 +243,14 @@ public class FoodLogService {
         Date dateOne = foodLogList.get(0).getDate();
         Date dateTwo = foodLogList.get(1).getDate();
         Date dateThree = foodLogList.get(2).getDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateOne);
+        return (int) ((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (int) ((dateTwo.getTime() - dateThree.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&
+                (cal.get(Calendar.DAY_OF_WEEK) == 3 || cal.get(Calendar.DAY_OF_WEEK) == 7);
+    }
+
+    public boolean isStandardLogType(Date dateOne, Date dateTwo, Date dateThree) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateOne);
         return (int) ((dateOne.getTime() - dateTwo.getTime()) / ONE_DAY_MILI_SECONDS) == 1 &&

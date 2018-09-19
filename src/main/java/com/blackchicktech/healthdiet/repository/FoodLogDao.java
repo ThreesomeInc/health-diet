@@ -47,6 +47,30 @@ public class FoodLogDao {
         return foodLogList;
     }
 
+    public List<FoodLog> getThreeDaysFoodLogForMonth(String openId, Date date) {
+        logger.info("Query 3 day food log for month openId={}, date={}", openId, date);
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? AND " +
+                        "log_date BETWEEN DATE_ADD(?,interval -3 DAY) AND DATE_ADD(LAST_DAY(?), INTERVAL 30 DAY)",
+                (resultSet, i) -> new FoodLog(
+                        resultSet.getString("open_id"),
+                        resultSet.getDate("log_date"),
+                        resultSet.getBoolean("is_completed_log"),
+                        resultSet.getDouble("totalEnergy"),
+                        resultSet.getDouble("totalProtein"),
+                        resultSet.getDouble("peRatio"),
+                        resultSet.getDouble("fat"),
+                        resultSet.getDouble("feRatio"),
+                        resultSet.getDouble("cho"),
+                        resultSet.getDouble("ceRatio"),
+                        resultSet.getDouble("na"),
+                        resultSet.getDouble("k"),
+                        resultSet.getDouble("p"),
+                        resultSet.getDouble("ca")
+                ), openId, date, date, date);
+        logger.info("Finished 3 day food log total {} records", foodLogList.size());
+        return foodLogList;
+    }
+
     public List<FoodLog> getFoodLogByDate(String openId, Date date) {
         logger.info("Query current month food log openId={}, date={}", openId, date);
         List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? AND " +

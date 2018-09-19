@@ -25,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -65,6 +63,26 @@ public class LogFoodController {
 			item.setExpectProtein(response.getProtein());
 		});
 		return new MonthFoodLogResponse(monthFoodLogList);
+	}
+
+	//获取当月哪日有3餐报告的接口 month=yyyy-MM
+	@RequestMapping(value = "/reports", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ThreeDayReportsResponse getThreeDayReports(@RequestBody ThreeDayReportsRequest reportsRequest) {
+		List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(reportsRequest.getOpenId(),
+				parseDate(reportsRequest.getMonth() + "-01"));
+		List<Date> dateList = new ArrayList<>();
+		if (monthFoodLogList.size() <= 2) {
+			return new ThreeDayReportsResponse(dateList);
+		}
+		for (int i = 2; i < monthFoodLogList.size() -2; i++) {
+			if (foodLogService.isStandardLogType(monthFoodLogList.get(i-2).getDate(),
+					monthFoodLogList.get(i-1).getDate(),
+					monthFoodLogList.get(i).getDate())) {
+				dateList.add(monthFoodLogList.get(i).getDate());
+			}
+		}
+		return new ThreeDayReportsResponse(dateList);
 	}
 
 	//记录每日膳食 有的话覆盖
