@@ -69,13 +69,13 @@ public class LogFoodController {
 	@RequestMapping(value = "/reports", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ThreeDayReportsResponse getThreeDayReports(@RequestBody ThreeDayReportsRequest reportsRequest) {
-		List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(reportsRequest.getOpenId(),
+		List<MonthFoodLog> monthFoodLogList = foodLogService.getThreeDaysMonthFoodLog(reportsRequest.getOpenId(),
 				parseDate(reportsRequest.getMonth() + "-01"));
 		List<Date> dateList = new ArrayList<>();
 		if (monthFoodLogList.size() <= 2) {
 			return new ThreeDayReportsResponse(dateList);
 		}
-		for (int i = 2; i < monthFoodLogList.size() -2; i++) {
+		for (int i = 2; i < monthFoodLogList.size(); i++) {
 			if (foodLogService.isStandardLogType(monthFoodLogList.get(i-2).getDate(),
 					monthFoodLogList.get(i-1).getDate(),
 					monthFoodLogList.get(i).getDate())) {

@@ -26,7 +26,7 @@ public class FoodLogDao {
     public List<FoodLog> getCurrentMonthFoodLog(String openId, Date date) {
         logger.info("Query current month food log openId={}, date={}", openId, date);
         List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? AND " +
-                        "log_date BETWEEN DATE_ADD(?,interval -day(?)+1 DAY) AND last_day(?)",
+                        "log_date BETWEEN DATE_ADD(?,interval -day(?)+1 DAY) AND DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY)",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
@@ -50,7 +50,7 @@ public class FoodLogDao {
     public List<FoodLog> getThreeDaysFoodLogForMonth(String openId, Date date) {
         logger.info("Query 3 day food log for month openId={}, date={}", openId, date);
         List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? AND " +
-                        "log_date BETWEEN DATE_ADD(?,interval -3 DAY) AND DATE_ADD(LAST_DAY(?), INTERVAL 30 DAY)",
+                        "log_date BETWEEN DATE_ADD(?,interval -2 DAY) AND DATE_ADD(LAST_DAY(?), INTERVAL 1 DAY)",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
@@ -66,7 +66,7 @@ public class FoodLogDao {
                         resultSet.getDouble("k"),
                         resultSet.getDouble("p"),
                         resultSet.getDouble("ca")
-                ), openId, date, date, date);
+                ), openId, date, date);
         logger.info("Finished 3 day food log total {} records", foodLogList.size());
         return foodLogList;
     }
