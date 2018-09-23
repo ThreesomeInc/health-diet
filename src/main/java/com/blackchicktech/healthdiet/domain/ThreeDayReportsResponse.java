@@ -3,6 +3,8 @@ package com.blackchicktech.healthdiet.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +19,9 @@ public class ThreeDayReportsResponse extends BasicResponse {
 
     public ThreeDayReportsResponse(List<Date> logDateList) {
         this.logDateList = logDateList.stream().filter(Objects::nonNull)
-                .map(item -> item.toInstant().get(ChronoField.DAY_OF_MONTH)).collect(Collectors.toList());
+                .map(item -> new Date(item.getTime()).toInstant()
+                        .atZone(ZoneId.systemDefault()).get(ChronoField.DAY_OF_MONTH))
+                .collect(Collectors.toList());
     }
 
     @Override

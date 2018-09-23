@@ -76,9 +76,9 @@ public class LogFoodController {
 			return new ThreeDayReportsResponse(dateList);
 		}
 		for (int i = 2; i < monthFoodLogList.size(); i++) {
-			if (foodLogService.isStandardLogType(monthFoodLogList.get(i-2).getDate(),
+			if (foodLogService.isStandardLogType(monthFoodLogList.get(i).getDate(),
 					monthFoodLogList.get(i-1).getDate(),
-					monthFoodLogList.get(i).getDate())) {
+					monthFoodLogList.get(i-2).getDate())) {
 				dateList.add(monthFoodLogList.get(i).getDate());
 			}
 		}
