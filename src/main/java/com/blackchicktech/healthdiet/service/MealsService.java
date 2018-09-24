@@ -99,7 +99,14 @@ public class MealsService {
         for(String element : breakfastElements){
             LOGGER.info("Trying to get lunch food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+            boolean hasETypeYet = false;
             for(String ckd : ckds){
+                if(hasETypeYet && ckd.contains("E")){
+                    continue;
+                }
+                if(ckd.contains("E")){
+                    hasETypeYet = true;
+                }
                 Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 if(recipe != null){
                     String material = recipe.getMaterial();
@@ -139,7 +146,14 @@ public class MealsService {
         for(String element : breakfastElements){
             LOGGER.info("Trying to get dinner food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+            boolean hasETypeYet = false;
             for(String ckd : ckds){
+                if(hasETypeYet && ckd.contains("E")){
+                    continue;
+                }
+                if(ckd.contains("E")){
+                    hasETypeYet = true;
+                }
                 Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 if(recipe != null){
                     if(recipe != null){
