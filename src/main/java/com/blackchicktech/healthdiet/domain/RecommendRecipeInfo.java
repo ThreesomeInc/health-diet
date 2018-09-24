@@ -11,6 +11,8 @@ public class RecommendRecipeInfo {
 
     private Map<String, Integer> materials;
 
+    private float protein;
+
     public String getRecipeName() {
         return recipeName;
     }
@@ -33,5 +35,13 @@ public class RecommendRecipeInfo {
 
     public void setMaterials(Map<String, Integer> materials) {
         this.materials = materials;
+    }
+
+    public float getProtein() {
+        return protein;
+    }
+
+    public void setProtein(float protein) {
+        this.protein = protein;
     }
 }

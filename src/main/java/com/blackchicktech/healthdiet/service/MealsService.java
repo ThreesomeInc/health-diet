@@ -82,6 +82,7 @@ public class MealsService {
                                 .setScale(0, BigDecimal.ROUND_FLOOR)
                                 .intValue());
                         recommendRecipeInfo.setMaterials(materialMap);
+                        recommendRecipeInfo.setProtein(protein);
                         breakfast.add(recommendRecipeInfo);
                     }
 
@@ -127,6 +128,7 @@ public class MealsService {
                                     .setScale(0, BigDecimal.ROUND_FLOOR)
                                     .intValue());
                             recommendRecipeInfo.setMaterials(materialMap);
+                            recommendRecipeInfo.setProtein(protein);
                             lunch.add(recommendRecipeInfo);
                         }
                     }
@@ -175,6 +177,7 @@ public class MealsService {
                                         .setScale(0, BigDecimal.ROUND_FLOOR)
                                         .intValue());
                                 recommendRecipeInfo.setMaterials(materialMap);
+                                recommendRecipeInfo.setProtein(protein);
                                 recommendedDinner.add(recommendRecipeInfo);
                             }
                         }
@@ -218,6 +221,7 @@ public class MealsService {
                                         .setScale(0, BigDecimal.ROUND_FLOOR)
                                         .intValue());
                                 recommendRecipeInfo.setMaterials(materialMap);
+                                recommendRecipeInfo.setProtein(protein);
                                 recommendAdditionalMeal.add(recommendRecipeInfo);
                             }
                         }
