@@ -222,7 +222,7 @@ public class FoodLogDao {
 
     public List<FoodLog> getLatestThreeDayFoodLog(String openId, String date){
         logger.info("Going to get latest 3 three days food log for user openId = {}", openId);
-        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? and log_date <= ? and is_completed_log = 1 order by log_date desc limit 3",
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? and log_date <= ? order by log_date desc limit 3",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
