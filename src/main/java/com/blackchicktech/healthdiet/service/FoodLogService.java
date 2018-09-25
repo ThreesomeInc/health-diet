@@ -119,10 +119,10 @@ public class FoodLogService {
         double totalCho = accumulativeEnergy.getCho() + readDouble(foodTbl.getCho(), 0) * calPercent;
         double ceRatio = calChoRatio(totalEnergy, totalCho);
 
-        double na = readDouble(foodTbl.getNa(), 0) * calPercent;
-        double k = readDouble(foodTbl.getK(), 0) * calPercent;
-        double p = readDouble(foodTbl.getP(), 0) * calPercent;
-        double ca = readDouble(foodTbl.getCa(), 0) * calPercent;
+        double na = accumulativeEnergy.getNa() + readDouble(foodTbl.getNa(), 0) * calPercent;
+        double k = accumulativeEnergy.getK() + readDouble(foodTbl.getK(), 0) * calPercent;
+        double p = accumulativeEnergy.getP() + readDouble(foodTbl.getP(), 0) * calPercent;
+        double ca = accumulativeEnergy.getCa() + readDouble(foodTbl.getCa(), 0) * calPercent;
         //应该将计算重构到最后?
 
         accumulativeEnergy.setTotalEnergy(totalEnergy);
