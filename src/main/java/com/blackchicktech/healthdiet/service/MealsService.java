@@ -105,10 +105,14 @@ public class MealsService {
                 if(hasETypeYet && ckd.contains("E")){
                     continue;
                 }
+                Recipe recipe = null;
                 if(ckd.contains("E")){
                     hasETypeYet = true;
+                    recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
+                } else {
+                    recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 }
-                Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
+
                 if(recipe != null){
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
@@ -153,10 +157,13 @@ public class MealsService {
                 if(hasETypeYet && ckd.contains("E")){
                     continue;
                 }
+                Recipe recipe = null;
                 if(ckd.contains("E")){
                     hasETypeYet = true;
+                    recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
+                } else {
+                    recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 }
-                Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 if(recipe != null){
                     if(recipe != null){
                         String material = recipe.getMaterial();
