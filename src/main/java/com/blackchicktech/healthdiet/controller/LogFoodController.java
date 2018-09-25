@@ -1,6 +1,17 @@
 package com.blackchicktech.healthdiet.controller;
 
-import com.blackchicktech.healthdiet.domain.*;
+import com.blackchicktech.healthdiet.domain.AccumulativeEnergy;
+import com.blackchicktech.healthdiet.domain.DietHistoryResponse;
+import com.blackchicktech.healthdiet.domain.DietRecord;
+import com.blackchicktech.healthdiet.domain.DietRecordResponse;
+import com.blackchicktech.healthdiet.domain.FoodLogRequest;
+import com.blackchicktech.healthdiet.domain.FoodUnitResponse;
+import com.blackchicktech.healthdiet.domain.MonthFoodLog;
+import com.blackchicktech.healthdiet.domain.MonthFoodLogResponse;
+import com.blackchicktech.healthdiet.domain.ReportResponse;
+import com.blackchicktech.healthdiet.domain.ThreeDayFoodLogAnalysis;
+import com.blackchicktech.healthdiet.domain.ThreeDayReportsRequest;
+import com.blackchicktech.healthdiet.domain.ThreeDayReportsResponse;
 import com.blackchicktech.healthdiet.entity.FoodLog;
 import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.entity.FoodUnit;
@@ -25,11 +36,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * 饮食记录对应API
+ */
 @RestController
 @RequestMapping("/foodLog")
 public class LogFoodController {
@@ -49,8 +66,12 @@ public class LogFoodController {
 	@Autowired
 	private ReportService reportService;
 
-	//logFood?openId=xxxx
-	//获取当月食物
+	/**
+	 * logFood?openId=xxxx 获取当月食物 （not in use)
+	 *
+	 * @param openId
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public MonthFoodLogResponse getCurrentMonthFoodLog(@RequestParam String openId) {
@@ -65,7 +86,9 @@ public class LogFoodController {
 		return new MonthFoodLogResponse(monthFoodLogList);
 	}
 
-	//获取当月哪日有3餐报告的接口 month=yyyy-MM
+	/**
+	 * 获取当月哪日有3餐报告的接口 month=yyyy-MM
+	 */
 	@RequestMapping(value = "/reports", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ThreeDayReportsResponse getThreeDayReports(@RequestBody ThreeDayReportsRequest reportsRequest) {
@@ -85,7 +108,12 @@ public class LogFoodController {
 		return new ThreeDayReportsResponse(dateList);
 	}
 
-	//记录每日膳食 有的话覆盖
+	/**
+	 * 记录每日膳食
+	 *
+	 * @param request
+	 * @return
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public DietRecordResponse addFoodLog(@RequestBody FoodLogRequest request) {
@@ -98,7 +126,14 @@ public class LogFoodController {
 		return new DietRecordResponse(energy);
 	}
 
-	//获取每日膳食
+	/**
+	 * 获取每日膳食
+	 *
+	 * @param openId
+	 * @param mealtime （早午晚）
+	 * @param date
+	 * @return
+	 */
 	@RequestMapping(value = "/single", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public DietHistoryResponse getDietHistory(@RequestParam String openId,
@@ -123,7 +158,11 @@ public class LogFoodController {
 		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
 	}
 
-	//获取食部信息
+	/**
+	 * 获取食物信息（ID，名称，可食部等，用于UI选择食物进行膳食记录）
+	 * @param foodId '01-1-101'
+	 * @return
+	 */
 	@RequestMapping(value = "/food/{foodId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public FoodUnitResponse getFoodUnit(@PathVariable String foodId) {
@@ -135,13 +174,6 @@ public class LogFoodController {
 		return new FoodUnitResponse(foodUnit);
 	}
 
-	@RequestMapping(value = "/isCompletedLog", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public BasicResponse updateIsCompletedLog(@RequestBody CompletedLogInfo completedLogInfo) {
-		foodLogService.updateIsCompletedLog(completedLogInfo.getOpenId(), parseDate(completedLogInfo.getDate()), completedLogInfo.isChecked());
-		return new BasicResponse();
-	}
-
 	private Date parseDate(String dateString) {
 		try {
 			return sdf.parse(dateString);
@@ -151,7 +183,13 @@ public class LogFoodController {
 		}
 	}
 
-
+	/**
+	 * 生成三日膳食报告
+	 *
+	 * @param openId
+	 * @param date
+	 * @return
+	 */
 	@RequestMapping(value = "/analysis", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ThreeDayFoodLogAnalysis getFoodLogAnalysis(@RequestParam String openId, @RequestParam String date) {

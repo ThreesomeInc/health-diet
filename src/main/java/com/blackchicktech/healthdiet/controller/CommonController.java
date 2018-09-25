@@ -2,15 +2,18 @@ package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.util.HttpClientUtil;
 import com.blackchicktech.healthdiet.util.WXBizDataCrypt;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 小程序相关登录和解密接口
+ */
 @RestController
 @RequestMapping("/common")
 public class CommonController {
