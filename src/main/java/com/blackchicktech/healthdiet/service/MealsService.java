@@ -71,14 +71,14 @@ public class MealsService {
                     String recipeName = recipe.getRecipeName();
                     FoodUnit food = foodDao.getFoodUnitByAlias(material);
                     if(food != null){
-                        float protein = food.getProtein();
+                        float foodProtein = food.getProtein();
                         int foodEdible = food.getEdible();
-                        double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
+                        double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
                         RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                         recommendRecipeInfo.setRecipeName(recipeName);
                         recommendRecipeInfo.setRecipeId(recipeId);
                         Map<String, Integer> materialMap = new HashMap<>();
-                        materialMap.put(material, BigDecimal.valueOf(ratio/protein/foodEdible*10000)
+                        materialMap.put(material, BigDecimal.valueOf(protein/foodProtein/foodEdible*10000)
                                 .setScale(0, BigDecimal.ROUND_FLOOR)
                                 .intValue());
                         recommendRecipeInfo.setMaterials(materialMap);
@@ -117,14 +117,14 @@ public class MealsService {
                     if(!"早餐".equals(meal_time)){
                         FoodUnit food = foodDao.getFoodUnitByAlias(material);
                         if(food != null){
-                            float protein = food.getProtein();
+                            float foodProtein = food.getProtein();
                             int foodEdible = food.getEdible();
-                            double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
+                            double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
                             RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                             recommendRecipeInfo.setRecipeName(recipeName);
                             recommendRecipeInfo.setRecipeId(recipeId);
                             Map<String, Integer> materialMap = new HashMap<>();
-                            materialMap.put(material, BigDecimal.valueOf(ratio/protein/foodEdible*10000)
+                            materialMap.put(material, BigDecimal.valueOf(protein/foodProtein/foodEdible*10000)
                                     .setScale(0, BigDecimal.ROUND_FLOOR)
                                     .intValue());
                             recommendRecipeInfo.setMaterials(materialMap);
@@ -166,14 +166,14 @@ public class MealsService {
                         if(!"早餐".equals(meal_time)){
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
                             if(food != null){
-                                float protein = food.getProtein();
+                                float foodProtein = food.getProtein();
                                 int foodEdible = food.getEdible();
-                                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
+                                double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
                                 RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                                 recommendRecipeInfo.setRecipeName(recipeName);
                                 recommendRecipeInfo.setRecipeId(recipeId);
                                 Map<String, Integer> materialMap = new HashMap<>();
-                                materialMap.put(material, BigDecimal.valueOf(ratio/protein/foodEdible*10000)
+                                materialMap.put(material, BigDecimal.valueOf(protein/foodProtein/foodEdible*10000)
                                         .setScale(0, BigDecimal.ROUND_FLOOR)
                                         .intValue());
                                 recommendRecipeInfo.setMaterials(materialMap);
@@ -210,14 +210,14 @@ public class MealsService {
                         if (!"早餐".equals(meal_time)) {
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
                             if (food != null) {
-                                float protein = food.getProtein();
+                                float foodProtein = food.getProtein();
                                 int foodEdible = food.getEdible();
-                                double ratio = deduceCandidateFoodFieldValue(foodRecommended, element, "AP");
+                                double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "AP");
                                 RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                                 recommendRecipeInfo.setRecipeName(recipeName);
                                 recommendRecipeInfo.setRecipeId(recipeId);
                                 Map<String, Integer> materialMap = new HashMap<>();
-                                materialMap.put(material, BigDecimal.valueOf(ratio / protein / foodEdible * 10000)
+                                materialMap.put(material, BigDecimal.valueOf(protein / foodProtein / foodEdible * 10000)
                                         .setScale(0, BigDecimal.ROUND_FLOOR)
                                         .intValue());
                                 recommendRecipeInfo.setMaterials(materialMap);
