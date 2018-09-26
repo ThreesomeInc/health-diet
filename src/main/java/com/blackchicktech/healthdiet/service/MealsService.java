@@ -184,7 +184,6 @@ public class MealsService {
                         String[] foodElements = material.split("\\|");
                         for(String foodElement : foodElements){
                             if(!"早餐".equals(meal_time)){
-                                LOGGER.info("Lunch food element: " + foodElement);
                                 FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
                                 if(food != null){
                                     float foodProtein = food.getProtein();
