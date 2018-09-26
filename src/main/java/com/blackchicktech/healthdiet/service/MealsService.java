@@ -169,7 +169,7 @@ public class MealsService {
                     recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 }
 
-                if(recipe != null){
+                if(recipe != null && !recipe.getMealTime().contains("早餐")){
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
@@ -182,32 +182,31 @@ public class MealsService {
                     Map<String, Integer> materialMap = new HashMap<>();
                     if(material.indexOf("|") > -1){
                         String[] foodElements = material.split("\\|");
-                        for(String foodElement : foodElements){
-                            if(!meal_time.contains("早餐")){
-                                FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
-                                if(food != null){
-                                    float foodProtein = food.getProtein();
-                                    int foodEdible = food.getEdible();
-                                    materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
-                                            /foodEdible*10000)
-                                            .setScale(0, BigDecimal.ROUND_FLOOR)
-                                            .intValue());
+                        for(String foodElement : foodElements) {
 
-                                }
+                            FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
+                            if (food != null) {
+                                float foodProtein = food.getProtein();
+                                int foodEdible = food.getEdible();
+                                materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein / foodProtein
+                                        / foodEdible * 10000)
+                                        .setScale(0, BigDecimal.ROUND_FLOOR)
+                                        .intValue());
+
                             }
                         }
                     } else {
-                        if(!meal_time.contains("早餐")){
-                            FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                            if(food != null){
-                                float foodProtein = food.getProtein();
-                                int foodEdible = food.getEdible();
-                                materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
-                                        /foodEdible*10000)
-                                        .setScale(0, BigDecimal.ROUND_FLOOR)
-                                        .intValue());
-                            }
+
+                        FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                        if (food != null) {
+                            float foodProtein = food.getProtein();
+                            int foodEdible = food.getEdible();
+                            materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein / foodProtein
+                                    / foodEdible * 10000)
+                                    .setScale(0, BigDecimal.ROUND_FLOOR)
+                                    .intValue());
                         }
+
                     }
 
                     recommendRecipeInfo.setMaterials(materialMap);
