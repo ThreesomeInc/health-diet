@@ -126,7 +126,7 @@ public class MealsService {
                     Map<String, Integer> materialMap = new HashMap<>();
                     LOGGER.info("Lunch Material for Recipe: " + recipeName + " is " + material);
                     if(material.indexOf("|") > -1){
-                        String[] foodElements = material.split("|");
+                        String[] foodElements = material.split("\\|");
                         for(String foodElement : foodElements){
                             if(!"早餐".equals(meal_time)){
                                 LOGGER.info("Lunch food element: " + foodElement);
@@ -198,7 +198,7 @@ public class MealsService {
                     Map<String, Integer> materialMap = new HashMap<>();
                     LOGGER.info("Diner Material for Recipe: " + recipeName + " is " + material);
                     if(material.indexOf("|") > -1){
-                        String[] foodElements = material.split("|");
+                        String[] foodElements = material.split("\\|");
                         for(String foodElement : foodElements){
                             if(!"早餐".equals(meal_time)){
                                 LOGGER.info("Dinner food element: " + foodElement);
