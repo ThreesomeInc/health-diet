@@ -69,21 +69,24 @@ public class MealsService {
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
-                    FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                    if(food != null){
-                        float foodProtein = food.getProtein();
-                        int foodEdible = food.getEdible();
-                        double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
-                        RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
-                        recommendRecipeInfo.setRecipeName(recipeName);
-                        recommendRecipeInfo.setRecipeId(recipeId);
-                        Map<String, Integer> materialMap = new HashMap<>();
-                        materialMap.put(material, BigDecimal.valueOf(protein/foodProtein/foodEdible*10000)
-                                .setScale(0, BigDecimal.ROUND_FLOOR)
-                                .intValue());
-                        recommendRecipeInfo.setMaterials(materialMap);
-                        recommendRecipeInfo.setProtein(protein);
-                        breakfast.add(recommendRecipeInfo);
+                    String meal_time = recipe.getMealTime();
+                    if(meal_time.contains("早餐")){
+                        FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                        if(food != null){
+                            float foodProtein = food.getProtein();
+                            int foodEdible = food.getEdible();
+                            double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
+                            RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
+                            recommendRecipeInfo.setRecipeName(recipeName);
+                            recommendRecipeInfo.setRecipeId(recipeId);
+                            Map<String, Integer> materialMap = new HashMap<>();
+                            materialMap.put(material, BigDecimal.valueOf(protein/foodProtein/foodEdible*10000)
+                                    .setScale(0, BigDecimal.ROUND_FLOOR)
+                                    .intValue());
+                            recommendRecipeInfo.setMaterials(materialMap);
+                            recommendRecipeInfo.setProtein(protein);
+                            breakfast.add(recommendRecipeInfo);
+                        }
                     }
 
                 }
@@ -95,147 +98,12 @@ public class MealsService {
     }
 
     private List<RecommendRecipeInfo> deduceRecommendedLunch(FoodRecommended foodRecommended){
-        List<RecommendRecipeInfo> lunch = new ArrayList<>();
-        List<String> breakfastElements = candidateFoodElements(foodRecommended, "LR");
-        for(String element : breakfastElements){
-            LOGGER.info("Trying to get lunch food for element: {}", element);
-            Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
-            boolean hasETypeYet = false;
-            for(String ckd : ckds){
-                if(hasETypeYet && (ckd.equals("E1") || ckd.equals("E2"))){
-                    continue;
-                }
-                Recipe recipe = null;
-                if((ckd.equals("E1") || ckd.equals("E2"))){
-                    hasETypeYet = true;
-                    recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
-                } else {
-                    recipe = recipeDao.getRecipeByCkdCategory(ckd);
-                }
-
-                if(recipe != null){
-                    String material = recipe.getMaterial();
-                    String recipeId = recipe.getRecipeId();
-                    String recipeName = recipe.getRecipeName();
-                    String meal_time = recipe.getMealTime();
-                    RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
-                    recommendRecipeInfo.setRecipeName(recipeName);
-                    recommendRecipeInfo.setRecipeId(recipeId);
-                    double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "LP");
-                    recommendRecipeInfo.setProtein(protein);
-                    Map<String, Integer> materialMap = new HashMap<>();
-                    LOGGER.info("Lunch Material for Recipe: " + recipeName + " is " + material);
-                    if(material.indexOf("|") > -1){
-                        String[] foodElements = material.split("\\|");
-                        for(String foodElement : foodElements){
-                            if(!"早餐".equals(meal_time)){
-                                LOGGER.info("Lunch food element: " + foodElement);
-                                FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
-                                if(food != null){
-                                    float foodProtein = food.getProtein();
-                                    int foodEdible = food.getEdible();
-                                    materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
-                                                                        /foodEdible*10000)
-                                                                       .setScale(0, BigDecimal.ROUND_FLOOR)
-                                                                        .intValue());
-
-                                }
-                            }
-                        }
-                    } else {
-                        if(!"早餐".equals(meal_time)){
-                            FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                            if(food != null){
-                                float foodProtein = food.getProtein();
-                                int foodEdible = food.getEdible();
-                                materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
-                                                                                            /foodEdible*10000)
-                                        .setScale(0, BigDecimal.ROUND_FLOOR)
-                                        .intValue());
-                            }
-                        }
-                    }
-
-                    recommendRecipeInfo.setMaterials(materialMap);
-                    lunch.add(recommendRecipeInfo);
-
-                }
-
-            }
-        }
-        return lunch;
+        return deduceRecommendedMeal(foodRecommended, "LR", "LP");
 
     }
 
     private List<RecommendRecipeInfo> deduceRecommendedDinner(FoodRecommended foodRecommended){
-        List<RecommendRecipeInfo> recommendedDinner = new ArrayList<>();
-        List<String> breakfastElements = candidateFoodElements(foodRecommended, "DR");
-        for(String element : breakfastElements){
-            LOGGER.info("Trying to get dinner food for element: {}", element);
-            Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
-            boolean hasETypeYet = false;
-            for(String ckd : ckds){
-                if(hasETypeYet && (ckd.equals("E1") || ckd.equals("E2"))){
-                    continue;
-                }
-                Recipe recipe = null;
-                if((ckd.equals("E1") || ckd.equals("E2"))){
-                    hasETypeYet = true;
-                    recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
-                } else {
-                    recipe = recipeDao.getRecipeByCkdCategory(ckd);
-                }
-                if(recipe != null){
-                    String material = recipe.getMaterial();
-                    String recipeId = recipe.getRecipeId();
-                    String recipeName = recipe.getRecipeName();
-                    String meal_time = recipe.getMealTime();
-                    RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
-                    recommendRecipeInfo.setRecipeName(recipeName);
-                    recommendRecipeInfo.setRecipeId(recipeId);
-                    double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "DP");
-                    recommendRecipeInfo.setProtein(protein);
-                    Map<String, Integer> materialMap = new HashMap<>();
-                    LOGGER.info("Diner Material for Recipe: " + recipeName + " is " + material);
-                    if(material.indexOf("|") > -1){
-                        String[] foodElements = material.split("\\|");
-                        for(String foodElement : foodElements){
-                            if(!"早餐".equals(meal_time)){
-                                LOGGER.info("Dinner food element: " + foodElement);
-                                FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
-                                if(food != null){
-                                    float foodProtein = food.getProtein();
-                                    int foodEdible = food.getEdible();
-                                    materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
-                                            /foodEdible*10000)
-                                            .setScale(0, BigDecimal.ROUND_FLOOR)
-                                            .intValue());
-
-                                }
-                            }
-                        }
-                    } else {
-                        if(!"早餐".equals(meal_time)){
-                            FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                            if(food != null){
-                                float foodProtein = food.getProtein();
-                                int foodEdible = food.getEdible();
-                                materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
-                                        /foodEdible*10000)
-                                        .setScale(0, BigDecimal.ROUND_FLOOR)
-                                        .intValue());
-                            }
-                        }
-                    }
-
-                    recommendRecipeInfo.setMaterials(materialMap);
-                    recommendedDinner.add(recommendRecipeInfo);
-
-                }
-            }
-        }
-
-            return recommendedDinner;
+            return deduceRecommendedMeal(foodRecommended, "DR", "DP");
 
         }
 
@@ -280,6 +148,76 @@ public class MealsService {
 
         }
         return recommendAdditionalMeal;
+    }
+
+    private List<RecommendRecipeInfo> deduceRecommendedMeal(FoodRecommended foodRecommended, String suffixR, String suffixP){
+        List<RecommendRecipeInfo> recommendRecipes = new ArrayList<>();
+        List<String> breakfastElements = candidateFoodElements(foodRecommended, suffixR);
+        for(String element : breakfastElements){
+
+            Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
+            boolean hasETypeYet = false;
+            for(String ckd : ckds){
+                if(hasETypeYet && (ckd.equals("E1") || ckd.equals("E2"))){
+                    continue;
+                }
+                Recipe recipe = null;
+                if((ckd.equals("E1") || ckd.equals("E2"))){
+                    hasETypeYet = true;
+                    recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
+                } else {
+                    recipe = recipeDao.getRecipeByCkdCategory(ckd);
+                }
+
+                if(recipe != null){
+                    String material = recipe.getMaterial();
+                    String recipeId = recipe.getRecipeId();
+                    String recipeName = recipe.getRecipeName();
+                    String meal_time = recipe.getMealTime();
+                    RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
+                    recommendRecipeInfo.setRecipeName(recipeName);
+                    recommendRecipeInfo.setRecipeId(recipeId);
+                    double protein = deduceCandidateFoodFieldValue(foodRecommended, element, suffixP);
+                    recommendRecipeInfo.setProtein(protein);
+                    Map<String, Integer> materialMap = new HashMap<>();
+                    if(material.indexOf("|") > -1){
+                        String[] foodElements = material.split("\\|");
+                        for(String foodElement : foodElements){
+                            if(!"早餐".equals(meal_time)){
+                                LOGGER.info("Lunch food element: " + foodElement);
+                                FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
+                                if(food != null){
+                                    float foodProtein = food.getProtein();
+                                    int foodEdible = food.getEdible();
+                                    materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
+                                            /foodEdible*10000)
+                                            .setScale(0, BigDecimal.ROUND_FLOOR)
+                                            .intValue());
+
+                                }
+                            }
+                        }
+                    } else {
+                        if(!"早餐".equals(meal_time)){
+                            FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                            if(food != null){
+                                float foodProtein = food.getProtein();
+                                int foodEdible = food.getEdible();
+                                materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein/foodProtein
+                                        /foodEdible*10000)
+                                        .setScale(0, BigDecimal.ROUND_FLOOR)
+                                        .intValue());
+                            }
+                        }
+                    }
+
+                    recommendRecipeInfo.setMaterials(materialMap);
+                    recommendRecipes.add(recommendRecipeInfo);
+                }
+
+            }
+        }
+        return recommendRecipes;
     }
 
     public float calStandardWeight(User user) {
