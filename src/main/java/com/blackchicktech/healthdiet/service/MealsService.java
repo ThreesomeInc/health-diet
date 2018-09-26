@@ -183,7 +183,7 @@ public class MealsService {
                     if(material.indexOf("|") > -1){
                         String[] foodElements = material.split("\\|");
                         for(String foodElement : foodElements){
-                            if(!"早餐".equals(meal_time)){
+                            if(!meal_time.contains("早餐")){
                                 FoodUnit food = foodDao.getFoodUnitByAlias(foodElement);
                                 if(food != null){
                                     float foodProtein = food.getProtein();
@@ -197,7 +197,7 @@ public class MealsService {
                             }
                         }
                     } else {
-                        if(!"早餐".equals(meal_time)){
+                        if(!meal_time.contains("早餐")){
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
                             if(food != null){
                                 float foodProtein = food.getProtein();
