@@ -169,11 +169,10 @@ public class MealsService {
                     recipe = recipeDao.getRecipeByCkdCategory(ckd);
                 }
 
-                if(recipe != null && !recipe.getMealTime().contains("早餐")){
+                if(recipe != null && !"早餐".equals(recipe.getMealTime())){
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
-                    String meal_time = recipe.getMealTime();
                     RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                     recommendRecipeInfo.setRecipeName(recipeName);
                     recommendRecipeInfo.setRecipeId(recipeId);
