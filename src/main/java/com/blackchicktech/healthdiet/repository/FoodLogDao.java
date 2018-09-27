@@ -242,4 +242,29 @@ public class FoodLogDao {
         logger.info("Finished query food log total {} records", foodLogList.size());
         return foodLogList;
     }
+
+    public List<FoodLog> getThreeDayFoodLog(String openId, String date){
+        logger.info("Going to get 3 days food log for user openId = {}, data={}", openId, date);
+        List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? and " +
+                        "log_date BETWEEN date_sub(str_to_date(?,'%Y-%m-%d'), INTERVAL 2 DAY) " +
+                        "AND str_to_date(?, '%Y-%m-%d') ORDER BY log_date",
+                (resultSet, i) -> new FoodLog(
+                        resultSet.getString("open_id"),
+                        resultSet.getDate("log_date"),
+                        resultSet.getBoolean("is_completed_log"),
+                        resultSet.getDouble("totalEnergy"),
+                        resultSet.getDouble("totalProtein"),
+                        resultSet.getDouble("peRatio"),
+                        resultSet.getDouble("fat"),
+                        resultSet.getDouble("feRatio"),
+                        resultSet.getDouble("cho"),
+                        resultSet.getDouble("ceRatio"),
+                        resultSet.getDouble("na"),
+                        resultSet.getDouble("k"),
+                        resultSet.getDouble("p"),
+                        resultSet.getDouble("ca")
+                ), openId, date, date);
+        logger.info("Finished query 3 days food log total {} records", foodLogList.size());
+        return foodLogList;
+    }
 }

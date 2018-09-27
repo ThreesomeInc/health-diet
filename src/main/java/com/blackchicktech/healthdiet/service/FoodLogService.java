@@ -174,20 +174,20 @@ public class FoodLogService {
     }
 
     public ThreeDayFoodLogAnalysis deduceThreeDayFoodLogAnalysis(String openId, String date){
-        List<FoodLog> threeDayFoodLog = foodLogDao.getLatestThreeDayFoodLog(openId, date);
+        List<FoodLog> threeDayFoodLog = foodLogDao.getThreeDayFoodLog(openId, date);
         if(threeDayFoodLog.size() < 3){
             logger.info("Food log is less than 3 days, fail to analytic.");
             return new ThreeDayFoodLogAnalysis();
         }
         ThreeDayFoodLogAnalysis analysis = new ThreeDayFoodLogAnalysis();
         boolean isStandardLogType = isStandardLogType(threeDayFoodLog);
-        if(isStandardLogType){
-            analysis.setStandardLog(Boolean.TRUE);
 
-        } else {
-            analysis.setStandardLog(Boolean.FALSE);
-
+        //非标返回空
+        if(!isStandardLogType){
+            return new ThreeDayFoodLogAnalysis();
         }
+
+        analysis.setStandardLog(Boolean.TRUE);
         Map<String, Double> elementEvgs = deduceElementEvgs(threeDayFoodLog);
         analysis.setElementEvgs(elementEvgs);
         if(userDao.getUserByOpenId(openId) != null){
