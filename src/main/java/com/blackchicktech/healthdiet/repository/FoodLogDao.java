@@ -247,7 +247,7 @@ public class FoodLogDao {
         logger.info("Going to get 3 days food log for user openId = {}, data={}", openId, date);
         List<FoodLog> foodLogList = jdbcTemplate.query("SELECT * FROM food_log_tbl WHERE open_id =? and " +
                         "log_date BETWEEN date_sub(str_to_date(?,'%Y-%m-%d'), INTERVAL 2 DAY) " +
-                        "AND str_to_date(?, '%Y-%m-%d') ORDER BY log_date",
+                        "AND str_to_date(?, '%Y-%m-%d') ORDER BY log_date DESC",
                 (resultSet, i) -> new FoodLog(
                         resultSet.getString("open_id"),
                         resultSet.getDate("log_date"),
