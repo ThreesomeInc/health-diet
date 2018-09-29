@@ -158,11 +158,11 @@ public class MealsService {
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             boolean hasETypeYet = false;
             for(String ckd : ckds){
-                if(hasETypeYet && (ckd.equals("E1") || ckd.equals("E2"))){
+                if(hasETypeYet && (ckd.contains("E"))){
                     continue;
                 }
                 Recipe recipe = null;
-                if((ckd.equals("E1") || ckd.equals("E2"))){
+                if((ckd.contains("E"))){
                     hasETypeYet = true;
                     recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
                 } else {
