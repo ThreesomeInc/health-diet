@@ -25,7 +25,7 @@ public class ReportService {
         LOGGER.info("Begin to generate report for user openId={}", reportRequest.getUserInfo().getOpenId());
         ReportResponse response = new ReportResponse();
         response.setStandardWeight(String.valueOf(calStandardWeight(reportRequest)) + "公斤");
-        response.setCalorie(String.valueOf(calCalorie(reportRequest)) + "卡路里");
+        response.setCalorie(String.format("%.2f 卡路里", calCalorie(reportRequest)));
         response.setProtein(calProtein(reportRequest));
         response.setBmi(calBmi(reportRequest));
         response.setAdvice(deduceAdvice(reportRequest));

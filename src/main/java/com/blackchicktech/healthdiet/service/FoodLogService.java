@@ -109,6 +109,10 @@ public class FoodLogService {
     private void calEnergy(AccumulativeEnergy accumulativeEnergy, FoodLogItem foodLogItem) {
         FoodTbl foodTbl = foodDao.getFoodById(foodLogItem.getFoodId());
         double calPercent = getCalPercent(foodLogItem.getChannel(), foodTbl);
+
+        //根据每日摄入计算百分比
+        calPercent = calPercent * (readDouble(foodLogItem.getUnit()) / 100);
+
         double totalEnergy = accumulativeEnergy.getTotalEnergy() + foodTbl.getEnergy() * calPercent;
         double totalProtein = accumulativeEnergy.getTotalProtein() + foodTbl.getProtein() * calPercent;
         double peRatio = calPeRatio(totalEnergy, totalProtein);
@@ -171,6 +175,13 @@ public class FoodLogService {
         } catch (Exception e) {
             return defaultValue;
         }
+    }
+
+    private double readDouble(double d) {
+        if (Double.isNaN(d) || Double.isInfinite(d)) {
+            return 0.0;
+        }
+        return d;
     }
 
     public ThreeDayFoodLogAnalysis deduceThreeDayFoodLogAnalysis(String openId, String date){
