@@ -187,7 +187,7 @@ public class MealsService {
                             if (food != null) {
                                 float foodProtein = food.getProtein();
                                 int foodEdible = food.getEdible();
-                                materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein / foodProtein
+                                materialMap.put(food.getFoodAlias(), BigDecimal.valueOf(protein / foodProtein
                                         / foodEdible * 10000)
                                         .setScale(0, BigDecimal.ROUND_FLOOR)
                                         .intValue());
@@ -200,7 +200,7 @@ public class MealsService {
                         if (food != null) {
                             float foodProtein = food.getProtein();
                             int foodEdible = food.getEdible();
-                            materialMap.put(food.getFoodName(), BigDecimal.valueOf(protein / foodProtein
+                            materialMap.put(food.getFoodAlias(), BigDecimal.valueOf(protein / foodProtein
                                     / foodEdible * 10000)
                                     .setScale(0, BigDecimal.ROUND_FLOOR)
                                     .intValue());
