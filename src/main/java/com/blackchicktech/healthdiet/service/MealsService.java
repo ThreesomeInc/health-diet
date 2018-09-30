@@ -3,14 +3,8 @@ package com.blackchicktech.healthdiet.service;
 
 import com.blackchicktech.healthdiet.domain.MealsRecommendationResponse;
 import com.blackchicktech.healthdiet.domain.RecommendRecipeInfo;
-import com.blackchicktech.healthdiet.entity.FoodRecommended;
-import com.blackchicktech.healthdiet.entity.FoodUnit;
-import com.blackchicktech.healthdiet.entity.Recipe;
-import com.blackchicktech.healthdiet.entity.User;
-import com.blackchicktech.healthdiet.repository.FoodDaoImpl;
-import com.blackchicktech.healthdiet.repository.MealsDaoImpl;
-import com.blackchicktech.healthdiet.repository.RecipeDaoImpl;
-import com.blackchicktech.healthdiet.repository.UserDaoImpl;
+import com.blackchicktech.healthdiet.entity.*;
+import com.blackchicktech.healthdiet.repository.*;
 import com.blackchicktech.healthdiet.util.Constants;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -42,10 +36,16 @@ public class MealsService {
     @Autowired
     private FoodDaoImpl foodDao;
 
+    @Autowired
+    private RecipeWeightDaoImpl recipeWeightDao;
+
     public MealsRecommendationResponse getRecommendedMeals(String openId){
         User user = userDao.getUserByOpenId(openId);
         float standardWeight = calStandardWeight(user);
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
+        String[] otherDiseases = StringUtils.isEmpty(user.getOtherDiseases())?null:user.getOtherDiseases().split(",");
+
+
         MealsRecommendationResponse recommendedMeals = new MealsRecommendationResponse();
         int standardWeightRange = deduceStandardWeightRange(standardWeight);
         String ckd = nephroticPeriod == 1 || nephroticPeriod == 2? "CKD 1-2期":"CKD 3-5期";
@@ -173,6 +173,8 @@ public class MealsService {
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
+                    RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
+                    
                     RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                     recommendRecipeInfo.setRecipeName(recipeName);
                     recommendRecipeInfo.setRecipeId(recipeId);

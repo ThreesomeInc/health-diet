@@ -1,9 +1,11 @@
 package com.blackchicktech.healthdiet.util;
 
 import com.blackchicktech.healthdiet.domain.OtherDiseaseSuggestDiet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -182,6 +184,55 @@ public class Constants {
 			                                                           .put("Fruit", ImmutableSet.<String>builder().add("C2").build())
 			                                                           .build();
 
+
+	//高血压烹饪
+	public final static List<String> COOKING_FILTER_HYPERTENSION = ImmutableList.<String>builder()
+																	.add("熏")
+																	.add("卤")
+																	.add("干煸")
+																	.add("干锅")
+																	.add("炸")
+																	.add("腌")
+																	.add("腊")
+																	.build();
+	//高血脂烹饪
+	public final static List<String> COOKING_FILTER_TRIGLYCERIDE = ImmutableList.<String>builder()
+																	.add("干煸")
+																	.add("干锅")
+																	.add("炸")
+																	.add("煎")
+																	.add("熏")
+																	.add("腌")
+																	.add("腊").build();
+
+	//高胆固醇烹饪
+	public final static List<String> COOKING_FILTER_CHOLESTEROL = ImmutableList.<String>builder()
+			.add("卤")
+			.add("腌")
+			.add("酱")
+			.build();
+
+	//高血糖烹饪
+	public final static List<String> COOKING_FILTER_HYPERGLYCEMIA = ImmutableList.<String>builder()
+			.add("干煸")
+			.add("干锅")
+			.add("拔丝")
+			.add("炸")
+			.add("糖蘸")
+			.add("熏")
+			.add("腌")
+			.add("腊")
+			.build();
+
+	//高尿酸烹饪
+	public final static List<String> COOKING_FILTER_HYPERURICACIDEMIA = ImmutableList.<String>builder()
+			.add("炖")
+			.add("炸")
+			.add("煨")
+			.add("熏")
+			.add("腌")
+			.add("腊")
+			.build();
 
 
 }
