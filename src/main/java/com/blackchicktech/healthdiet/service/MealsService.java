@@ -70,10 +70,13 @@ public class MealsService {
                     String recipeName = recipe.getRecipeName();
                     String meal_time = recipe.getMealTime();
                     RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
-                    int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
-                    if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
-                        continue;
+                    if(otherDiseases != null){
+                        int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
+                        if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
+                            continue;
+                        }
                     }
+
                     if(meal_time.contains("早餐")){
                         FoodUnit food = foodDao.getFoodUnitByAlias(material);
                         if(food != null){
@@ -128,9 +131,11 @@ public class MealsService {
                         String recipeName = recipe.getRecipeName();
                         String meal_time = recipe.getMealTime();
                         RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
-                        int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
-                        if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
-                            continue;
+                        if(otherDiseases != null){
+                            int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
+                            if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
+                                continue;
+                            }
                         }
                         if (!"早餐".equals(meal_time)) {
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
@@ -183,9 +188,11 @@ public class MealsService {
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
                     RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
-                    int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
-                    if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
-                        continue;
+                    if(otherDiseases != null){
+                        int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
+                        if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
+                            continue;
+                        }
                     }
                     RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                     recommendRecipeInfo.setRecipeName(recipeName);
