@@ -234,5 +234,12 @@ public class Constants {
 			.add("腊")
 			.build();
 
+	public final static Map<String, List<String>> COOKING_FILETER = ImmutableMap.<String, List<String>>builder()
+			.put("hypertension", COOKING_FILTER_HYPERTENSION)
+			.put("triglyceride", COOKING_FILTER_TRIGLYCERIDE)
+			.put("cholesterol", COOKING_FILTER_CHOLESTEROL)
+			.put("hyperglycemia", COOKING_FILTER_HYPERGLYCEMIA)
+			.put("hyperuricacidemia", COOKING_FILTER_HYPERURICACIDEMIA).build();
+
 
 }

@@ -43,21 +43,20 @@ public class MealsService {
         User user = userDao.getUserByOpenId(openId);
         float standardWeight = calStandardWeight(user);
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());
-        String[] otherDiseases = StringUtils.isEmpty(user.getOtherDiseases())?null:user.getOtherDiseases().split(",");
-
+        List<String> otherDiseases = StringUtils.isEmpty(user.getOtherDiseases())?null:Arrays.asList(user.getOtherDiseases().split(","));
 
         MealsRecommendationResponse recommendedMeals = new MealsRecommendationResponse();
         int standardWeightRange = deduceStandardWeightRange(standardWeight);
         String ckd = nephroticPeriod == 1 || nephroticPeriod == 2? "CKD 1-2期":"CKD 3-5期";
         FoodRecommended foodRecommended = mealsDao.getFoodRecommendedByStdWgtAndCkd(standardWeightRange, ckd);
-        recommendedMeals.setBreakfast(deduceRecommendedBreakfast(foodRecommended));
-        recommendedMeals.setLunch(deduceRecommendedLunch(foodRecommended));
-        recommendedMeals.setDinner(deduceRecommendedDinner(foodRecommended));
-        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal(foodRecommended));
+        recommendedMeals.setBreakfast(deduceRecommendedBreakfast(foodRecommended, otherDiseases));
+        recommendedMeals.setLunch(deduceRecommendedLunch(foodRecommended, otherDiseases));
+        recommendedMeals.setDinner(deduceRecommendedDinner(foodRecommended, otherDiseases));
+        recommendedMeals.setAdditionMeal(deduceRecommendedAdditionalMeal(foodRecommended, otherDiseases));
         return recommendedMeals;
     }
 
-    private List<RecommendRecipeInfo> deduceRecommendedBreakfast(FoodRecommended foodRecommended){
+    private List<RecommendRecipeInfo> deduceRecommendedBreakfast(FoodRecommended foodRecommended, List<String> otherDiseases){
         List<RecommendRecipeInfo> breakfast = new ArrayList<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "BR");
         for(String element : breakfastElements){
@@ -70,6 +69,11 @@ public class MealsService {
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
                     String meal_time = recipe.getMealTime();
+                    RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
+                    int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
+                    if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
+                        continue;
+                    }
                     if(meal_time.contains("早餐")){
                         FoodUnit food = foodDao.getFoodUnitByAlias(material);
                         if(food != null){
@@ -97,19 +101,19 @@ public class MealsService {
 
     }
 
-    private List<RecommendRecipeInfo> deduceRecommendedLunch(FoodRecommended foodRecommended){
-        return deduceRecommendedMeal(foodRecommended, "LR", "LP");
+    private List<RecommendRecipeInfo> deduceRecommendedLunch(FoodRecommended foodRecommended,List<String> otherDiseases){
+        return deduceRecommendedMeal(foodRecommended, "LR", "LP", otherDiseases);
 
     }
 
-    private List<RecommendRecipeInfo> deduceRecommendedDinner(FoodRecommended foodRecommended){
-            return deduceRecommendedMeal(foodRecommended, "DR", "DP");
+    private List<RecommendRecipeInfo> deduceRecommendedDinner(FoodRecommended foodRecommended,List<String> otherDiseases){
+            return deduceRecommendedMeal(foodRecommended, "DR", "DP",otherDiseases);
 
         }
 
 
 
-    private List<RecommendRecipeInfo> deduceRecommendedAdditionalMeal(FoodRecommended foodRecommended){
+    private List<RecommendRecipeInfo> deduceRecommendedAdditionalMeal(FoodRecommended foodRecommended,List<String> otherDiseases){
         List<RecommendRecipeInfo> recommendAdditionalMeal = new ArrayList<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "AR");
         for(String element : breakfastElements) {
@@ -123,6 +127,11 @@ public class MealsService {
                         String recipeId = recipe.getRecipeId();
                         String recipeName = recipe.getRecipeName();
                         String meal_time = recipe.getMealTime();
+                        RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
+                        int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
+                        if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
+                            continue;
+                        }
                         if (!"早餐".equals(meal_time)) {
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
                             if (food != null) {
@@ -150,7 +159,7 @@ public class MealsService {
         return recommendAdditionalMeal;
     }
 
-    private List<RecommendRecipeInfo> deduceRecommendedMeal(FoodRecommended foodRecommended, String suffixR, String suffixP){
+    private List<RecommendRecipeInfo> deduceRecommendedMeal(FoodRecommended foodRecommended, String suffixR, String suffixP,List<String> otherDiseases){
         List<RecommendRecipeInfo> recommendRecipes = new ArrayList<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, suffixR);
         for(String element : breakfastElements){
@@ -161,7 +170,7 @@ public class MealsService {
                 if(hasETypeYet && (ckd.contains("E"))){
                     continue;
                 }
-                Recipe recipe = null;
+                Recipe recipe;
                 if((ckd.contains("E"))){
                     hasETypeYet = true;
                     recipe = recipeDao.getMeatRecipeByCkdCategory(ckd);
@@ -174,7 +183,10 @@ public class MealsService {
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
                     RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
-                    
+                    int maxWeight = getMaxWeight(recipeWeight, otherDiseases);
+                    if(maxWeight == 3 || filterCookMethod(recipe.getCookMethod(), otherDiseases)){
+                        continue;
+                    }
                     RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                     recommendRecipeInfo.setRecipeName(recipeName);
                     recommendRecipeInfo.setRecipeId(recipeId);
@@ -217,6 +229,15 @@ public class MealsService {
             }
         }
         return recommendRecipes;
+    }
+
+    private boolean filterCookMethod(String cookMethod, List<String> otherDiseases){
+        for(String otherDisease : otherDiseases){
+            if(Constants.COOKING_FILETER.get(otherDisease).contains(cookMethod)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public float calStandardWeight(User user) {
@@ -295,6 +316,30 @@ public class MealsService {
             }
         }
         return 0;
+    }
+
+
+    private int getMaxWeight(RecipeWeight recipeWeight, List<String> otherDiseases) {
+        List<Integer> weights = new ArrayList<>();
+        weights.add(recipeWeight.getProteinWeight());
+        if (otherDiseases.contains("hyperuricacidemia")) {
+            weights.add(recipeWeight.getPurineWeight());
+        }
+        if (otherDiseases.contains("cholesterol")) {
+            weights.add(recipeWeight.getCholesterolWeight());
+        }
+        if (otherDiseases.contains("hypertension")) {
+            weights.add(recipeWeight.getNaWeight());
+        }
+        if (otherDiseases.contains("triglyceride")) {
+            weights.add(recipeWeight.getFatWeight());
+        }
+
+        if (otherDiseases.contains("hyperglycemia")) {
+            weights.add(recipeWeight.getChoWeight());
+        }
+
+        return Collections.max(weights);
     }
 
 }
