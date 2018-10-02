@@ -3,16 +3,20 @@ package com.blackchicktech.healthdiet.domain;
 import com.blackchicktech.healthdiet.entity.Recipe;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipeListItem {
 
+    @ApiModelProperty(value = "食谱ID", notes = "全局唯一", required = true, example = "46")
     @JsonProperty("recipeId")
     private String recipeId;
 
+    @ApiModelProperty(value = "食谱名", notes = "", required = true, example = "炒四季豆")
     @JsonProperty("recipeName")
     private String recipeName;
 
+    @ApiModelProperty(value = "图片URL", notes = "", required = true, example = "46.jpg")
     @JsonProperty("recipeUrl")
     private String picUrl;
 

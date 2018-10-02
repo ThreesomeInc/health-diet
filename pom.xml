@@ -35,6 +35,7 @@
 		<poi.version>3.17</poi.version>
 		<guava.version>25.1-jre</guava.version>
 		<jasypt.version>2.1.0</jasypt.version>
+		<swagger.version>2.9.2</swagger.version>
 	</properties>
 
 	<repositories>
@@ -45,6 +46,16 @@
 	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
