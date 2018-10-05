@@ -64,8 +64,7 @@ public class FoodController {
 			notes = "UI食材库分类搜索时获取有多少个食材分类（如蛋类等）",
 			response = FoodTypeListResponse.class)
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "请求成功")})
-	@RequestMapping(value = "/type", method = RequestMethod.GET,
-			produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/type", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public FoodTypeListResponse getFoodTypeList() {
 		return new FoodTypeListResponse(foodService.listFoodType());
