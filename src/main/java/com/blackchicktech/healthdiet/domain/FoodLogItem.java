@@ -2,26 +2,35 @@ package com.blackchicktech.healthdiet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel("用餐记录")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FoodLogItem {
 
+    @ApiModelProperty(value = "食材码", example = "01-1-101")
     @JsonProperty("foodId")
     private String foodId;
 
+    @ApiModelProperty(value = "食用量", example = "100.0")
     @JsonProperty("unit")
     private double unit;
 
+    @ApiModelProperty(value = "购买渠道", example = "市场")
     @JsonProperty("channel") //市场，超市
     private String channel;
 
-    @JsonProperty("edible") //食部，入库作回显
+    @ApiModelProperty(value = "食部", notes = "入库作回显")
+    @JsonProperty("edible")
     private String edible;
 
-    @JsonProperty("foodName") //食材名，入库作回显
+    @ApiModelProperty(value = "食材名", notes = "入库作回显")
+    @JsonProperty("foodName")
     private String foodName;
 
-    @JsonProperty("foodAlias") //食材别名，入库作回显
+    @ApiModelProperty(value = "食材别名", notes = "入库作回显")
+    @JsonProperty("foodAlias") //，
     private String foodAlias;
 
     public FoodLogItem() {

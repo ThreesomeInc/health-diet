@@ -4,13 +4,16 @@ import com.blackchicktech.healthdiet.entity.FoodLogDetail;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 
-//就餐记录 log your diet
+@ApiModel("就餐记录 log your diet")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DietRecord {
 
+    @ApiModelProperty(value = "就餐时间",example = "午餐")
     @JsonProperty("mealtime")
     private String mealtime;
 
