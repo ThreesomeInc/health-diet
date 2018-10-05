@@ -13,7 +13,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class FoodDaoImpl implements FoodDao {
@@ -67,6 +69,7 @@ public class FoodDaoImpl implements FoodDao {
 	}
 
 	public List<FoodListItem> listFoodByAlias(String alias) {
+		String updateAlias = Arrays.stream(alias.split("")).collect(Collectors.joining("%"));
 		logger.info("Query food list by food alias alias={}", alias);
 		List<FoodListItem> foodListItems = jdbcTemplate.query("SELECT * FROM food_tbl WHERE food_alias LIKE  ?",
 				(resultSet, i) -> new FoodListItem(
@@ -75,7 +78,7 @@ public class FoodDaoImpl implements FoodDao {
 						"somePic.pic",
 						resultSet.getString("energy"),
 						resultSet.getString("food_alias"))
-				, "%" + alias + "%");
+				, "%" + updateAlias + "%");
 		logger.info("Finished to query food list by alias={}, totally {} counts", alias, foodListItems.size());
 		return foodListItems;
 	}
