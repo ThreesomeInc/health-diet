@@ -147,7 +147,7 @@ public class RecipeDaoImpl {
 							"recipe.recipe_name, recipe.meal_time FROM recipe_tbl recipe, " +
 							"recipe_weight_tbl recipe_weight WHERE ckd_category like ? and recipe.meal_time != '早餐'and " +
 							recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id " +
-							"and order by rand() limit 1",
+							" order by rand() limit 1",
 					domainRowMapper, "%"+ckdCategory + "%");
 			return recipes.isEmpty()?null:recipes.get(0);
 		}
