@@ -22,6 +22,8 @@ import com.blackchicktech.healthdiet.service.ReportService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.blackchicktech.healthdiet.util.FoodLogUtil;
 import com.blackchicktech.healthdiet.util.UserUtil;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,15 +68,13 @@ public class LogFoodController {
 	@Autowired
 	private ReportService reportService;
 
-	/**
-	 * logFood?openId=xxxx 获取当月食物 （not in use)
-	 *
-	 * @param openId
-	 * @return
-	 */
+	@ApiOperation(value = "Get nutro statistic for today according to the log food record",
+			notes = "获取今天记录了的饮食对应营养结构统计",
+			response = MonthFoodLogResponse.class)
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public MonthFoodLogResponse getCurrentMonthFoodLog(@RequestParam String openId) {
+	public MonthFoodLogResponse getCurrentMonthFoodLog(
+			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String openId) {
 		Date date = new Date();
 		List<MonthFoodLog> monthFoodLogList = foodLogService.getCurrentMonthFoodLog(openId, date);
 		User user = userService.getUserByOpenId(openId);
@@ -86,9 +86,10 @@ public class LogFoodController {
 		return new MonthFoodLogResponse(monthFoodLogList);
 	}
 
-	/**
-	 * 获取当月哪日有3餐报告的接口 month=yyyy-MM
-	 */
+
+	@ApiOperation(value = "Get list of date which contained valid standard-3-day diet report",
+			notes = "获取当月哪日有3餐报告的接口 month=yyyy-MM",
+			response = ThreeDayReportsResponse.class)
 	@RequestMapping(value = "/reports", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ThreeDayReportsResponse getThreeDayReports(@RequestBody ThreeDayReportsRequest reportsRequest) {
@@ -108,12 +109,9 @@ public class LogFoodController {
 		return new ThreeDayReportsResponse(dateList);
 	}
 
-	/**
-	 * 记录每日膳食
-	 *
-	 * @param request
-	 * @return
-	 */
+	@ApiOperation(value = "Add diet record",
+			notes = "记录每日膳食中添加食材记录",
+			response = DietRecordResponse.class)
 	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public DietRecordResponse addFoodLog(@RequestBody FoodLogRequest request) {
@@ -126,19 +124,16 @@ public class LogFoodController {
 		return new DietRecordResponse(energy);
 	}
 
-	/**
-	 * 获取每日膳食
-	 *
-	 * @param openId
-	 * @param mealtime （早午晚）
-	 * @param date
-	 * @return
-	 */
+
+	@ApiOperation(value = "Get diet record for specify date",
+			notes = "获取单日膳食记录",
+			response = DietHistoryResponse.class)
 	@RequestMapping(value = "/single", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public DietHistoryResponse getDietHistory(@RequestParam String openId,
-											  @RequestParam(required = false) String mealtime,
-											  @RequestParam String date) {
+	public DietHistoryResponse getDietHistory(
+			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String openId,
+			@ApiParam(example = "早餐") @RequestParam(required = false) String mealtime,
+			@ApiParam(example = "2018-09-01") @RequestParam String date) {
 		List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, parseDate(date), mealtime);
 
 		User user = userService.getUserByOpenId(openId);
@@ -158,14 +153,14 @@ public class LogFoodController {
 		return new DietHistoryResponse(foodLogDetails.stream().map(DietRecord::new).collect(Collectors.toList()), monthFoodLog);
 	}
 
-	/**
-	 * 获取食物信息（ID，名称，可食部等，用于UI选择食物进行膳食记录）
-	 * @param foodId '01-1-101'
-	 * @return
-	 */
+
+	@ApiOperation(value = "Get food simple info in log food function",
+			notes = "获取食物信息（ID，名称，可食部等，用于UI选择食物进行膳食记录）",
+			response = FoodUnitResponse.class)
 	@RequestMapping(value = "/food/{foodId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public FoodUnitResponse getFoodUnit(@PathVariable String foodId) {
+	public FoodUnitResponse getFoodUnit(
+			@ApiParam(example = "01-1-101") @PathVariable String foodId) {
 		FoodUnit foodUnit = foodService.getFoodUnit(foodId);
 		if (foodUnit == null) {
 			return new FoodUnitResponse();
@@ -183,16 +178,15 @@ public class LogFoodController {
 		}
 	}
 
-	/**
-	 * 生成三日膳食报告
-	 *
-	 * @param openId
-	 * @param date
-	 * @return
-	 */
+
+	@ApiOperation(value = "Generate standard-3-days diet report",
+			notes = "生成三日膳食报告",
+			response = ThreeDayFoodLogAnalysis.class)
 	@RequestMapping(value = "/analysis", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ThreeDayFoodLogAnalysis getFoodLogAnalysis(@RequestParam String openId, @RequestParam String date) {
+	public ThreeDayFoodLogAnalysis getFoodLogAnalysis(
+			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String openId,
+			@ApiParam(example = "2018-09-01") @RequestParam String date) {
 		logger.info("Begin to analytics three days' food log for user openId = {}, date={}", openId, date);
 		return foodLogService.deduceThreeDayFoodLogAnalysis(openId, date);
 	}
