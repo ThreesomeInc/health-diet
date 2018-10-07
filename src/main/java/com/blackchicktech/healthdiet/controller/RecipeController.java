@@ -13,6 +13,8 @@ import com.blackchicktech.healthdiet.service.RecipeService;
 import com.blackchicktech.healthdiet.service.UserService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,9 @@ public class RecipeController {
 	 *
 	 * @return
 	 */
+	@ApiOperation(value = "Get type of recipe",
+			notes = "获取菜谱类别",
+			response = RecipeTypeResponse.class)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public RecipeTypeResponse getAllRecipeTypes() {
@@ -64,25 +69,24 @@ public class RecipeController {
 		return new RecipeTypeResponse(recipeTypes);
 	}
 
-	/**
-	 * 根据关键字获取菜谱
-	 * @param key
-	 * @return
-	 */
+
+	@ApiOperation(value = "Get recipe by keyword",
+			notes = "根据关键字获取菜谱",
+			response = RecipeListResponse.class)
 	@GetMapping(value = "/search/{key}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeListResponse search(@PathVariable("key") String key) {
+	public RecipeListResponse search(
+			@ApiParam(example = "牛肉") @PathVariable("key") String key) {
 		return new RecipeListResponse(recipeService.getByName(key).stream().map(RecipeListItem::new).collect(Collectors.toList()));
 	}
 
-	/**
-	 * 根据分类获取菜谱list
-	 * @param type
-	 * @return
-	 */
+	@ApiOperation(value = "Get recipe list by type",
+			notes = "根据分类获取菜谱list",
+			response = RecipeTypeListResponse.class)
 	@RequestMapping(value = "/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeTypeListResponse getAllByType(@PathVariable("type") String type) {
+	public RecipeTypeListResponse getAllByType(
+			@ApiParam(example = "category") @PathVariable("type") String type) {
 		switch (type) {
 			case "mealtime": {
 				return new RecipeTypeListResponse(recipeService.getMealTimeList());
@@ -95,14 +99,13 @@ public class RecipeController {
 		}
 	}
 
-	/**
-	 * 根据早午晚餐时段获取食谱list
-	 * @param mealtimeName
-	 * @return
-	 */
+	@ApiOperation(value = "Get recipe list according to mealtime",
+			notes = "根据早午晚餐时段获取食谱list",
+			response = RecipeListResponse.class)
 	@RequestMapping(value = "/mealtime/{mealtimeName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeListResponse getRecipeListByMealTime(@PathVariable String mealtimeName) {
+	public RecipeListResponse getRecipeListByMealTime(
+			@ApiParam(example = "早餐") @PathVariable String mealtimeName) {
 		List<Recipe> recipeList = recipeService.getRecipeListByMealTime(mealtimeName);
 		if (recipeList.isEmpty()) {
 			LOGGER.info("Can not find recipe by mealtime={0}", mealtimeName);
@@ -111,14 +114,13 @@ public class RecipeController {
 		return new RecipeListResponse(recipeList.stream().map(RecipeListItem::new).collect(Collectors.toList()));
 	}
 
-	/**
-	 * 根据荤素分类获取食谱list
-	 * @param categoryName
-	 * @return
-	 */
+	@ApiOperation(value = "Get recipe list according to category",
+			notes = "根据荤素分类获取食谱list",
+			response = RecipeListResponse.class)
 	@RequestMapping(value = "/category/{categoryName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeListResponse getRecipeListByCategory(@PathVariable String categoryName) {
+	public RecipeListResponse getRecipeListByCategory(
+			@ApiParam(example = "素食") @PathVariable String categoryName) {
 		List<Recipe> recipeList = recipeService.getRecipeListByCategroy(categoryName);
 		if (recipeList.isEmpty()) {
 			LOGGER.info("Can not find recipe by categoryName={0}", categoryName);
@@ -127,15 +129,14 @@ public class RecipeController {
 		return new RecipeListResponse(recipeList.stream().map(RecipeListItem::new).collect(Collectors.toList()));
 	}
 
-	/**
-	 * 根据菜谱ID（eg.1)获取食谱具体内容
-	 * @param recipeId
-	 * @param openId
-	 * @return
-	 */
+	@ApiOperation(value = "Get recipe detail by ID",
+			notes = "根据菜谱ID（eg.1)获取食谱具体内容",
+			response = RecipeDetailResponse.class)
 	@RequestMapping(value = "/detail/{recipeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public RecipeDetailResponse getRecipeDetailById(@PathVariable String recipeId, @RequestParam String openId) {
+	public RecipeDetailResponse getRecipeDetailById(
+			@ApiParam(example = "1") @PathVariable String recipeId,
+			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String openId) {
 		Recipe recipe = recipeService.getRecipeById(recipeId);
 		String dieticianAdvice = recipeService.deduceDieticianAdvice(recipe, openId);
 		if (recipe == null) {
@@ -147,31 +148,27 @@ public class RecipeController {
 				recipeService.getMappedMainIngredients(recipe.getMainIngredients()), preference);
 	}
 
-	/**
-	 * 更新菜谱偏好 (1-不喜欢吃/2-马马虎虎/3-超爱吃的)
-	 * @param recipeId
-	 * @param userId
-	 * @param preference
-	 * @return
-	 */
+	@ApiOperation(value = "Update receipe preference",
+			notes = "更新菜谱偏好 (1-不喜欢吃/2-马马虎虎/3-超爱吃的)",
+			response = PreferenceResponse.class)
 	@PostMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public PreferenceResponse pushPreference(@RequestParam String recipeId,
-											 @RequestParam String userId,
-											 @RequestParam int preference) {
+	public PreferenceResponse pushPreference(
+			@ApiParam(example = "1") @RequestParam String recipeId,
+			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String userId,
+			@ApiParam(example = "1") @RequestParam int preference) {
 		return preferenceService.save(new Preference(userId, recipeId, preference, "recipe"));
 	}
 
-	/**
-	 * 获取菜谱偏好 (1-不喜欢吃/2-马马虎虎/3-超爱吃的)
-	 * @param recipeId
-	 * @param userId
-	 * @return
-	 */
+
+	@ApiOperation(value = "Get receipe preference",
+			notes = "获取菜谱偏好 (1-不喜欢吃/2-马马虎虎/3-超爱吃的)",
+			response = PreferenceResponse.class)
 	@GetMapping(value = "/preference", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public PreferenceResponse getPreference(@RequestParam String recipeId,
-											@RequestParam String userId) {
+	public PreferenceResponse getPreference(
+			@ApiParam(example = "1") @RequestParam String recipeId,
+			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String userId) {
 		return preferenceService.listPreference(userId, recipeId, "recipe");
 	}
 }
