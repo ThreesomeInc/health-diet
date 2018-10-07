@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,11 +17,13 @@ public class RecipeDaoImpl {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private RowMapper<Recipe> rowMapper = new BeanPropertyRowMapper<>(Recipe.class);
+	private RowMapper<Recipe> entityRowMapper = new BeanPropertyRowMapper<>(Recipe.class);
+
+	private RowMapper<com.blackchicktech.healthdiet.domain.Recipe> domainRowMapper = new BeanPropertyRowMapper<>(com.blackchicktech.healthdiet.domain.Recipe.class);
 
 	public Recipe getRecipeById(String recipeId) {
 		List<Recipe> foodList = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE recipe_id = ?",
-				rowMapper, recipeId);
+				entityRowMapper, recipeId);
 		return foodList.stream().findFirst().orElse(null);
 	}
 
@@ -34,40 +37,96 @@ public class RecipeDaoImpl {
 
 	public List<Recipe> getRecipeByName(String recipeName) {
 		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE recipe_name LIKE ?",
-				rowMapper, "%" + recipeName + "%");
+				entityRowMapper, "%" + recipeName + "%");
 	}
 
 	public List<Recipe> getRecipeByMealTime(String mealTime) {
 		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE meal_time LIKE ?",
-				rowMapper, "%" + mealTime + "%");
+				entityRowMapper, "%" + mealTime + "%");
 	}
 
 	public List<Recipe> getRecipeByCategory(String category) {
 		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE category = ?",
-				rowMapper, category);
+				entityRowMapper, category);
 	}
 
 	public List<Recipe> getRecommendRecipe(String foodName) {
 		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE material LIKE ? ORDER BY RAND() LIMIT 3;",
-				rowMapper, "%" + foodName + "%");
+				entityRowMapper, "%" + foodName + "%");
 	}
 
 	public List<Recipe> getRecipeByCookMethod(String cookMethod) {
 		return jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE cook_method = ?",
-				rowMapper, cookMethod);
+				entityRowMapper, cookMethod);
 	}
 
-	public Recipe getRecipeByCkdCategory(String ckdCategory) {
-		List<Recipe> recipes = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE ckd_category = ? order by rand() limit 1",
-				rowMapper, ckdCategory);
-		return recipes.isEmpty()?null:recipes.get(0);
+	public com.blackchicktech.healthdiet.domain.Recipe getRecipeByCkdCategory(String ckdCategory, List<String> recipeWeights, List<String> recipeCookingMethods) {
+		StringBuffer recipeWeightSqlSegment = new StringBuffer();
+		for(String recipeWeight : recipeWeights){
+			recipeWeightSqlSegment.append("recipe_weight.").append(recipeWeight).append(" < 3 and ");
+		}
+		StringBuffer filteredCookingMethod = new StringBuffer();
+		if(recipeCookingMethods != null){
+			for(int i = 0 ; i < recipeCookingMethods.size(); i++){
+				if(i == recipeCookingMethods.size() - 1){
+					filteredCookingMethod.append("'").append(recipeCookingMethods.get(i)).append("'");
+				} else {
+					filteredCookingMethod.append("'").append(recipeCookingMethods.get(i)).append("'").append(",");
+				}
+
+			}
+
+			String querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time from recipe_tbl recipe," +
+					" recipe_weight_tbl recipe_weight where recipe.ckd_category = ? and recipe.recipe_id = recipe_weight.recipe_id and " + recipeWeightSqlSegment +
+					" recipe.cook_method not in (" + filteredCookingMethod + ") order by rand() limit 1";
+			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query(querySql,
+					domainRowMapper, ckdCategory);
+			return recipes.isEmpty()?null:recipes.get(0);
+
+		} else {
+			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query("SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time FROM recipe_tbl recipe, recipe_weight_tbl recipe_weight WHERE ckd_category = ? and " +
+							recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id and order by rand() limit 1",
+					domainRowMapper, ckdCategory);
+			return recipes.isEmpty()?null:recipes.get(0);
+		}
+
 	}
 
-	public Recipe getMeatRecipeByCkdCategory(String ckdCategory){
-		List<Recipe> recipes = jdbcTemplate.query("SELECT * FROM recipe_tbl WHERE ckd_category like ? order by rand() limit 1",
-				rowMapper, "%"+ckdCategory + "%");
-		return recipes.isEmpty()?null:recipes.get(0);
+	public com.blackchicktech.healthdiet.domain.Recipe getMeatRecipeByCkdCategory(String ckdCategory,List<String> recipeWeights, List<String> recipeCookingMethods){
+		StringBuffer recipeWeightSqlSegment = new StringBuffer();
+		for(String recipeWeight : recipeWeights){
+			recipeWeightSqlSegment.append("recipe_weight.").append(recipeWeight).append(" < 3 and ");
+		}
+		if(recipeCookingMethods != null){
+			String filteredCookingMethods = String.join(",", recipeCookingMethods);
+			String querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time from recipe_tbl recipe," +
+					" recipe_weight_tbl recipe_weight where recipe.ckd_category like ? " +
+					"and recipe.recipe_id = recipe_weight.recipe_id and " + recipeWeightSqlSegment +
+					" recipe.cook_method not in (" + filteredCookingMethods + ") order by rand() limit 1";
+			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query(querySql,
+					domainRowMapper, "%"+ckdCategory + "%");
+			return recipes.isEmpty()?null:recipes.get(0);
 
+		} else {
+			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query("SELECT recipe.material, recipe.recipe_id, " +
+							"recipe.recipe_name, recipe.meal_time FROM recipe_tbl recipe, " +
+							"recipe_weight_tbl recipe_weight WHERE ckd_category like ? and " +
+							recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id and order by rand() limit 1",
+					domainRowMapper, "%"+ckdCategory + "%");
+			return recipes.isEmpty()?null:recipes.get(0);
+		}
+
+	}
+
+	public static void main(String... args){
+		List<String> recipeWeight = new ArrayList<>();
+		recipeWeight.add("na_weight");
+		recipeWeight.add("cholesterol_weight");
+		/*List<String> cookingMethod = new ArrayList<>();
+		cookingMethod.add("炸");
+		cookingMethod.add("泡");*/
+		RecipeDaoImpl dao = new RecipeDaoImpl();
+		dao.getRecipeByCkdCategory("E", recipeWeight, null);
 	}
 
 }
