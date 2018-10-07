@@ -59,7 +59,7 @@ public class RecipeDaoImpl {
 				entityRowMapper, cookMethod);
 	}
 
-	public com.blackchicktech.healthdiet.domain.Recipe getRecipeByCkdCategory(String ckdCategory, List<String> recipeWeights, List<String> recipeCookingMethods) {
+	public com.blackchicktech.healthdiet.domain.Recipe getRecipeByCkdCategory(String ckdCategory, List<String> recipeWeights, List<String> recipeCookingMethods, boolean isBreakfast) {
 		StringBuffer recipeWeightSqlSegment = new StringBuffer();
 		for(String recipeWeight : recipeWeights){
 			recipeWeightSqlSegment.append("recipe_weight.").append(recipeWeight).append(" < 3 and ");
@@ -75,16 +75,42 @@ public class RecipeDaoImpl {
 
 			}
 
-			String querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time from recipe_tbl recipe," +
-					" recipe_weight_tbl recipe_weight where recipe.ckd_category = ? and recipe.recipe_id = recipe_weight.recipe_id and " + recipeWeightSqlSegment +
-					" recipe.cook_method not in (" + filteredCookingMethod + ") order by rand() limit 1";
+			String querySql;
+			if(isBreakfast){
+				 querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time " +
+						 "from recipe_tbl recipe," +
+						" recipe_weight_tbl recipe_weight where recipe.ckd_category = ? " +
+						 "and recipe.meal_time like '%早餐%' and recipe.recipe_id = recipe_weight.recipe_id " +
+						 "and " + recipeWeightSqlSegment +
+						" recipe.cook_method not in (" + filteredCookingMethod + ") order by rand() limit 1";
+			} else {
+				 querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time" +
+						 " from recipe_tbl recipe," +
+						" recipe_weight_tbl recipe_weight where recipe.ckd_category = ? and recipe.meal_time != '早餐'" +
+						 "and recipe.recipe_id = recipe_weight.recipe_id and "
+						 + recipeWeightSqlSegment +
+						" recipe.cook_method not in (" + filteredCookingMethod + ") order by rand() limit 1";
+			}
+
 			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query(querySql,
 					domainRowMapper, ckdCategory);
 			return recipes.isEmpty()?null:recipes.get(0);
 
 		} else {
-			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query("SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time FROM recipe_tbl recipe, recipe_weight_tbl recipe_weight WHERE ckd_category = ? and " +
-							recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id and order by rand() limit 1",
+			String querySql;
+			if(isBreakfast){
+				querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time FROM " +
+						"recipe_tbl recipe, recipe_weight_tbl recipe_weight WHERE recipe.ckd_category = ? and " +
+						"recipe.meal_time like '%早餐%' and " +
+						recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id " +
+						" order by rand() limit 1";
+			} else {
+				querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time FROM " +
+						"recipe_tbl recipe, recipe_weight_tbl recipe_weight WHERE recipe.ckd_category = ? and recipe.meal_time != '早餐'and " +
+						recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id " +
+						" order by rand() limit 1";
+			}
+			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query(querySql,
 					domainRowMapper, ckdCategory);
 			return recipes.isEmpty()?null:recipes.get(0);
 		}
@@ -106,8 +132,9 @@ public class RecipeDaoImpl {
 				}
 
 			}
-			String querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time from recipe_tbl recipe," +
-					" recipe_weight_tbl recipe_weight where recipe.ckd_category like ? " +
+			String querySql = "SELECT recipe.material, recipe.recipe_id, recipe.recipe_name, recipe.meal_time " +
+					"from recipe_tbl recipe," +
+					" recipe_weight_tbl recipe_weight where recipe.ckd_category like ? and recipe.meal_time != '早餐' " +
 					"and recipe.recipe_id = recipe_weight.recipe_id and " + recipeWeightSqlSegment +
 					" recipe.cook_method not in (" + filteredCookingMethod + ") order by rand() limit 1";
 			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query(querySql,
@@ -115,10 +142,12 @@ public class RecipeDaoImpl {
 			return recipes.isEmpty()?null:recipes.get(0);
 
 		} else {
-			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query("SELECT recipe.material, recipe.recipe_id, " +
+			List<com.blackchicktech.healthdiet.domain.Recipe> recipes = jdbcTemplate.query("SELECT recipe.material," +
+							" recipe.recipe_id, " +
 							"recipe.recipe_name, recipe.meal_time FROM recipe_tbl recipe, " +
-							"recipe_weight_tbl recipe_weight WHERE ckd_category like ? and " +
-							recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id and order by rand() limit 1",
+							"recipe_weight_tbl recipe_weight WHERE ckd_category like ? and recipe.meal_time != '早餐'and " +
+							recipeWeightSqlSegment +"recipe.recipe_id = recipe_weight.recipe_id " +
+							"and order by rand() limit 1",
 					domainRowMapper, "%"+ckdCategory + "%");
 			return recipes.isEmpty()?null:recipes.get(0);
 		}

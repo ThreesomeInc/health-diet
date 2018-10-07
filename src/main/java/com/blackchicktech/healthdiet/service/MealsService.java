@@ -61,34 +61,32 @@ public class MealsService {
     private List<RecommendRecipeInfo> deduceRecommendedBreakfast(FoodRecommended foodRecommended, List<String> recipeWeights, List<String> recipeCookingMethod){
         List<RecommendRecipeInfo> breakfast = new ArrayList<>();
         List<String> breakfastElements = candidateFoodElements(foodRecommended, "BR");
-        for(String element : breakfastElements){
+        for(String element : breakfastElements) {
             LOGGER.info("Trying to get breakfast food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
-            for(String ckd : ckds){
-                com.blackchicktech.healthdiet.domain.Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod);
-                if(recipe != null){
+            for (String ckd : ckds) {
+                com.blackchicktech.healthdiet.domain.Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod, true);
+                if (recipe != null) {
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
-                    String meal_time = recipe.getMealTime();
 
-                    if(meal_time.contains("早餐")){
-                        FoodUnit food = foodDao.getFoodUnitByAlias(material);
-                        if(food != null){
-                            float foodProtein = food.getProtein();
-                            int foodEdible = food.getEdible();
-                            double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
-                            RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
-                            recommendRecipeInfo.setRecipeName(recipeName);
-                            recommendRecipeInfo.setRecipeId(recipeId);
-                            Map<String, Integer> materialMap = new HashMap<>();
-                            materialMap.put(material, BigDecimal.valueOf(protein/foodProtein/foodEdible*10000)
-                                    .setScale(0, BigDecimal.ROUND_FLOOR)
-                                    .intValue());
-                            recommendRecipeInfo.setMaterials(materialMap);
-                            recommendRecipeInfo.setProtein(protein);
-                            breakfast.add(recommendRecipeInfo);
-                        }
+
+                    FoodUnit food = foodDao.getFoodUnitByAlias(material);
+                    if (food != null) {
+                        float foodProtein = food.getProtein();
+                        int foodEdible = food.getEdible();
+                        double protein = deduceCandidateFoodFieldValue(foodRecommended, element, "BP");
+                        RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
+                        recommendRecipeInfo.setRecipeName(recipeName);
+                        recommendRecipeInfo.setRecipeId(recipeId);
+                        Map<String, Integer> materialMap = new HashMap<>();
+                        materialMap.put(material, BigDecimal.valueOf(protein / foodProtein / foodEdible * 10000)
+                                .setScale(0, BigDecimal.ROUND_FLOOR)
+                                .intValue());
+                        recommendRecipeInfo.setMaterials(materialMap);
+                        recommendRecipeInfo.setProtein(protein);
+                        breakfast.add(recommendRecipeInfo);
                     }
 
                 }
@@ -140,15 +138,13 @@ public class MealsService {
             LOGGER.info("Trying to get additional meal food for element: {}", element);
             Set<String> ckds = Constants.CKD_FOOD_CATAGARIES.get(element);
             for (String ckd : ckds) {
-                com.blackchicktech.healthdiet.domain.Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod);
+                com.blackchicktech.healthdiet.domain.Recipe recipe = recipeDao.getRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod, false);
                 if (recipe != null) {
                     if (recipe != null) {
                         String material = recipe.getMaterial();
                         String recipeId = recipe.getRecipeId();
                         String recipeName = recipe.getRecipeName();
-                        String meal_time = recipe.getMealTime();
 
-                        if (!"早餐".equals(meal_time)) {
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
                             if (food != null) {
                                 float foodProtein = food.getProtein();
@@ -165,7 +161,6 @@ public class MealsService {
                                 recommendRecipeInfo.setProtein(protein);
                                 recommendAdditionalMeal.add(recommendRecipeInfo);
                             }
-                        }
                     }
 
                 }
@@ -191,10 +186,10 @@ public class MealsService {
                     hasETypeYet = true;
                     recipe = recipeDao.getMeatRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod);
                 } else {
-                    recipe = recipeDao.getRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod);
+                    recipe = recipeDao.getRecipeByCkdCategory(ckd, recipeWeights, recipeCookingMethod, false);
                 }
 
-                if(recipe != null && !"早餐".equals(recipe.getMealTime())){
+                if(recipe != null){
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
