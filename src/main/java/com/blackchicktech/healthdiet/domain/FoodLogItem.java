@@ -21,15 +21,15 @@ public class FoodLogItem {
     @JsonProperty("channel") //市场，超市
     private String channel;
 
-    @ApiModelProperty(value = "食部", notes = "入库作回显")
+    @ApiModelProperty(value = "可食部", notes = "入库作回显",example="100")
     @JsonProperty("edible")
     private String edible;
 
-    @ApiModelProperty(value = "食材名", notes = "入库作回显")
+    @ApiModelProperty(value = "食材名", notes = "入库作回显", example="小麦粒")
     @JsonProperty("foodName")
     private String foodName;
 
-    @ApiModelProperty(value = "食材别名", notes = "入库作回显")
+    @ApiModelProperty(value = "食材别名", notes = "入库作回显", example="小麦粒")
     @JsonProperty("foodAlias") //，
     private String foodAlias;
 

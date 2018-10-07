@@ -2,16 +2,19 @@ package com.blackchicktech.healthdiet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MainIngredient {
 
+    @ApiModelProperty(value = "食材名", example = "小麦粒")
     @JsonProperty("foodName")
     private String foodName;
 
     @JsonProperty("weight")
     private String weight;
 
+    @ApiModelProperty(value = "食材ID", example = "01-1-101")
     @JsonProperty("foodId")
     private String foodId;
 

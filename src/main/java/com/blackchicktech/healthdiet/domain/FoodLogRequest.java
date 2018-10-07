@@ -4,6 +4,7 @@ import com.blackchicktech.healthdiet.util.json.CustomDateDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FoodLogRequest {
 
+	@ApiModelProperty(value = "用户码", example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8")
 	@JsonProperty("openId")
 	private String openId;
 
@@ -18,6 +20,7 @@ public class FoodLogRequest {
 	@JsonDeserialize(using = CustomDateDeserializer.class)
 	private Date date;
 
+	@ApiModelProperty(value = "用餐时间", example = "早餐")
 	@JsonProperty("mealTime")
 	private String mealTime;
 

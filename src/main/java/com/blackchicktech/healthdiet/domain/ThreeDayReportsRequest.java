@@ -2,12 +2,12 @@ package com.blackchicktech.healthdiet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
+import io.swagger.annotations.ApiModelProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ThreeDayReportsRequest {
 
+    @ApiModelProperty(value = "用户码", example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8")
     @JsonProperty("openId")
     private String openId;
 
