@@ -2,6 +2,7 @@ package com.blackchicktech.healthdiet.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ThreeDayFoodLogAnalysis {
 
+    @ApiModelProperty(value = "标准三日膳食标注", example = "true")
     @JsonProperty
     private Boolean standardLog;
 
