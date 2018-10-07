@@ -71,8 +71,6 @@ public class MealsService {
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
                     String meal_time = recipe.getMealTime();
-                    RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
-
 
                     if(meal_time.contains("早餐")){
                         FoodUnit food = foodDao.getFoodUnitByAlias(material);
@@ -149,7 +147,6 @@ public class MealsService {
                         String recipeId = recipe.getRecipeId();
                         String recipeName = recipe.getRecipeName();
                         String meal_time = recipe.getMealTime();
-                        RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
 
                         if (!"早餐".equals(meal_time)) {
                             FoodUnit food = foodDao.getFoodUnitByAlias(material);
@@ -201,7 +198,6 @@ public class MealsService {
                     String material = recipe.getMaterial();
                     String recipeId = recipe.getRecipeId();
                     String recipeName = recipe.getRecipeName();
-                    RecipeWeight recipeWeight = recipeWeightDao.getRecipeWeightByRecipeId(recipeId);
 
                     RecommendRecipeInfo recommendRecipeInfo = new RecommendRecipeInfo();
                     recommendRecipeInfo.setRecipeName(recipeName);
@@ -247,14 +243,6 @@ public class MealsService {
         return recommendRecipes;
     }
 
-    private boolean filterCookMethod(String cookMethod, List<String> otherDiseases){
-        for(String otherDisease : otherDiseases){
-            if(Constants.COOKING_FILETER.get(otherDisease).contains(cookMethod)){
-                return true;
-            }
-        }
-        return false;
-    }
 
     public float calStandardWeight(User user) {
         String gender = user.getGender();
@@ -332,30 +320,6 @@ public class MealsService {
             }
         }
         return 0;
-    }
-
-
-    private int getMaxWeight(RecipeWeight recipeWeight, List<String> otherDiseases) {
-        List<Integer> weights = new ArrayList<>();
-        weights.add(recipeWeight.getProteinWeight());
-        if (otherDiseases.contains("hyperuricacidemia")) {
-            weights.add(recipeWeight.getPurineWeight());
-        }
-        if (otherDiseases.contains("cholesterol")) {
-            weights.add(recipeWeight.getCholesterolWeight());
-        }
-        if (otherDiseases.contains("hypertension")) {
-            weights.add(recipeWeight.getNaWeight());
-        }
-        if (otherDiseases.contains("triglyceride")) {
-            weights.add(recipeWeight.getFatWeight());
-        }
-
-        if (otherDiseases.contains("hyperglycemia")) {
-            weights.add(recipeWeight.getChoWeight());
-        }
-
-        return Collections.max(weights);
     }
 
 }
