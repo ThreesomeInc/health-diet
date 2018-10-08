@@ -50,7 +50,7 @@ public class MealsService {
         String ckd = nephroticPeriod == 1 || nephroticPeriod == 2? "CKD 1-2期":"CKD 3-5期";
         FoodRecommended foodRecommended = mealsDao.getFoodRecommendedByStdWgtAndCkd(standardWeightRange, ckd);
         List<String> recipeWeights = deduceRecipeWeight(otherDiseases);
-        List<String> recipeCookingMethod = duduceRecipeCookingMethod(otherDiseases);
+        List<String> recipeCookingMethod = deduceRecipeCookingMethod(otherDiseases);
         recommendedMeals.setBreakfast(deduceRecommendedBreakfast(foodRecommended, recipeWeights, recipeCookingMethod));
         recommendedMeals.setLunch(deduceRecommendedLunch(foodRecommended, recipeWeights, recipeCookingMethod));
         recommendedMeals.setDinner(deduceRecommendedDinner(foodRecommended, recipeWeights, recipeCookingMethod));
@@ -108,12 +108,13 @@ public class MealsService {
         return recipeWeight;
     }
 
-    private List<String> duduceRecipeCookingMethod(List<String> otherDiseases){
+    private List<String> deduceRecipeCookingMethod(List<String> otherDiseases){
         if(otherDiseases != null){
             List<String> cookingMethod = new ArrayList<>();
             for(String otherDisease : otherDiseases){
                 cookingMethod.addAll(Constants.COOKING_FILETER.get(otherDisease));
             }
+            return cookingMethod;
         }
         return null;
 
