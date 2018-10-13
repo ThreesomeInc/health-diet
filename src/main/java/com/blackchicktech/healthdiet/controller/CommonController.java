@@ -2,6 +2,8 @@ package com.blackchicktech.healthdiet.controller;
 
 import com.blackchicktech.healthdiet.util.HttpClientUtil;
 import com.blackchicktech.healthdiet.util.WXBizDataCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/common")
 public class CommonController {
 
+	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 	@Value("${app.appId}")
 	private String appId;
 
@@ -28,11 +31,14 @@ public class CommonController {
 	@ResponseBody
 	public String login(HttpServletRequest request) {
 		String code = request.getHeader("X-WX-Code");
-		return HttpClientUtil.instance().getData(
+		String loginResult =  HttpClientUtil.instance().getData(
 				"https://api.weixin.qq.com/sns/jscode2session?appid=" + appId +
 						"&secret=" + appSecret +
 						"&grant_type=authorization_code" +
 						"&js_code=" + code);
+		logger.info("LoginResult: {}", loginResult);
+		return loginResult;
+
 	}
 
 	@GetMapping(value = "/decrypt", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
