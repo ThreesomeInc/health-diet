@@ -1,6 +1,5 @@
 package com.blackchicktech.healthdiet.advice;
 
-import com.blackchicktech.healthdiet.util.rest.JsonResult;
 import com.blackchicktech.healthdiet.util.rest.ResultHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +17,14 @@ public class RestExceptionHandlerAdvice {
 	private static Logger logger = LoggerFactory.getLogger(RestExceptionHandlerAdvice.class);
 
 	@ExceptionHandler(value = Exception.class)
-	public JsonResult handleException(Exception exception, WebRequest request) {
+	public ModelAndView handleException(Exception exception, WebRequest request) {
 		logger.error("error occurs：{}，details：{}", ((ServletWebRequest) request).getRequest().getRequestURI(), exception.getMessage(), exception);
-		return ResultHelper.error();
+		return new ModelAndView("500",ResultHelper.error());
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ModelAndView handleError404(HttpServletRequest request, Exception e) {
 		logger.info("Request: " + request.getRequestURL() + " raised " + e);
-		return new ModelAndView("404");
+		return new ModelAndView("404", ResultHelper.resourceNotFound());
 	}
 }

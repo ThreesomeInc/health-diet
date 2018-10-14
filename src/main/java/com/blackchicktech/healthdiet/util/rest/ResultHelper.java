@@ -44,6 +44,10 @@ public class ResultHelper {
         return build(ApiCode.ERROR);
     }
 
+    public static JsonResult resourceNotFound() {
+        return build(ApiCode.REQUEST_NOT_FOUND_ERROR);
+    }
+
     public static JsonResult forbidden(){
         return build(ApiCode.UNAUTHORIZED_ERROR);
     }
