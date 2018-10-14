@@ -40,6 +40,8 @@ import java.util.stream.Stream;
 @Service
 public class FoodService {
 
+    private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
+
     @Autowired
     private FoodDaoImpl foodDao;
 
@@ -121,6 +123,15 @@ public class FoodService {
     }
 
     public FoodDetailResponse getFoodById(String foodId, String openId) {
+        if (StringUtils.isEmpty(foodId)) {
+            logger.warn("Food id is null, return empty food detail response");
+            return new FoodDetailResponse();
+        }
+
+        if (StringUtils.isEmpty(openId)) {
+            logger.error("OpenId is null, failed to create food detail response");
+            return new FoodDetailResponse();
+        }
         User user = userService.getUserByOpenId(openId);
         FoodTbl food = foodDao.getFoodById(foodId);
         FoodWeight foodWeight = foodWeightDao.getFoodWeightByFoodId(foodId);
