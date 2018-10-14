@@ -19,14 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -48,16 +44,28 @@ public class FoodLogService {
     private UserDaoImpl userDao;
 
     public List<MonthFoodLog> getCurrentMonthFoodLog(String openId, Date currentDate) {
+        if (StringUtils.isEmpty(openId)) {
+            logger.error("Open id is null, return empty food log for current month food log");
+            return Collections.emptyList();
+        }
         return foodLogDao.getCurrentMonthFoodLog(openId, currentDate).stream()
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
     public List<MonthFoodLog> getThreeDaysMonthFoodLog(String openId, Date currentDate) {
+        if (StringUtils.isEmpty(openId)) {
+            logger.error("Open id is null, return empty food log for three days month food log");
+            return Collections.emptyList();
+        }
         return foodLogDao.getThreeDaysFoodLogForMonth(openId, currentDate).stream()
                 .map(MonthFoodLog::new).collect(Collectors.toList());
     }
 
     public List<FoodLogDetail> getFoodLogDetail(String openId, Date date, String mealtime) {
+        if (StringUtils.isEmpty(openId)) {
+            logger.error("Open id is null, return empty food log detail");
+            return Collections.emptyList();
+        }
         return foodLogDao.getFoodLogDetailByDate(openId, date, mealtime);
     }
 

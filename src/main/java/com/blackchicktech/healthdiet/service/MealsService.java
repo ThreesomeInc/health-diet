@@ -40,6 +40,10 @@ public class MealsService {
     private RecipeWeightDaoImpl recipeWeightDao;
 
     public MealsRecommendationResponse getRecommendedMeals(String openId){
+        if (StringUtils.isEmpty(openId)) {
+            LOGGER.error("Open id is null, failed to create meals recommendation response");
+            return new MealsRecommendationResponse();
+        }
         User user = userDao.getUserByOpenId(openId);
         float standardWeight = calStandardWeight(user);
         int nephroticPeriod = Integer.valueOf(user.getNephroticPeriod());

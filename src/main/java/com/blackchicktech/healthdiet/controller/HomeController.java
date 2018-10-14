@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,10 @@ public class HomeController {
                 reportRequest.getUserInfo().getOpenId(),
                 reportRequest.getUserInfo().getUnionId(),
                 reportRequest.getUserInfo().getInfo());
+        if (StringUtils.isEmpty(reportRequest.getUserInfo().getOpenId())) {
+            logger.error("Open id is null, failed to generate report");
+            return new ReportResponse();
+        }
         userService.createUser(reportRequest.getUserInfo(), reportRequest.getUserDataInfo());
         return reportService.report(reportRequest);
     }

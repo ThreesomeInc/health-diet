@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,10 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -93,6 +91,15 @@ public class LogFoodController {
 	@RequestMapping(value = "/reports", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ThreeDayReportsResponse getThreeDayReports(@RequestBody ThreeDayReportsRequest reportsRequest) {
+		if (StringUtils.isEmpty(reportsRequest.getOpenId())) {
+			logger.error("Open id is null, failed to generate three days report");
+			return new ThreeDayReportsResponse(Collections.emptyList());
+		}
+
+		if (StringUtils.isEmpty(reportsRequest.getMonth())) {
+			logger.error("Month is null, failed to generate three days report");
+			return new ThreeDayReportsResponse(Collections.emptyList());
+		}
 		List<MonthFoodLog> monthFoodLogList = foodLogService.getThreeDaysMonthFoodLog(reportsRequest.getOpenId(),
 				parseDate(reportsRequest.getMonth() + "-01"));
 		List<Date> dateList = new ArrayList<>();
@@ -120,6 +127,25 @@ public class LogFoodController {
 				request.getDate(),
 				request.getMealTime(),
 				FoodLogUtil.toJsonStr(request.getFoodLogItemList()));
+		if (StringUtils.isEmpty(request.getOpenId())) {
+			logger.error("Open id is null, failed to add diet record");
+			return new DietRecordResponse(new AccumulativeEnergy());
+		}
+
+		if (Objects.isNull(request.getDate())) {
+			logger.error("Date is null, failed to add diet record");
+			return new DietRecordResponse(new AccumulativeEnergy());
+		}
+
+		if (StringUtils.isEmpty(request.getMealTime())) {
+			logger.error("Mealtime is null, failed to add diet record");
+			return new DietRecordResponse(new AccumulativeEnergy());
+		}
+
+		if (Objects.isNull(request.getFoodLogItemList()) || request.getFoodLogItemList().isEmpty()) {
+			logger.error("Food log item is empty, failed to add diet record");
+			return new DietRecordResponse(new AccumulativeEnergy());
+		}
 		AccumulativeEnergy energy = foodLogService.updateFoodLog(request);
 		return new DietRecordResponse(energy);
 	}
