@@ -80,6 +80,15 @@ public class RecipeController {
 		return new RecipeListResponse(recipeService.getByName(key).stream().map(RecipeListItem::new).collect(Collectors.toList()));
 	}
 
+	@ApiOperation(value = "Get recipe by keyword",
+			notes = "根据关键字获取菜谱",
+			response = RecipeListResponse.class)
+	@GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public RecipeListResponse searchByName(@ApiParam(example = "牛肉") @RequestParam String name) {
+		return search(name);
+	}
+
 	@ApiOperation(value = "Get recipe list by type",
 			notes = "根据分类获取菜谱list",
 			response = RecipeTypeListResponse.class)
