@@ -114,6 +114,15 @@ public class RecipeController {
 		return new RecipeListResponse(recipeList.stream().map(RecipeListItem::new).collect(Collectors.toList()));
 	}
 
+	@ApiOperation(value = "Get recipe list according to mealtime",
+			notes = "根据早午晚餐时段获取食谱list",
+			response = RecipeListResponse.class)
+	@RequestMapping(value = "/mealtime", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public RecipeListResponse getRecipeListByMealTimeName(@ApiParam(example = "早餐") @RequestParam String mealtimeName) {
+		return getRecipeListByMealTime(mealtimeName);
+	}
+
 	@ApiOperation(value = "Get recipe list according to category",
 			notes = "根据荤素分类获取食谱list",
 			response = RecipeListResponse.class)
@@ -127,6 +136,15 @@ public class RecipeController {
 			return new RecipeListResponse(Collections.emptyList());
 		}
 		return new RecipeListResponse(recipeList.stream().map(RecipeListItem::new).collect(Collectors.toList()));
+	}
+
+	@ApiOperation(value = "Get recipe list according to category",
+			notes = "根据荤素分类获取食谱list",
+			response = RecipeListResponse.class)
+	@RequestMapping(value = "/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public RecipeListResponse getRecipeListByCategoryName(@ApiParam(example = "素食") @RequestParam String categoryName) {
+		return getRecipeListByCategory(categoryName);
 	}
 
 	@ApiOperation(value = "Get recipe detail by ID",
