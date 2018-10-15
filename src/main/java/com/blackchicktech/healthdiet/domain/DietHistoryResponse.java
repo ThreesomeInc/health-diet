@@ -14,6 +14,9 @@ public class DietHistoryResponse extends BasicResponse {
     @JsonProperty("monthFoodLog")
     private MonthFoodLog monthFoodLog;
 
+    public DietHistoryResponse() {
+    }
+
     public DietHistoryResponse(List<DietRecord> dietRecordList, MonthFoodLog monthFoodLog) {
         this.dietRecordList = dietRecordList;
         this.monthFoodLog = monthFoodLog;

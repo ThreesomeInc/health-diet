@@ -160,6 +160,10 @@ public class LogFoodController {
 			@ApiParam(example = "oXLZ35Pe0eCs-m084xLMdTnyq7c8") @RequestParam String openId,
 			@ApiParam(example = "早餐") @RequestParam(required = false) String mealtime,
 			@ApiParam(example = "2018-09-01") @RequestParam String date) {
+		if (StringUtils.isEmpty(openId)) {
+			logger.error("Open id is null, failed to get diet history.");
+			return new DietHistoryResponse();
+		}
 		List<FoodLogDetail> foodLogDetails = foodLogService.getFoodLogDetail(openId, parseDate(date), mealtime);
 
 		User user = userService.getUserByOpenId(openId);
