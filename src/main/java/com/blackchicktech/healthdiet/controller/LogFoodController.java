@@ -142,10 +142,6 @@ public class LogFoodController {
 			return new DietRecordResponse(new AccumulativeEnergy());
 		}
 
-		if (Objects.isNull(request.getFoodLogItemList()) || request.getFoodLogItemList().isEmpty()) {
-			logger.error("Food log item is empty, failed to add diet record");
-			return new DietRecordResponse(new AccumulativeEnergy());
-		}
 		AccumulativeEnergy energy = foodLogService.updateFoodLog(request);
 		return new DietRecordResponse(energy);
 	}
