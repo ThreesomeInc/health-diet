@@ -26,7 +26,7 @@ public class ReportService {
         ReportResponse response = new ReportResponse();
         response.setStandardWeight(String.valueOf(calStandardWeight(reportRequest)) + "公斤");
         response.setCalorie(String.format("%.2f 卡路里", calCalorie(reportRequest)));
-        response.setProtein(calProtein(reportRequest));
+        response.setProtein(calMinProtein(reportRequest));
         response.setBmi(calBmi(reportRequest));
         response.setAdvice(deduceAdvice(reportRequest));
         response.setSuggestNutrition(calSuggestNutrition(reportRequest));
@@ -99,21 +99,18 @@ public class ReportService {
 
     }
 
-    private String calProtein(ReportRequest reportRequest) {
+    private String calMinProtein(ReportRequest reportRequest) {
         int nephroticPeriod = Integer.parseInt(reportRequest.getUserDataInfo().getNephroticPeriod());
         List<String> treatmentMethod = reportRequest.getUserDataInfo().getTreatmentMethod();
         BigDecimal standardWeight = BigDecimal.valueOf(calStandardWeight(reportRequest));
         StringBuilder protein = new StringBuilder();
         if (nephroticPeriod >= 1 && nephroticPeriod <= 2) {
-            return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8)).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
-                    .append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
+            return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.8)).setScale(1, BigDecimal.ROUND_FLOOR)).toString();
         } else if (nephroticPeriod >= 3 && nephroticPeriod <= 5) {
             if (treatmentMethod.stream().anyMatch(item -> item.contains("dialysis"))) {
-                return protein.append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
-                        .append(standardWeight.multiply(BigDecimal.valueOf(1.2)).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
+                return protein.append(standardWeight.multiply(BigDecimal.ONE).setScale(1, BigDecimal.ROUND_FLOOR)).toString();
             } else {
-                return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6)).setScale(1, BigDecimal.ROUND_FLOOR)).append("~")
-                        .append(standardWeight.multiply(BigDecimal.valueOf(10.8)).setScale(1, BigDecimal.ROUND_FLOOR)).append("克").toString();
+                return protein.append(standardWeight.multiply(BigDecimal.valueOf(0.6)).setScale(1, BigDecimal.ROUND_FLOOR)).toString();
             }
         }
         return "Protein is unclear.";
