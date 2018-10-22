@@ -22,16 +22,8 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -168,12 +160,12 @@ public class FoodService {
 	}
 
     private Map<String, String> deduceCompositions(FoodTbl food){
-		Map<String, String> compositions = new HashMap<>();
-		Optional.ofNullable(food.getWater()).ifPresent(item -> compositions.put("水", item + "克"));
-		Optional.of(food.getEnergy()).filter(item -> item > 0).ifPresent(item -> compositions.put("热量", item + "千卡"));
-		Optional.of(food.getProtein()).filter(item -> item > 0).ifPresent(item -> compositions.put("蛋白质", item + "克"));
+		Map<String, String> compositions = new LinkedHashMap<>();
+        Optional.of(food.getProtein()).filter(item -> item > 0).ifPresent(item -> compositions.put("蛋白质", item + "克"));
+        Optional.of(food.getEnergy()).filter(item -> item > 0).ifPresent(item -> compositions.put("热量", item + "千卡"));
 		Optional.ofNullable(food.getFat()).ifPresent(item -> compositions.put("脂肪", item + "克"));
 		Optional.ofNullable(food.getCho()).ifPresent(item -> compositions.put("碳水化合物", item + "克"));
+        Optional.ofNullable(food.getWater()).ifPresent(item -> compositions.put("水", item + "克"));
 		Optional.ofNullable(food.getNa()).ifPresent(item -> compositions.put("钠", item + "毫克"));
 		Optional.ofNullable(food.getP()).ifPresent(item -> compositions.put("磷", item + "毫克"));
 		Optional.ofNullable(food.getK()).ifPresent(item -> compositions.put("钾", item + "毫克"));
