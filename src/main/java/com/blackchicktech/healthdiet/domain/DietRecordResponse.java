@@ -55,17 +55,17 @@ public class DietRecordResponse extends BasicResponse {
     private String ca;
 
     public DietRecordResponse(AccumulativeEnergy energy) {
-        this.totalEnergy = formatDouble(energy.getTotalEnergy());
-        this.totalProtein = formatDouble(energy.getTotalProtein());
-        this.peRatio = formatDouble(energy.getPeRatio());
-        this.fat = formatDouble(energy.getFat());
-        this.feRatio = formatDouble(energy.getFeRatio());
-        this.cho = formatDouble(energy.getCho());
-        this.ceRatio = formatDouble(energy.getCeRatio());
-        this.na = formatDouble(energy.getNa());
-        this.k = formatDouble(energy.getK());
-        this.p = formatDouble(energy.getP());
-        this.ca = formatDouble(energy.getCa());
+        this.totalEnergy = formatDouble(energy.getTotalEnergy()) + "卡";
+        this.totalProtein = formatDouble(energy.getTotalProtein()) + "克";
+        this.peRatio = formatDouble(energy.getPeRatio()) + "%";
+        this.fat = formatDouble(energy.getFat()) + "克";
+        this.feRatio = formatDouble(energy.getFeRatio()) + "%";
+        this.cho = formatDouble(energy.getCho()) + "克";
+        this.ceRatio = formatDouble(energy.getCeRatio()) + "%";
+        this.na = formatDouble(energy.getNa()) + "毫克";
+        this.k = formatDouble(energy.getK()) + "毫克";
+        this.p = formatDouble(energy.getP()) + "毫克";
+        this.ca = formatDouble(energy.getCa()) + "毫克";
     }
 
     @JsonIgnore
