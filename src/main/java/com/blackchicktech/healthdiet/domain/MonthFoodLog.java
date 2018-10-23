@@ -59,17 +59,17 @@ public class MonthFoodLog {
     public MonthFoodLog(FoodLog foodLog) {
         this.date = foodLog.getDate();
         this.logged = foodLog.isCompletedLog();
-        this.totalEnergy = formatDouble(foodLog.getTotalEnergy());
-        this.totalProtein = formatDouble(foodLog.getTotalProtein());
+        this.totalEnergy = formatDouble(foodLog.getTotalEnergy()) + "卡";
+        this.totalProtein = formatDouble(foodLog.getTotalProtein()) + "克";
         this.peRatio = formatDouble(foodLog.getPeRatio());
-        this.fat = formatDouble(foodLog.getFat());
+        this.fat = formatDouble(foodLog.getFat()) + "克";
         this.feRatio = formatDouble(foodLog.getFeRatio());
-        this.cho = formatDouble(foodLog.getCho());
+        this.cho = formatDouble(foodLog.getCho()) + "克";
         this.ceRatio = formatDouble(foodLog.getCeRatio());
-        this.na = formatDouble(foodLog.getNa());
-        this.k = formatDouble(foodLog.getK());
-        this.p = formatDouble(foodLog.getP());
-        this.ca = formatDouble(foodLog.getCa());
+        this.na = formatDouble(foodLog.getNa()) + "毫克";
+        this.k = formatDouble(foodLog.getK()) + "毫克";
+        this.p = formatDouble(foodLog.getP()) + "毫克";
+        this.ca = formatDouble(foodLog.getCa()) + "毫克";
     }
 
 	public MonthFoodLog(String expectProtein, String expectEnergy) {
