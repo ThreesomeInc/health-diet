@@ -55,7 +55,7 @@ public class DietRecordResponse extends BasicResponse {
     private String ca;
 
     public DietRecordResponse(AccumulativeEnergy energy) {
-        this.totalEnergy = formatDouble(energy.getTotalEnergy()) + "卡";
+        this.totalEnergy = formatDouble(energy.getTotalEnergy()) + "千卡";
         this.totalProtein = formatDouble(energy.getTotalProtein()) + "克";
         this.peRatio = formatDouble(energy.getPeRatio());
         this.fat = formatDouble(energy.getFat()) + "克";
