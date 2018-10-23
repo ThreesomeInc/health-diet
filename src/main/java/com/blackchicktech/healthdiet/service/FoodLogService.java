@@ -208,11 +208,27 @@ public class FoodLogService {
 
         analysis.setStandardLog(Boolean.TRUE);
         Map<String, Double> elementEvgs = deduceElementEvgs(threeDayFoodLog);
-        analysis.setElementEvgs(elementEvgs);
+        analysis.setElementEvgs(deduceElementEvgsToDisplay(elementEvgs));
         if(userDao.getUserByOpenId(openId) != null){
             analysis.setDieticianAdvice(deduceDieticianAdvice(threeDayFoodLog,elementEvgs,openId));
         }
         return analysis;
+    }
+
+    public Map<String, String> deduceElementEvgsToDisplay(Map<String, Double> elementEvgs){
+        return ImmutableMap.<String, String>builder()
+                .put("ca", String.format("%.2f毫克", elementEvgs.get("ca")))
+                .put("cho",  String.format("%.2f克", elementEvgs.get("cho")))
+                .put("fat",  String.format("%.2f克", elementEvgs.get("fat")))
+                .put("k",  String.format("%.2f毫克", elementEvgs.get("k")))
+                .put("p",  String.format("%.2f毫克", elementEvgs.get("p")))
+                .put("na",  String.format("%.2f毫克", elementEvgs.get("na")))
+                .put("totalProtein",  String.format("%.2f克", elementEvgs.get("totalProtein")))
+                .put("totalEnergy",  String.format("%.2f千卡", elementEvgs.get("totalEnergy")))
+                .put("ceRatio",  String.format("%.2f", elementEvgs.get("ceRatio")))
+                .put("feRatio", String.format("%.2f", elementEvgs.get("feRatio")))
+                .put("peRatio",String.format("%.2f", elementEvgs.get("peRatio")))
+                .build();
     }
 
     public Map<String, Double> deduceElementEvgs(List<FoodLog> foodLogList){
@@ -243,17 +259,17 @@ public class FoodLogService {
         }
 
         return ImmutableMap.<String, Double>builder()
-                .put("ca", BigDecimal.valueOf(ca / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("cho", BigDecimal.valueOf(cho / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("fat", BigDecimal.valueOf(fat / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("k", BigDecimal.valueOf(k / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("p", BigDecimal.valueOf(p / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("na", BigDecimal.valueOf(na / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("totalProtein", BigDecimal.valueOf(protein / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("totalEnergy", BigDecimal.valueOf(energy / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("ceRatio", BigDecimal.valueOf(ceRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("feRatio", BigDecimal.valueOf(feRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
-                .put("peRatio", BigDecimal.valueOf(peRatio / 3).setScale(1, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("ca", BigDecimal.valueOf(ca / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("cho", BigDecimal.valueOf(cho / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("fat", BigDecimal.valueOf(fat / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("k", BigDecimal.valueOf(k / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("p", BigDecimal.valueOf(p / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("na", BigDecimal.valueOf(na / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("totalProtein", BigDecimal.valueOf(protein / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("totalEnergy", BigDecimal.valueOf(energy / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("ceRatio", BigDecimal.valueOf(ceRatio / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("feRatio", BigDecimal.valueOf(feRatio / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
+                .put("peRatio", BigDecimal.valueOf(peRatio / 3).setScale(2, BigDecimal.ROUND_FLOOR).doubleValue())
                 .build();
     }
 

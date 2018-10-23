@@ -19,7 +19,7 @@ public class ThreeDayFoodLogAnalysis {
     private Boolean standardLog;
 
     @JsonProperty
-    private Map<String, Double> elementEvgs;
+    private Map<String, String> elementEvgs;
 
     @JsonProperty
     private List<String> dieticianAdvice;
@@ -39,11 +39,11 @@ public class ThreeDayFoodLogAnalysis {
         this.standardLog = standardLog;
     }
 
-    public Map<String, Double> getElementEvgs() {
+    public Map<String, String> getElementEvgs() {
         return elementEvgs;
     }
 
-    public void setElementEvgs(Map<String, Double> elementEvgs) {
+    public void setElementEvgs(Map<String, String> elementEvgs) {
         this.elementEvgs = elementEvgs;
     }
 
